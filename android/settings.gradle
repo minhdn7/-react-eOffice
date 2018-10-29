@@ -1,0 +1,3 @@
+rootProject.name = 'eOffice4'
+
+include ':app'
