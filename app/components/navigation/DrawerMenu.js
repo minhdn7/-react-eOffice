@@ -1,23 +1,26 @@
 import React, {Component} from 'react';
 import {Text,View} from 'react-native';
 import {DrawerNavigator} from 'react-navigation';
-import FirstScreen from '../screen/Home';
+import Home from '../screen/Home';
+import ThongTinDieuHanh from '../screen/ThongTinDieuHanh';
+import SideMenu from '../navigation/SideMenu';
 import SecondScreen from '../RepositoriesList';
 
 const MenuDrawerNavigator = DrawerNavigator(
     {
       First: {
-        path: '/',
-        screen: FirstScreen,
+
+        screen: Home,
       },
       Second: {
-        path: '/sent',
-        screen: SecondScreen,
+
+        screen: ThongTinDieuHanh,
       },
     },
     {
       initialRouteName: 'First',
       drawerPosition:'left',
+      contentComponent: SideMenu,
       navigationOptions: {
         header: null,
       },

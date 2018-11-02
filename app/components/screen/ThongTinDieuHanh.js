@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 
 import BottomNavigation, { Tab } from 'react-native-material-bottom-navigation-performance';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Header from '../navigation/Header';
+import DefaultHeader from '../navigation/DefaultHeader';
 import flatListData from '../../data/flatListData';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import Moment from 'moment';
@@ -31,7 +31,8 @@ export default class ThongTinDieuHanh extends Component {
         };
       }
       openMenu(){
-        this.props.navigation.openDrawer();
+        // this.props.navigation.openDrawer();
+        this.props.menu.openDrawer();
       }
       
       openDetailControls= (item) =>{
@@ -62,7 +63,7 @@ export default class ThongTinDieuHanh extends Component {
       
       return (
         <View style = {{flex: 1}}>
-            <Header onOpen={this.openMenu.bind(this)} myTitle= "Thông tin điều hành" />
+            <DefaultHeader myTitle= 'Thông tin điều hành' navigator= {this.props.navigation} />
             <View style={{flex: 1, alignItems:'center'}}>
 
                 <View style={{height: 40, flexDirection:'row'}}>

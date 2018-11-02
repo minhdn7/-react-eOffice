@@ -12,6 +12,11 @@ import ChiTietDieuHanh from "../screen/ChiTietDieuHanh";
 import SendThongTin from "../screen/SendThongTin";
 import DanhSachNhan from "../screen/DanhSachNhan";
 import LichCongTac from "../screen/LichCongTac";
+import BaoCaoThongKe from "../screen/BaoCaoThongKe";
+import Notification from "../screen/Notification";
+import UserInfo from "../screen/UserInfo";
+import ChangePassword from "../screen/ChangePassword";
+import Setting from "../screen/Setting";
 import DrawerMenu from "./DrawerMenu";
 import RepositoriesList from "../RepositoriesList";
 import RepositoryDetails from "../RepositoryDetails";
@@ -25,6 +30,11 @@ const Routes = {
   SendThongTin: {screen: SendThongTin},
   DanhSachNhan: {screen: DanhSachNhan},
   LichCongTac: {screen: LichCongTac},
+  BaoCaoThongKe: {screen: BaoCaoThongKe},
+  Notification: {screen: Notification},
+  UserInfo: {screen: UserInfo},
+  ChangePassword: {screen: ChangePassword},
+  Setting: {screen: Setting},
   DrawerMenu: {screen: DrawerMenu},
   RepositoriesList: {screen: RepositoriesList},
   RepositoryDetails: {screen: RepositoryDetails},

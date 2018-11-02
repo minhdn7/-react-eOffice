@@ -13,6 +13,7 @@ import * as detailsActions from "../../actions/details-actions";
 import Color from 'react-native-material-color';
 import PropTypes from 'prop-types';
 
+import BaoCaoThongKe from "../screen/BaoCaoThongKe";
 import BottomNavigation, { Tab } from 'react-native-material-bottom-navigation-performance';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Header from '../navigation/Header';
@@ -21,6 +22,13 @@ import consts from "../../const";
 export default class Home extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isDateTimePickerVisible: false,
+      isStartDate: true,
+      startDate: 'Từ ngày',
+      endDate: 'Đến ngày',
+      menu: this.props.navigation,
+    };
   }
   openMenu(){
     this.props.navigation.openDrawer();
@@ -40,6 +48,9 @@ export default class Home extends Component {
           this.props.navigation.navigate('ThongTinDieuHanh');
           break;
         case 5:
+          this.props.navigation.navigate('BaoCaoThongKe');
+          // this.props.navigation.navigate('BaoCaoThongKe', { name: 'Brent' })};
+
           break;
         case 6:
           Alert.alert('Thông báo',
@@ -54,7 +65,7 @@ export default class Home extends Component {
       return (
         <View>
 
-              <Header onOpen={this.openMenu.bind(this)} myTitle= "Trang chủ" />
+              <Header onOpen={this.openMenu.bind(this)} myTitle= "Trang chủ"  navigator= {this.props.navigation} />
 
               <View style= {{flexDirection:'column'}}>
                   <View style= {{alignItems: 'center', marginTop: 10}}>
