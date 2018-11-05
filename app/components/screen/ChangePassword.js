@@ -30,7 +30,6 @@ export default class ChangePassword extends Component {
       }
       
 
-
     render() {
       
       return (

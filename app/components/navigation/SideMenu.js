@@ -37,8 +37,7 @@ class SideMenu extends Component {
             </View>
 
               {/* Trang chủ */}
-              <TouchableOpacity 
-              onPress={ () => this.navigation.cl}
+              <TouchableOpacity
               style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
                   <Image style={{width: 30, height: 30, margin: 4}} 
                   source={require('../../image/ic_home.png')}/>
@@ -109,11 +108,14 @@ class SideMenu extends Component {
 
 
               {/* Danh bạ */}
-              <View style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
+              <TouchableOpacity
+              // onPress={ () => this.props.navigation.navigate('DanhBa')}
+              onPress={ () => this.props.navigation.navigate('BaoCaoThongKe')} 
+              style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
                   <Image style={{width: 30, height: 30, margin: 4}} 
                   source={require('../../image/contact.png')}/>
                   <Text style={{color: '#0d47a1', padding: 4}}>{strings.danhBa}</Text>
-              </View>
+              </TouchableOpacity>
               <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
 
               {/* Lịch công tác */}

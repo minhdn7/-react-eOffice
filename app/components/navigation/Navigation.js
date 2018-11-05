@@ -17,6 +17,7 @@ import Notification from "../screen/Notification";
 import UserInfo from "../screen/UserInfo";
 import ChangePassword from "../screen/ChangePassword";
 import Setting from "../screen/Setting";
+import DanhBa from "../screen/DanhBa";
 import DrawerMenu from "./DrawerMenu";
 import RepositoriesList from "../RepositoriesList";
 import RepositoryDetails from "../RepositoryDetails";
@@ -25,6 +26,7 @@ const store = configureStore();
 const Routes = {
   Login: {screen: Login},
   Home: {screen: Home},
+  DanhBa: {screen: DanhBa},
   ThongTinDieuHanh: {screen: ThongTinDieuHanh},
   ChiTietDieuHanh: {screen: ChiTietDieuHanh},
   SendThongTin: {screen: SendThongTin},

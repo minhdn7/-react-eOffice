@@ -43,13 +43,14 @@ export default class Home extends Component {
           this.props.navigation.navigate('LichCongTac');
           break;
         case 3:
+        this.props.navigation.navigate('DanhBa');
           break;
         case 4:
           this.props.navigation.navigate('ThongTinDieuHanh');
           break;
         case 5:
           this.props.navigation.navigate('BaoCaoThongKe');
-          // this.props.navigation.navigate('BaoCaoThongKe', { name: 'Brent' })};
+
 
           break;
         case 6:
@@ -67,8 +68,8 @@ export default class Home extends Component {
 
               <Header onOpen={this.openMenu.bind(this)} myTitle= "Trang chủ"  navigator= {this.props.navigation} />
 
-              <View style= {{flexDirection:'column'}}>
-                  <View style= {{alignItems: 'center', marginTop: 10}}>
+              <View style= {{}}>
+                  <View style= {{alignItems: 'center', marginTop: 10, height: '30%'}}>
                     <View style={itemStyles.containerStyleRow}>
                           <TouchableOpacity style={itemStyles.itemStyle} onPress={() =>this.openDetail(1)}>
                             <Image source={require('../../image/home_document.png')} style={itemStyles.iconStyle50}/>
@@ -82,7 +83,7 @@ export default class Home extends Component {
                       </View>
                   </View>
                   
-                  <View style= {{alignItems: 'center'}}>
+                  <View style= {{alignItems: 'center', height: '30%'}}>
                     <View style={itemStyles.containerStyleRow}>
                           <TouchableOpacity style={[itemStyles.itemStyle , {backgroundColor:Color.BLUEGREY[300]}]} onPress={() =>this.openDetail(3)}>
                             <Image source={require('../../image/home_contact.png')} style={itemStyles.iconStyle50}/>
@@ -98,7 +99,7 @@ export default class Home extends Component {
       
 
 
-                <View style= {{alignItems: 'center'}}>
+                <View style= {{alignItems: 'center', height: '30%'}}>
                   <View style={itemStyles.containerStyleRow}>
                       <TouchableOpacity style={[itemStyles.itemStyle , {backgroundColor:Color.GREEN[500]}]} onPress={() =>this.openDetail(5)}>
                         <Image source={require('../../image/home_report.png')} style={itemStyles.iconStyle50}/>
@@ -130,11 +131,8 @@ export default class Home extends Component {
 
     containerStyleRow: {
       flexDirection: 'row',
-      width:350,
-      // resizeMode: 'cover',
-      // padding: 4,
-      // alignItems: 'center',
-      justifyContent:'center'
+      justifyContent:'center',
+      height: '100%',
     },
     containerStyleColumn: {
       flexDirection: 'column',
@@ -142,16 +140,14 @@ export default class Home extends Component {
       justifyContent: 'space-between',
     },
     textStyle: {
-      flex: 1,
-      alignItems: 'center',
       color: '#fff',
-      fontSize: 20,
+      fontSize: 16,
     },
     itemStyle: {
       backgroundColor: Color.BLUE[900],
-      width:350,
-      height: 220,
+      width:'45%',
       alignItems: 'center',
+      justifyContent: 'center',
       padding: 6,
       margin: 4,
       borderRadius:10,
@@ -172,7 +168,7 @@ export default class Home extends Component {
       height: 30,
     },
     iconStyle50: {
-      marginTop: 40,
+      // marginTop: 40,
       width: 50, 
       height: 50,
     },
