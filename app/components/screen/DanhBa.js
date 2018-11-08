@@ -80,50 +80,55 @@ export default class DanhBa extends Component {
       <View style={{ flex: 1 }}>
         <DefaultHeader myTitle="Danh Bạ" navigator={this.props.navigation} />
 
-        <TreeView
-          ref={ref => (this.treeView = ref)}
-          data= {[dataConvert]}
-          // data={ContactData}
-          deleteOnLongPress
-          renderItem={(item, level) => (
-            <View style={{margin: 20}}>
-              <Text
-                style={{
-                  marginLeft: 25 * level,
-                  fontSize: 18
-                }}
-              >
-                {item.collapsed !== null ? (
-                  <Text style={{ fontSize: 18 }}>
-                    {item.collapsed ? 
-                      <Octicons
-                          name='diff-added'
-                          color='#000'
-                          size={14}
-                        />
-                        : 
-                        <AntDesign
-                          name='minussquareo'
-                          color='#000'
-                          size={14}
-                        />
-                    }
-                  </Text>
-                ) : (
+        <View style={{margin: 20}}>
+            <TreeView
+              ref={ref => (this.treeView = ref)}
+              
+              data= {[dataConvert]}
+              
+              // data={ContactData}
+              deleteOnLongPress
+              renderItem={(item, level) => (
+                <View style={{}}>
+                  <Text
+                    style={{
+                      marginLeft: 25 * level,
+                      fontSize: 18
+                    }}
+                  >
+                    {item.collapsed !== null ? (
+                      <Text style={{ fontSize: 18 }}>
+                        {item.collapsed ? 
+                          <Octicons
+                              name='diff-added'
+                              color='#000'
+                              size={14}
+                            />
+                            : 
+                            <AntDesign
+                              name='minussquareo'
+                              color='#000'
+                              size={14}
+                            />
+                        }
+                      </Text>
+                    ) : (
 
-                  <Text>                         
-                      <AntDesign
-                          name='minussquareo'
-                          color='#000'
-                          size={14}
-                        /> 
+                      <Text>                         
+                          <AntDesign
+                              name='minussquareo'
+                              color='#000'
+                              size={14}
+                            /> 
+                      </Text>
+                    )}
+                    {item.Name}
                   </Text>
-                )}
-                {item.Name}
-              </Text>
-            </View>
-          )}
-        />
+                </View>
+              )}
+            />
+        </View>
+        
       </View>
     );
   }
