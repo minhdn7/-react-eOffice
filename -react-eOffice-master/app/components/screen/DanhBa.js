@@ -81,7 +81,7 @@ export default class DanhBa extends Component {
       <View style={{ flex: 1 }}>
         <DefaultHeader myTitle="Danh Bạ" navigator={this.props.navigation} />
 
-        <View  style={{margin: 20}}>
+        <View  style={{margin: 2}}>
             <TreeView
               
               ref={ref => (this.treeView = ref)}
