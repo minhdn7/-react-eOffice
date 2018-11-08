@@ -97,7 +97,7 @@ export default class DanhBa extends Component {
                     }}
                   >
                     {item.collapsed !== null ? (
-                      <Text style={{ fontSize: 18 }}>
+                      <Text style={{ fontSize: 18}}>
                         {item.collapsed ? 
                           <Octicons
                               name='diff-added'
@@ -122,6 +122,7 @@ export default class DanhBa extends Component {
                             /> 
                       </Text>
                     )}
+                    {" "}
                     {item.Name}
                   </Text>
                 </View>
