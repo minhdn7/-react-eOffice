@@ -84,7 +84,13 @@ module.exports = new LocalizedStrings({
     thietLapMacDinh: 'Thiết lập mặc định',
     dangXuat: 'Đăng xuất',
 
+    // cài đặt mặc định
+    chonChucNangMacDinh: 'Chọn chức năng mặc định',
+    thietLapMacDinh: 'Thiết lập mặc định',
+    chucNangManHinh: 'Chức năng màn hình',
+    chon: 'Chọn',
 
+    
 
   }
 });

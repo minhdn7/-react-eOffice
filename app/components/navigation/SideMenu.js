@@ -109,8 +109,7 @@ class SideMenu extends Component {
 
               {/* Danh bạ */}
               <TouchableOpacity
-              // onPress={ () => this.props.navigation.navigate('DanhBa')}
-              onPress={ () => this.props.navigation.navigate('BaoCaoThongKe')} 
+              onPress={ () => this.props.navigation.navigate('DanhBa')}
               style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
                   <Image style={{width: 30, height: 30, margin: 4}} 
                   source={require('../../image/contact.png')}/>

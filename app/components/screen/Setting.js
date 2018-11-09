@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Image, Text, View, Alert, TouchableOpacity, StyleSheet, TextInput, Input, FlatList, TouchableWithoutFeedback} from "react-native";
-import {Container, Content, Spinner, Button} from "native-base";
+import {Container, Content, Spinner, Button, CheckBox, ListItem, Body, Header} from "native-base";
 import { Navigation, StatusBar} from 'react-native-navigation';
 import colors from "../../resources/colors";
 import {connect} from "react-redux";
@@ -19,96 +19,68 @@ import DefaultHeader from '../navigation/DefaultHeader';
 import flatListData from '../../data/flatListData';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import Moment from 'moment';
+import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
 export default class Setting extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userName : 'Lê Hữu Hoàng',
-            gioiTinh: 'Nam',
-            ngaySinh: '1/11/2018',
-            phone: '0123456789',
-            email: '123@gmail.com',
-            tenDangNhap: 'hoanglx',
-            danToc: 'Kinh',
-            tonGiao: 'Không',
-            hocVan: 'Đại học',
-            diaChi: 'Thống nhất',
-            donVi: 'VNPT',
-            trangThai: 'chờ duyệt',
+            radio_props : [
+                {id: '1', label: strings.trangChu, value: 0 },
+                {id: '2', label: strings.vanBanDaXuLy, value: 1 },
+                {id: '3', label: strings.vanBanXemDeBiet, value: 2 },
+                {id: '4', label: strings.vanBanDanhDau, value: 3 },
+                {id: '5', label: strings.danhBa, value: 4 },
+                {id: '6', label: strings.lichCongTacLanhDao, value: 5 },
+            ],
+
+            selectedId: 0,
         };
-      }
+      };
       
 
+    onCheckBoxPress(value) {
+        this.setState({
+          selectedId: value
+        });
+      }
 
     render() {
-      
+
       return (
         <View style = {{flex: 1}}>
-            <DefaultHeader myTitle= "Thông tin cá nhân" navigator= {this.props.navigation} />
+            <DefaultHeader myTitle= {strings.thietLapMacDinh} navigator= {this.props.navigation} />
             <View style={{flex: 1}}>
-                <View style={{flexDirection: 'row' ,margin: 10, alignItems: 'center'}}>
-                    <Image source={require('../../image/ic_avatar.png')} style={{width: 60, height: 60}}/>
-                    <Text style={{color: 'black', fontSize: 18, padding: 4, fontWeight: 'bold' }}>{this.state.userName}</Text>
-                </View>
-                <View style={{margin: 6, height: 1, backgroundColor: 'lightslategray'}}/>
-                <View style={{margin: 6}}>
-                    <View style={itemStyles.viewBound}>
-                        <Text style={itemStyles.textLabel}>{strings.gioiTinh}</Text>
-                        <Text style={itemStyles.textData}>{this.state.gioiTinh}</Text>
-                    </View>
-
-                    <View style={itemStyles.viewBound}>
-                        <Text style={itemStyles.textLabel}>{strings.ngaySinh}</Text>
-                        <Text style={itemStyles.textData}>{this.state.ngaySinh}</Text>
-                    </View>
-
-                    <View style={itemStyles.viewBound}>
-                        <Text style={itemStyles.textLabel}>{strings.dienThoai}</Text>
-                        <Text style={itemStyles.textData}>{this.state.phone}</Text>
-                    </View>
-
-                    <View style={itemStyles.viewBound}>
-                        <Text style={itemStyles.textLabel}>{strings.email}</Text>
-                        <Text style={itemStyles.textData}>{this.state.email}</Text>
-                    </View>
-
-                    <View style={itemStyles.viewBound}>
-                        <Text style={itemStyles.textLabel}>{strings.tenDangNhap}</Text>
-                        <Text style={itemStyles.textData}>{this.state.tenDangNhap}</Text>
-                    </View>
-
-                    <View style={itemStyles.viewBound}>
-                        <Text style={itemStyles.textLabel}>{strings.danToc}</Text>
-                        <Text style={itemStyles.textData}>{this.state.danToc}</Text>
-                    </View>
-
-                    <View style={itemStyles.viewBound}>
-                        <Text style={itemStyles.textLabel}>{strings.tonGiao}</Text>
-                        <Text style={itemStyles.textData}>{this.state.tonGiao}</Text>
-                    </View>
-
-                    <View style={itemStyles.viewBound}>
-                        <Text style={itemStyles.textLabel}>{strings.hocVan}</Text>
-                        <Text style={itemStyles.textData}>{this.state.hocVan}</Text>
-                    </View>
-
-                    <View style={itemStyles.viewBound}>
-                        <Text style={itemStyles.textLabel}>{strings.diaChi}</Text>
-                        <Text style={itemStyles.textData}>{this.state.diaChi}</Text>
-                    </View>
-
-                    <View style={itemStyles.viewBound}>
-                        <Text style={itemStyles.textLabel}>{strings.donVi}</Text>
-                        <Text style={itemStyles.textData}>{this.state.donVi}</Text>
-                    </View>
-
-                    <View style={itemStyles.viewBound}>
-                        <Text style={itemStyles.textLabel}>{strings.trangThai}</Text>
-                        <Text style={itemStyles.textData}>{this.state.trangThai}</Text>
-                    </View>
+                <View style={{alignItems: 'center'}}>
+                    <Text style={{color: 'blue', fontSize: 20, margin: 12, fontWeight:'bold'}}>{strings.chonChucNangMacDinh}</Text> 
                 </View>
 
+               <View style={{margin: 20, borderWidth: 1, borderRadius: 4}}>
+
+                    <View style={{flexDirection: 'row', backgroundColor: 'blue', height: 50, justifyContent: "center", alignItems: 'center'}}>
+                            <Text style={{width:'90%', color: 'white', fontSize: 16}}>{strings.chucNangManHinh}</Text>
+                            <Text style={{fontSize: 16, justifyContent: 'center', color: 'white', textAlign: 'center'}}>{strings.chon}</Text>
+                    </View>
+                    <FlatList 
+                    extraData={this.state}
+                    keyExtractor={(item, index) => item.id}
+                    data={this.state.radio_props}
+                    renderItem={({item, index})=>{
+                        return <ListItem>
+                            <Body style={{width:'90%'}}>
+                                <Text>{item.label}</Text>
+                            </Body>
+                            <CheckBox
+                                checked={this.state.selectedId == item.id}
+                                onPress={() => this.onCheckBoxPress(item.id)}
+                            />
+                            </ListItem>
+          
+                    }}
+                    >
+
+                    </FlatList>  
+                </View> 
 
 
 
@@ -145,3 +117,33 @@ export default class Setting extends Component {
         margin: 4,
     }  
   });
+
+  class FlatListItem extends Component {
+    render() {          
+        return (        
+            <View style={{
+                flex: 1,
+                flexDirection:'column',
+                backgroundColor: 'white',
+                paddingLeft: 10,
+                paddingRight: 10,
+                paddingTop: 2,                              
+            }}> 
+                <Text style={{backgroundColor: 'white', fontWeight: 'bold'}}>{this.props.item.name}</Text>           
+                <View style={{
+                        flex: 1,
+                        flexDirection:'row',                
+                        backgroundColor: 'white'
+                }}>            
+                  <Text style={{flex: 3}}>{this.props.item.name}</Text>
+                  <CheckBox
+                    checked={this.state.selectedId == item.value}
+                    onPress={() => this.onCheckBoxPress(item.value)}
+                  />            
+                </View>
+                
+          </View>
+        );
+    }
+  }
+  
