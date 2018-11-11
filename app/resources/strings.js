@@ -46,6 +46,7 @@ module.exports = new LocalizedStrings({
     congViecBanDaBanHanh: 'Công việc đã ban hành',
     tatCa: 'Tất cả',
     daDoc: 'Đã đọc',
+    test: 'test',
 
     // thông tin cá nhân
     gioiTinh: 'Giới tính:',
