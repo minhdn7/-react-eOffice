@@ -31,6 +31,6 @@ export function setError(error) {
 export function setLoginSuccess(data) {
   return {
     type: actions.LOGIN_SUCCESS,
-    data
+    data: data
   }
 }

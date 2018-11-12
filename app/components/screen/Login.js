@@ -27,20 +27,23 @@ export class Login extends Component {
   isSelected: false;
   constructor(){
     super();
-    this.password = "Vnpt@123";
-    this.email = "nnhai";
+    this.password = "Al@nwalker1901";
+    this.email = "liemhq";
+    // this.password = "";
+    // this.email = "";
     this.tokenFirebase = "";
     this.isGoneAlready = false;
-    this.isfirstLoad = false;
-    this.isLoggedIn = false;
+
+
     this.state = {
       checked: false,
-    }   
+      isfirstLoad: false,
+    }
+     
  }
 
  componentDidMount() {
   this.props.dispatch(rootActions.controlProgress(false));
-  const isLoggedIn = false;
 }
 
 componentDidUpdate() {
@@ -48,18 +51,22 @@ componentDidUpdate() {
 }
 
 proceed() {
-  const loginError = this.props.login.get('loginError');
-  isLoggedIn = this.props.login.get('isLoggedIn');
+  // const loginError = this.props.login.get('loginError');
 
-  if (this.isfirstLoad) {
-    if(this.isfirstLoad){
+  // console.log('isLoggedIn', this.props.login.get('isLoggedIn'));
+
+  if (this.state.isfirstLoad) {
+    this.setState({isfirstLoad : false});
+    if(this.props.login.get('isLoggedIn')){
+
+
       this.props.navigation.navigate('DrawerMenu');
+      
     }else{
-      this.props.dispatch(loginActions.setError({}))
-      isLoggedIn = false;
+      message = this.props.login.get('loginError');
       Alert.alert(
         'Thông báo',
-        "Thất bại",
+          message,
         [
           {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
           {text: 'OK', onPress: () => console.log('OK Pressed')},
@@ -85,7 +92,7 @@ isObject(obj) {
         <ImageBackground style={loginStyles.backgroundImage} source={require('../../image/ic_background_login.png')}>
           <Content contentContainerStyle={loginStyles.contentStyle}>
             <Text style={loginStyles.textStyle}>
-              Hệ thống văn bản điều hành
+              {strings.heThongVanBanDieuHanh}
             </Text>
             <ValidationTextInput
               validate={this.validateEmail}
@@ -100,6 +107,7 @@ isObject(obj) {
               label={strings.password}
               style={loginStyles.emailStyle}
               color={colors.accentColor}/>
+
               <Content contentContainerStyle={loginStyles.contentStyle2}>
                 <Text>Ghi nhớ tài khoản </Text>
 
@@ -150,7 +158,7 @@ isObject(obj) {
   validatePassword = (text: string): boolean => text.length >= consts.MIN_PASSWORD_LENGTH;
 
   onLoginPress = () => {
-    this.isfirstLoad = true;
+    this.setState({isfirstLoad : true});
     this.props.dispatch(loginActions.loginAccount(this.email, this.password, this.tokenFirebase));
   }
 }

@@ -62,7 +62,13 @@ export default class Home extends Component {
     }
   }
   
+  componentDidMount() {
+    // console.log('token 4', this.props.login.get('token'));
+  }
+
+
     render() {
+
       return (
         <View>
 

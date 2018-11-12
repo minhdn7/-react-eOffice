@@ -5,15 +5,27 @@ import {NavigationActions} from 'react-navigation';
 import {TouchableOpacity, ScrollView, Text, View, StyleSheet, Image} from 'react-native';
 import {Collapse,CollapseHeader, CollapseBody, AccordionList} from 'accordion-collapse-react-native';
 import strings from "../../resources/strings";
-
+import {connect} from "react-redux";
 class SideMenu extends Component {
-      constructor(props) {
-        super(props);
+      constructor() {
+        super();
+
         this.state = {
-          name: "Huỳnh Thị Trần Lê",
-          address: "Công ty TNHH Yến Sào",
+          name: "username",
+          address: "unitName",
         };
     }
+
+    componentWillMount() {
+      console.log('token 3', this.props.login.get('token'));
+      loginData = this.props.login.get('loginData');
+      // res = this.props.login.get('token');
+      this.setState({
+        name: loginData.username,
+        address: loginData.unitName,
+      });
+    }
+
   navigateToScreen = (route) => () => {
     const navigateAction = NavigationActions.navigate({
       routeName: route
@@ -22,6 +34,7 @@ class SideMenu extends Component {
   }
 
   render () {
+    
     return (
       <View style={menuStyles.container}>
         <ScrollView>
@@ -240,7 +253,7 @@ SideMenu.propTypes = {
   navigation: PropTypes.object
 };
 
-export default SideMenu;
+// export default SideMenu;
 
 const menuStyles = StyleSheet.create({
     container: {
@@ -262,3 +275,10 @@ const menuStyles = StyleSheet.create({
   },
   
   });
+
+  const mapStateToProps = (state) => ({
+    login: state.get('login'),
+    root: state.get('root'),
+  });
+  
+  export default connect(mapStateToProps)(SideMenu)  
