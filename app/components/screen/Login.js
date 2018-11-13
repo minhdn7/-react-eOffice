@@ -13,11 +13,13 @@ import * as actions from "../../actions/action-types";
 import styles from "../../resources/styles";
 import * as Toast from "@remobile/react-native-toast";
 
+
 import CheckBox from 'react-native-check-box';
 import * as loginActions from "../../actions/login-actions";
 import * as rootActions from "../../actions/root-actions";
 import {connect} from "react-redux";
 import Color from 'react-native-material-color';
+
 type Props = {};
 export class Login extends Component {
   static navigationOptions = {
@@ -59,7 +61,8 @@ proceed() {
     this.setState({isfirstLoad : false});
     if(this.props.login.get('isLoggedIn')){
 
-
+      consts.BASE_HEADER["X-Authentication-Token"] = this.props.login.get('token');
+      console.log('Token save: ', consts.BASE_HEADER["X-Authentication-Token"]);
       this.props.navigation.navigate('DrawerMenu');
       
     }else{
@@ -141,7 +144,7 @@ isObject(obj) {
     } else {
       return null;
     }
-  }
+  }   
 
   spinner() {
     return (

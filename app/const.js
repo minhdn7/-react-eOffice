@@ -1,5 +1,5 @@
 /**
- * Created by saionara1 on 6/21/17.
+ * Created by MinhDN.
  */
 
 // @flow
@@ -9,9 +9,10 @@ export default {
   CLIENT_ID: 'ffb12e79140e7b6597ba',
   CLIENT_SECRET: 'd07dadbce095325cebfc40a46eb467e906063927',
   BASE_HEADER: {
-    'Accept': 'application/vnd.github.v3.full+json',
     'Content-Type': 'application/json',
+    'X-Authentication-Token' : '',
   },
+  USER_TOKEN: 'token',
   BASE_PAGE_LIMIT: 10,
   LOGIN_SCREEN: 'Login',
   HOME_SCREEN: 'Home',

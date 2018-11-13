@@ -1,5 +1,5 @@
 /**
- * Created by saionara1 on 7/21/17.
+ * Created by MinhDN.
  */
 import * as actions from "../actions/action-types";
 
@@ -32,5 +32,26 @@ export function setLoginSuccess(data) {
   return {
     type: actions.LOGIN_SUCCESS,
     data: data
+  }
+}
+
+// get contact list after login success
+export function getContact() {
+  return {
+    type: actions.GET_CONTACT
+  }
+}
+
+export function getContactError(error) {
+  return {
+    type: actions.GET_CONTACT_ERROR,
+    error: error
+  }
+}
+
+export function getContactSuccess(dataContact) {
+  return {
+    type: actions.GET_CONTACT_SUCCESS,
+    dataContact: dataContact
   }
 }

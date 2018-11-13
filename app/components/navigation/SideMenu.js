@@ -40,12 +40,12 @@ class SideMenu extends Component {
         <ScrollView>
           <View>
             {/* header */}
-            <View style={{flexDirection: 'row', backgroundColor: '#0d47a1'}}>
+            <View style={{ flexDirection: 'row', backgroundColor: '#0d47a1'}}>
                 <Image style={{width: 80, height: 80}} 
                 source={require('../../image/ic_avatar.png')}/>
-                <View style={{justifyContent: 'center', padding: 4}}>
-                  <Text style={{color: 'white', fontWeight: 'bold'}}>{this.state.name}</Text>
-                  <Text style={{color: 'white'}}>{this.state.address}</Text>
+                <View style={{flex: 1,justifyContent: 'center', padding: 4, }}>
+                  <Text style={{fontSize: 16,color: 'white', fontWeight: 'bold'}}>{this.state.name}</Text>
+                  <Text style={{fontSize: 16, color: 'white'}}>{this.state.address}</Text>
                 </View>
             </View>
 
