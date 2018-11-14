@@ -10,9 +10,9 @@ import apiUrl from "../network/apiUrl";
 import consts from "../const";
 
 function logInRequestURL(username, password, tokenFireBase) {
-  console.log("username:", username);
-  console.log("password:", password);
-  console.log("tokenFireBase:", tokenFireBase);
+  // console.log("username:", username);
+  // console.log("password:", password);
+  // console.log("tokenFireBase:", tokenFireBase);
   url = apiUrl.ROOT_URL + apiUrl.LOGIN_URL;
   console.log("url:", url);
   return fetch(url, {
@@ -44,6 +44,7 @@ function logInRequestURL(username, password, tokenFireBase) {
 function getContactURL() {
 
     url = apiUrl.ROOT_URL + apiUrl.GET_CONTACT_URL;
+    console.log("url contact:", url);
     return fetch(url, {
       method: 'GET',
       headers: consts.BASE_HEADER
@@ -83,10 +84,11 @@ function* login(username, password, tokenFireBase) {
 function* getContact() {
   try {
     const response = yield call(getContactURL);
-    console.log("contact:", response);
+    // console.log("contact:", response);
     if(typeof(response) != "undefined"  && typeof(response.status) != "undefined"){
       if (response.status.code == "0") {
-        yield put(loginActions.getContactSuccess(response.data));
+        dataConvert = this.convertJsonToTreeMap(response.data);
+        yield put(loginActions.getContactSuccess(dataConvert));
         return response;
       } else {
         yield put(loginActions.getContactError(response.status.message));
@@ -103,15 +105,47 @@ function* getContact() {
   }
 }
 
+convertJsonToTreeMap = array => {
+  var map = {};
+  for (var i = 0; i < array.length; i++) {
+    var obj = array[i];
+    if (!(obj.id in map)) {
+      map[obj.id] = obj;
+      map[obj.id].children = [];
+    }
+
+    if(typeof map[obj.id].userName == 'undefined'){
+      map[obj.id].id = obj.id
+      map[obj.id].userName = obj.userName
+      map[obj.id].parentId = obj.parentId
+    }
+
+    var parent = obj.parentId || "-";
+    if (!(parent in map)) {
+      map[parent] = obj;
+
+      map[parent].children = [];
+    }else{
+            map[parent].children.push(map[obj.id]);
+    }
+
+
+  }
+  return map["-"];
+};
+
+
 export function* loginFlow() {
   while (true) {
     const {username, password, tokenFireBase} = yield take(actions.LOGIN_ACTION);
-    const {} = yield take(actions.GET_CONTACT);
     yield put(rootActions.controlProgress(true));
     yield call(login, username, password, tokenFireBase);
-    
     yield put(rootActions.controlProgress(false));
 
+    yield take(actions.GET_CONTACT);
+    yield put(rootActions.controlProgress(true));
+    yield call(getContact);
+    yield put(rootActions.controlProgress(false));
   }
 }
 

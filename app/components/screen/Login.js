@@ -46,27 +46,54 @@ export class Login extends Component {
 
  componentDidMount() {
   this.props.dispatch(rootActions.controlProgress(false));
-}
+  }
 
 componentDidUpdate() {
-  this.proceed()
+  if(this.checkLogin()){
+    this.checkContact();
+  }
 }
 
-proceed() {
-  // const loginError = this.props.login.get('loginError');
 
-  // console.log('isLoggedIn', this.props.login.get('isLoggedIn'));
 
-  if (this.state.isfirstLoad) {
-    this.setState({isfirstLoad : false});
-    if(this.props.login.get('isLoggedIn')){
 
-      consts.BASE_HEADER["X-Authentication-Token"] = this.props.login.get('token');
+  checkLogin(){
+    if (this.state.isfirstLoad) {
+      this.setState({isfirstLoad : false});
+      if(this.props.login.get('isLoggedIn')){
+  
+        consts.BASE_HEADER["X-Authentication-Token"] = this.props.login.get('token');
+        console.log('Token save: ', consts.BASE_HEADER["X-Authentication-Token"]);
+        loginActions.getContact();
+        // this.props.navigation.navigate('DrawerMenu');
+        return true;
+        
+      }else{
+        message = this.props.login.get('loginError');
+        Alert.alert(
+          'Thông báo',
+            message,
+          [
+            {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+          ],
+          { cancelable: false }
+        )
+        return false;
+      }
+  
+    }
+  }
+
+  checkContact(){
+    if(this.props.login.get('hasContact')){
+  
+      // consts.BASE_HEADER["X-Authentication-Token"] = this.props.login.get('token');
       console.log('Token save: ', consts.BASE_HEADER["X-Authentication-Token"]);
       this.props.navigation.navigate('DrawerMenu');
       
     }else{
-      message = this.props.login.get('loginError');
+      message = this.props.login.get('contactError');
       Alert.alert(
         'Thông báo',
           message,
@@ -76,10 +103,10 @@ proceed() {
         ],
         { cancelable: false }
       )
+      this.props.navigation.navigate('DrawerMenu');
     }
-
   }
-}
+
 
 isObject(obj) {
   return typeof obj === 'object';

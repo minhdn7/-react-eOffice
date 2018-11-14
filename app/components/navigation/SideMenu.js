@@ -17,7 +17,7 @@ class SideMenu extends Component {
     }
 
     componentWillMount() {
-      console.log('token 3', this.props.login.get('token'));
+      // console.log('token 3', this.props.login.get('token'));
       loginData = this.props.login.get('loginData');
       // res = this.props.login.get('token');
       this.setState({

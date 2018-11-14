@@ -37,7 +37,7 @@ import Moment from "moment";
 
 import TreeView from "@zaguini/react-native-tree-view";
 
-export default class DanhBa extends Component {
+export class DanhBa extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -52,17 +52,16 @@ export default class DanhBa extends Component {
         map[obj.id].children = [];
       }
 
-      if(typeof map[obj.id].Name == 'undefined'){
+      if(typeof map[obj.id].userName == 'undefined'){
         map[obj.id].id = obj.id
-        map[obj.id].Name = obj.Name
+        map[obj.id].userName = obj.userName
         map[obj.id].parentId = obj.parentId
       }
 
       var parent = obj.parentId || "-";
       if (!(parent in map)) {
         map[parent] = obj;
-        // map[parent].id = null
-        // map[parent].Name = obj.Name
+
         map[parent].children = [];
       }else{
               map[parent].children.push(map[obj.id]);
@@ -73,9 +72,14 @@ export default class DanhBa extends Component {
     return map["-"];
   };
 
+  componentWillMount(){
+    dataConvert = this.props.login.get('dataContact');
+  }
+
   render() {
-    dataConvert = this.convertJsonToTreeMap(ContactData);
-    console.log(JSON.stringify(dataConvert));
+    // dataConvert = this.convertJsonToTreeMap(ContactData);
+    // dataConvert = this.convertJsonToTreeMap(this.props.login.get('dataContact'));
+
     return (
       <View style={{ flex: 1 }}>
         <DefaultHeader myTitle="Danh Bạ" navigator={this.props.navigation} />
@@ -123,7 +127,7 @@ export default class DanhBa extends Component {
                       </Text>
                     )}
                     {" "}
-                    {item.Name}
+                    {item.userName}
                   </Text>
                 </View>
               )}
@@ -157,3 +161,10 @@ const itemStyles = StyleSheet.create({
     margin: 4
   }
 });
+
+const mapStateToProps = (state) => ({
+  login: state.get('login'),
+  root: state.get('root'),
+});
+
+export default connect(mapStateToProps)(DanhBa)  

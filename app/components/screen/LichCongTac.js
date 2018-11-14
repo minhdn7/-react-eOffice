@@ -18,16 +18,51 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import DefaultHeader from '../navigation/DefaultHeader';
 import {sectionListData} from '../../data/sectionListData';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import Moment from 'moment';
+import moment from 'moment';
+// import moment = require("moment");
 
 export default class LichCongTac extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            week: 'Tuần 42 năm 2018',
-            weekTime: '15/10/2018 - 21/10/2018',
+            date: moment().format('DD/MM/YYYY'),
+            week: moment().format('w'),
+            year: moment().format('YYYY'),
+            startDateOfWeek: moment().startOf('isoweek').format("DD/MM/YYYY"),
+            endDateOfWeek: moment().endOf('isoweek').format("DD/MM/YYYY"),
+
         };
       }
+
+
+
+
+    updateWeek(date, deltaDay){
+        
+        if(deltaDay > 0){
+            newDate = moment(date, "DD/MM/YYYY").add(7, 'days');
+        }else{
+            newDate = moment(date, "DD/MM/YYYY").add(-7, 'days');
+        }
+
+        this.setState({
+           date: newDate,
+           week: moment(newDate).format('w'),
+           year: moment(newDate).format('YYYY'),
+           startDateOfWeek : moment(newDate).startOf('isoweek').format("DD/MM/YYYY"),
+           endDateOfWeek: moment(newDate).endOf('isoweek').format("DD/MM/YYYY"),
+        });
+
+    }
+
+    getWeekNumber(date) {
+        var d = new Date(+date);
+        
+        d.setHours(0,0,0);
+        d.setDate(d.getDate()+4-(d.getDay()||7));
+        return Math.ceil((((d-new Date(d.getFullYear(),0,1))/8.64e7)+1)/7);
+    }
+
 
 
     render() {
@@ -36,18 +71,26 @@ export default class LichCongTac extends Component {
         <View style = {{flex: 1}}>
             <DefaultHeader myTitle= "Lịch công tác lãnh đạo" navigator= {this.props.navigation} />
             <View style={{flexDirection: 'row', padding: 10, justifyContent: 'space-between'}}>
+                <TouchableOpacity onPress={() =>this.updateWeek(this.state.date, -7)}>
                 <Image source={require('../../image/ic_arrow_left.png')} style={{width: 30, height: 30, margin: 10}}/>
+                </TouchableOpacity>
+
                 <View style={{alignContent: 'center'}}>
-                    <Text style={{fontSize: 18, color: 'red', marginLeft: 16}}>{this.state.week}</Text>
-                    <Text style={{fontSize: 18, color: 'black'}}>{this.state.weekTime}</Text>
+                    {/* <Text style={{fontSize: 18, color: 'red', marginLeft: 16}}>{this.state.week}</Text> */}
+                    <Text style={{fontSize: 18, color: 'red', marginLeft: 16}}>Tuần {this.state.week} năm {this.state.year}</Text>
+
+                    <Text style={{fontSize: 18, color: 'black'}}>{this.state.startDateOfWeek} - {this.state.endDateOfWeek}</Text>
                 </View>
+                <TouchableOpacity onPress={() =>this.updateWeek(this.state.date, 7)}>
                 <Image source={require('../../image/ic_arrow_right.png')} style={{width: 30, height: 30, margin: 10}}/>
+                </TouchableOpacity>
+
             </View>
             <View style={{ flex: 1, marginTop: Platform.OS === 'ios' ? 34 : 0 }}>
                 <SectionList
                     renderItem={({ item, index, section }) => {
                         return (<SectionListItem item={item} index={index} >
-
+                        
                         </SectionListItem>);
                     }}
                     renderSectionHeader={({ section }) => {

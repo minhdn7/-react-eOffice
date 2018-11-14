@@ -46,7 +46,7 @@ export default function loginReducer(state, action = {}) {
       return state.withMutations(state => state
         .set('progress', false)
         .set('hasContact', false)
-        .set('loginError', action.err));
+        .set('contactError', action.error));
     }
     default:
       return state
