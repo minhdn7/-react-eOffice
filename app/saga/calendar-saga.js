@@ -47,7 +47,7 @@ function* getCalendar(startDate, endDate) {
         return undefined;
       }
     }else{
-      yield put(calendarActions.setError("Không lấy được lịch họp!"));
+      yield put(calendarActions.setCalendarError("Không lấy được lịch họp!"));
       return undefined;
     }
 
