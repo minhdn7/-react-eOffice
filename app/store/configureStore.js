@@ -10,11 +10,13 @@ import Immutable from "immutable";
 import {applyMiddleware, compose, createStore} from "redux";
 import {AsyncStorage} from "react-native";
 import loginReducer from "../reducers/loginReducer";
+import calendarReducer from "../reducers/calendarReducer";
 import rootReducer from "../reducers/rootReducer";
 import listReducer from "../reducers/listReducer";
 import detailsReducer from "../reducers/detailsReducer";
 import createSagaMiddleware from "redux-saga";
 import * as loginSaga from "../saga/login-saga";
+import * as calendarSaga from "../saga/calendar-saga";
 import * as logoutSaga from "../saga/logout-saga";
 import * as listSaga from "../saga/list-saga";
 import * as detailsSaga from "../saga/details-saga";
@@ -24,7 +26,8 @@ const combinedReducers = combineReducers({
   root: rootReducer,
   login: loginReducer,
   list: listReducer,
-  details: detailsReducer
+  details: detailsReducer,
+  calendar: calendarReducer
 });
 
 const initialState = new Immutable.Map({
@@ -34,17 +37,27 @@ const initialState = new Immutable.Map({
   login: Immutable.Map({
     isLoggedIn: false,
     token: '',
-    loginError: {},
+    loginError: '',
     username:'',
     password:'',
-    authorizationId:''
+    authorizationId:'',
+    loginData:{},
+    hasContact: false,
+    contactError: '',
+    dataContact: {}
+
   }),
   list: Immutable.Map({
     data: [],
   }),
+  
   details: Immutable.Map({
     readMe: ''
-  })
+  }),
+  calendar: Immutable.Map({
+    calendarError: '',
+    calendarData: {}
+  }),
 });
 
 export default function configureStore() {
@@ -66,6 +79,8 @@ export default function configureStore() {
       [sagaMiddleware.run(listSaga.listFlow),
       sagaMiddleware.run(detailsSaga.detailsFlow),
       sagaMiddleware.run(logoutSaga.logoutFlow),
-      sagaMiddleware.run(loginSaga.loginFlow)]
+      sagaMiddleware.run(loginSaga.loginFlow),
+      sagaMiddleware.run(calendarSaga.calendarFlow)
+    ]
   };
 }

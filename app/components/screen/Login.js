@@ -40,6 +40,7 @@ export class Login extends Component {
     this.state = {
       checked: false,
       isfirstLoad: false,
+      isLoggedIn: false,
     }
      
  }
@@ -49,22 +50,27 @@ export class Login extends Component {
   }
 
 componentDidUpdate() {
-  if(this.checkLogin()){
-    this.checkContact();
+  if(this.state.isfirstLoad){
+    // this.setState({isfirstLoad: false});
+    if(this.checkLogin()){
+      this.checkContact();
+    }
   }
+
 }
 
 
 
 
   checkLogin(){
-    if (this.state.isfirstLoad) {
-      this.setState({isfirstLoad : false});
+
+    console.log('isLoggedIn:', this.props.login.get('isLoggedIn'));
       if(this.props.login.get('isLoggedIn')){
   
         consts.BASE_HEADER["X-Authentication-Token"] = this.props.login.get('token');
-        console.log('Token save: ', consts.BASE_HEADER["X-Authentication-Token"]);
-        loginActions.getContact();
+        console.log('Token save:', consts.BASE_HEADER["X-Authentication-Token"]);
+        
+        this.props.dispatch(loginActions.getContact());
         // this.props.navigation.navigate('DrawerMenu');
         return true;
         
@@ -81,15 +87,11 @@ componentDidUpdate() {
         )
         return false;
       }
-  
-    }
   }
 
   checkContact(){
     if(this.props.login.get('hasContact')){
-  
-      // consts.BASE_HEADER["X-Authentication-Token"] = this.props.login.get('token');
-      console.log('Token save: ', consts.BASE_HEADER["X-Authentication-Token"]);
+      
       this.props.navigation.navigate('DrawerMenu');
       
     }else{

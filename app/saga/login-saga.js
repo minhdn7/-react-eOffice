@@ -1,5 +1,5 @@
 /**
- * Created by saionara1 on 6/22/17.
+ * Created by MinhDN on 6/22/2018.
  */
 import {call, put, take} from "redux-saga/effects";
 import * as actions from "../actions/action-types";
@@ -10,9 +10,9 @@ import apiUrl from "../network/apiUrl";
 import consts from "../const";
 
 function logInRequestURL(username, password, tokenFireBase) {
-  // console.log("username:", username);
-  // console.log("password:", password);
-  // console.log("tokenFireBase:", tokenFireBase);
+  console.log("username:", username);
+  console.log("password:", password);
+  console.log("tokenFireBase:", tokenFireBase);
   url = apiUrl.ROOT_URL + apiUrl.LOGIN_URL;
   console.log("url:", url);
   return fetch(url, {
@@ -36,7 +36,7 @@ function logInRequestURL(username, password, tokenFireBase) {
   return response.json();
 })
 .catch((error) => {
-  console.log(error);
+  // console.log(error);
 });
 
 }
@@ -45,29 +45,30 @@ function getContactURL() {
 
     url = apiUrl.ROOT_URL + apiUrl.GET_CONTACT_URL;
     console.log("url contact:", url);
+    console.log('authen', consts.BASE_HEADER["X-Authentication-Token"]);
     return fetch(url, {
       method: 'GET',
       headers: consts.BASE_HEADER
-    }).then((list) => {
-      return list.json()
     })
-      .catch((error) => {
-        console.log(error);
-      });
-
+    .then((listContact) => {
+    return listContact.json();
+    })
+    .catch((error) => {
+      console.log(String(error));
+    });
 }
 
 function* login(username, password, tokenFireBase) {
   try {
-    const response = yield call(logInRequestURL, username, password, tokenFireBase);
+    response = yield call(logInRequestURL, username, password, tokenFireBase);
     console.log("response log 2", response);
     if(typeof(response) != "undefined"  && typeof(response.status) != "undefined"){
       if (response.status.code == "0") {
         yield put(loginActions.setLoginSuccess(response.data));
-        yield call(getContact);
+        // yield call(getContact);
         return response;
       } else {
-        yield put(loginActions.setError(response.status.message));
+        yield put(loginActions.setError(String(response.status.message)));
         return undefined;
       }
     }else{
@@ -83,25 +84,30 @@ function* login(username, password, tokenFireBase) {
 
 function* getContact() {
   try {
-    const response = yield call(getContactURL);
-    // console.log("contact:", response);
-    if(typeof(response) != "undefined"  && typeof(response.status) != "undefined"){
-      if (response.status.code == "0") {
-        dataConvert = this.convertJsonToTreeMap(response.data);
+    console.log("step 0:", "0");
+    responseContact = yield call(getContactURL);
+    // console.log("contact:", responseContact);
+    if(typeof(responseContact) != "undefined"  && typeof(responseContact.status) != "undefined"){
+
+      if (responseContact.status.code == "0") {
+
+        dataConvert = this.convertJsonToTreeMap(responseContact.data);
         yield put(loginActions.getContactSuccess(dataConvert));
-        return response;
+        return responseContact;
       } else {
-        yield put(loginActions.getContactError(response.status.message));
+        console.log("step 3:", "3");
+        yield put(loginActions.getContactError(String(responseContact.status.message)));
         return undefined;
       }
     }else{
+
       yield put(loginActions.getContactError("Lấy thông tin danh bạ thất bại"));
       return undefined;
     }
 
   } catch (error) {
-    
-    yield put(loginActions.setError(String(error)));
+    console.log("step 5:", String(error));
+    yield put(loginActions.getContactError(String(error)));
   }
 }
 
@@ -126,7 +132,7 @@ convertJsonToTreeMap = array => {
 
       map[parent].children = [];
     }else{
-            map[parent].children.push(map[obj.id]);
+      map[parent].children.push(map[obj.id]);
     }
 
 

@@ -42,10 +42,10 @@ export function getContact() {
   }
 }
 
-export function getContactError(error) {
+export function getContactError(contactError) {
   return {
     type: actions.GET_CONTACT_ERROR,
-    error: error
+    contactError: contactError
   }
 }
 
