@@ -24,6 +24,7 @@ import * as calendarAction from "../../actions/calendar-actions";
 import * as rootActions from "../../actions/root-actions";
 
 
+
 export class LichCongTac extends Component {
     constructor(props) {
         super(props);
@@ -35,22 +36,27 @@ export class LichCongTac extends Component {
             endDateOfWeek: moment().endOf('isoweek').format("DD/MM/YYYY"),
             sectionListData: [],
             flagLoad: true,
-        };
+        }
       }
 
     componentDidMount(){
-        if(this.state.flagLoad){
-            // this.props.dispatch(calendarAction.getCalendar(this.state.startDateOfWeek, this.state.endDateOfWeek));
-            // this.props.dispatch(calendarAction.getCalendar('19/11/2018', '21/11/2018'));
-            this.setState({
-                flagLoad: false,
-            })
-        }
+        this.props.dispatch(rootActions.controlProgress(false));
+        this.props.dispatch(calendarAction.getCalendar(this.state.startDateOfWeek, this.state.endDateOfWeek));
         
     }
 
+    getListCalendar= () =>{
+        this.props.dispatch(calendarAction.getCalendar(this.state.startDateOfWeek, this.state.endDateOfWeek));
+    }
+
     componentDidUpdate(){
-        this.checkCalendar();
+        if(this.state.flagLoad == true){
+            this.setState({
+                flagLoad: false,
+            });
+            this.checkCalendar();
+        }
+
     }
 
     checkCalendar(){
@@ -59,21 +65,21 @@ export class LichCongTac extends Component {
             this.setState({
                 sectionListData : this.props.calendar.get('dataCalendar'),
             });
+            return true;
         }else{
-            if(this.state.flagLoad == true){
-                message = this.props.calendar.get('calendarError');
-                console.log('message:', message);
-                Alert.alert(
-                    'Thông báo',
-                      message,
-                    [
-                      {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                      {text: 'OK', onPress: () => console.log('OK Pressed')},
-                    ],
-                    { cancelable: false }
-                  )
-                  return false;
-            }
+            
+            message = this.props.calendar.get('calendarError');
+            console.log('message 2:', message);
+            Alert.alert(
+                'Thông báo',
+                    message,
+                [
+                    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                ],
+                { cancelable: false }
+                )
+                return false;
         }
     }
 
@@ -93,7 +99,7 @@ export class LichCongTac extends Component {
            endDateOfWeek: moment(newDate).endOf('isoweek').format("DD/MM/YYYY"),
         });
 
-        this.props.dispatch(calendarAction.getCalendar(this.state.startDateOfWeek, this.state.endDateOfWeek));
+        this.getListCalendar();
     }
 
     getWeekNumber(date) {
@@ -137,7 +143,8 @@ export class LichCongTac extends Component {
                     renderSectionHeader={({ section }) => {
                         return (<SectionHeader section={section} />);
                     }}
-                    sections={this.state.sectionListData}
+                    // sections={this.state.sectionListData}
+                    sections={sectionListData}
                     keyExtractor={(item, index) => item + index}
                 >
 
@@ -304,10 +311,13 @@ class SectionHeader extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+function mapStateToProps(state){
+    return {
     calendar: state.get('calendar'),
     root: state.get('root'),
-  });
+    login: state.get('login')
+    }
+  }
   
-  export default connect(mapStateToProps)(LichCongTac)
+export default connect(mapStateToProps)(LichCongTac)
   

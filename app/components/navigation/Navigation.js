@@ -38,8 +38,8 @@ const Routes = {
   ChangePassword: {screen: ChangePassword},
   Setting: {screen: Setting},
   DrawerMenu: {screen: DrawerMenu},
-  RepositoriesList: {screen: RepositoriesList},
-  RepositoryDetails: {screen: RepositoryDetails},
+  // RepositoriesList: {screen: RepositoriesList},
+  // RepositoryDetails: {screen: RepositoryDetails},
   
 };
 const Navigator = StackNavigator(Routes, {
@@ -63,7 +63,7 @@ export class Navigation extends Component {
 
 function mapStateToProps(state) {
   return {
-    login: state.login
+    // login: state.login
   }
 }
 export default connect(

@@ -84,7 +84,7 @@ function* login(username, password, tokenFireBase) {
 
 function* getContact() {
   try {
-    console.log("step 0:", "0");
+    // console.log("step 0:", "0");
     responseContact = yield call(getContactURL);
     // console.log("contact:", responseContact);
     if(typeof(responseContact) != "undefined"  && typeof(responseContact.status) != "undefined"){
@@ -95,7 +95,7 @@ function* getContact() {
         yield put(loginActions.getContactSuccess(dataConvert));
         return responseContact;
       } else {
-        console.log("step 3:", "3");
+        // console.log("step 3:", "3");
         yield put(loginActions.getContactError(String(responseContact.status.message)));
         return undefined;
       }
@@ -106,7 +106,7 @@ function* getContact() {
     }
 
   } catch (error) {
-    console.log("step 5:", String(error));
+    // console.log("step 5:", String(error));
     yield put(loginActions.getContactError(String(error)));
   }
 }
@@ -149,9 +149,9 @@ export function* loginFlow() {
     yield put(rootActions.controlProgress(false));
 
     yield take(actions.GET_CONTACT);
-    yield put(rootActions.controlProgress(true));
+    // yield put(rootActions.controlProgress(true));
     yield call(getContact);
-    yield put(rootActions.controlProgress(false));
+    // yield put(rootActions.controlProgress(false));
   }
 }
 

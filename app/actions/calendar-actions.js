@@ -8,15 +8,16 @@ export function getCalendar(startDate, endDate) {
   return {
     type: actions.GET_CALENDAR,
     startDate: startDate,
-    endDate: endDate,
+    endDate: endDate
   }
 }
 
 export function setCalendarError(error) {
+  console.log("action calendar: ", error);
   return {
     type: actions.GET_CALENDAR_ERROR,
     hasCalendar: false,
-    calendarError: error,
+    calendarError: error
   }
 }
 
@@ -24,6 +25,6 @@ export function setCalendarSuccess(data) {
   return {
     type: actions.GET_CALENDAR_SUCCESS,
     hasCalendar: true,
-    dataCalendar: data,
+    dataCalendar: data
   }
 }

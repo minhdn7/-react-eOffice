@@ -55,8 +55,8 @@ const initialState = new Immutable.Map({
     readMe: ''
   }),
   calendar: Immutable.Map({
-    calendarError: '',
-    calendarData: {}
+    // calendarError: '',
+    // calendarData: {}
   }),
 });
 
