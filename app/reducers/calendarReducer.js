@@ -11,8 +11,7 @@ export default function calendarReducer(state, action = {}) {
 
         return state.withMutations(state => state
           .set('progress', false)
-          .set('calendarData', action.calendarData)
-          );
+          .set('calendarData', action.calendarData));
       default:
         return state
   }

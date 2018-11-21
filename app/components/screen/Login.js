@@ -51,7 +51,7 @@ export class Login extends Component {
 
 componentDidUpdate() {
   if(this.state.isfirstLoad){
-    // this.setState({isfirstLoad: false});
+    this.setState({isfirstLoad: false});
     if(this.checkLogin()){
       this.checkContact();
     }

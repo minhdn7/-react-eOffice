@@ -21,10 +21,10 @@ export function loginAccount(username, password, tokenFireBase) {
   }
 }
 
-export function setError(error) {
+export function setError(loginError) {
   return {
     type: actions.LOGIN_ERROR,
-    error: error
+    loginError: loginError
   }
 }
 

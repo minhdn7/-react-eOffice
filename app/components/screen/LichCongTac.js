@@ -98,7 +98,9 @@ export class LichCongTac extends Component {
            startDateOfWeek : moment(newDate).startOf('isoweek').format("DD/MM/YYYY"),
            endDateOfWeek: moment(newDate).endOf('isoweek').format("DD/MM/YYYY"),
         });
-
+        this.setState({
+            flagLoad: true,
+        });
         this.getListCalendar();
     }
 
@@ -143,8 +145,8 @@ export class LichCongTac extends Component {
                     renderSectionHeader={({ section }) => {
                         return (<SectionHeader section={section} />);
                     }}
-                    // sections={this.state.sectionListData}
-                    sections={sectionListData}
+                    sections={this.state.sectionListData}
+                    // sections={sectionListData}
                     keyExtractor={(item, index) => item + index}
                 >
 

@@ -10,7 +10,7 @@ export default function loginReducer(state, action = {}) {
       return state.withMutations(state => state
         .set('isLoggedIn', false)
         .set('progress', false)
-        .set('loginError', action.error));
+        .set('loginError', action.loginError));
     case actions.LOGIN_SUCCESS:
         // const data = action.data;
       return state.withMutations(state => state

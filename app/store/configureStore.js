@@ -35,16 +35,16 @@ const initialState = new Immutable.Map({
     progress: undefined,
   }),
   login: Immutable.Map({
-    isLoggedIn: false,
-    token: '',
-    loginError: '',
-    username:'',
-    password:'',
-    authorizationId:'',
-    loginData:{},
-    hasContact: false,
-    contactError: '',
-    dataContact: {}
+    // isLoggedIn: false,
+    // token: '',
+    // loginError: '',
+    // username:'',
+    // password:'',
+    // authorizationId:'',
+    // loginData:{},
+    // hasContact: false,
+    // contactError: '',
+    // dataContact: {}
 
   }),
   list: Immutable.Map({
