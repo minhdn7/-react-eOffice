@@ -92,6 +92,14 @@ module.exports = new LocalizedStrings({
     chucNangManHinh: 'Chức năng màn hình',
     chon: 'Chọn',
 
+    // lịch họp
+    noiDung: 'Nội dung:',
+    thanhPhan: 'Thành phần:',
+    diaDiem: 'Địa điểm:',
+    sang: 'Sáng:',
+    chieu: 'Chiều',
+    khongCoLichCongTac: 'Không có lịch công tác',
+
     
 
   }

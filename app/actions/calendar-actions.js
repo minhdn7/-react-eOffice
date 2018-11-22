@@ -16,7 +16,6 @@ export function setCalendarError(error) {
   console.log("action calendar: ", error);
   return {
     type: actions.GET_CALENDAR_ERROR,
-    hasCalendar: false,
     calendarError: error
   }
 }
@@ -24,7 +23,6 @@ export function setCalendarError(error) {
 export function setCalendarSuccess(data) {
   return {
     type: actions.GET_CALENDAR_SUCCESS,
-    hasCalendar: true,
-    dataCalendar: data
+    calendarData: data
   }
 }

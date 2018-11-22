@@ -13,6 +13,10 @@ function calendarRequestURL(startDate, endDate) {
 
   url = apiUrl.ROOT_URL + apiUrl.GET_SCHEDULES_URL;
   console.log("url:", url);
+  console.log("startDate:", startDate);
+  console.log("endDate:", endDate);
+  console.log("token:", consts.BASE_HEADER["X-Authentication-Token"]);
+  
   return fetch(url, {
   method: 'POST',
   headers: consts.BASE_HEADER,

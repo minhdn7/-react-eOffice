@@ -36,6 +36,7 @@ export class LichCongTac extends Component {
             endDateOfWeek: moment().endOf('isoweek').format("DD/MM/YYYY"),
             sectionListData: [],
             flagLoad: true,
+            hasCalendar: false,
         }
       }
 
@@ -45,9 +46,7 @@ export class LichCongTac extends Component {
         
     }
 
-    getListCalendar= () =>{
-        this.props.dispatch(calendarAction.getCalendar(this.state.startDateOfWeek, this.state.endDateOfWeek));
-    }
+
 
     componentDidUpdate(){
         if(this.state.flagLoad == true){
@@ -62,24 +61,38 @@ export class LichCongTac extends Component {
     checkCalendar(){
         if(this.props.calendar.get('hasCalendar')){
             console.log('data 2:', "message");
-            this.setState({
-                sectionListData : this.props.calendar.get('dataCalendar'),
-            });
-            return true;
+            data = this.props.calendar.get('calendarData');
+            console.log('Data Get:', String(data));
+            if(data != null){
+                this.setState({
+                    sectionListData : data,
+                    hasCalendar: true,
+                });
+                return true;
+            }else {
+                this.setState({
+                    hasCalendar: false,
+                });
+                return false;
+            }
+
         }else{
             
             message = this.props.calendar.get('calendarError');
             console.log('message 2:', message);
-            Alert.alert(
-                'Thông báo',
-                    message,
-                [
-                    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                    {text: 'OK', onPress: () => console.log('OK Pressed')},
-                ],
-                { cancelable: false }
-                )
-                return false;
+            this.setState({
+                hasCalendar: false,
+            });
+            // Alert.alert(
+            //     'Thông báo',
+            //         message,
+            //     [
+            //         {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+            //         {text: 'OK', onPress: () => console.log('OK Pressed')},
+            //     ],
+            //     { cancelable: false }
+            //     )
+            //     return false;
         }
     }
 
@@ -92,16 +105,18 @@ export class LichCongTac extends Component {
         }
 
         this.setState({
+           flagLoad: true,
            date: newDate,
            week: moment(newDate).format('w'),
            year: moment(newDate).format('YYYY'),
            startDateOfWeek : moment(newDate).startOf('isoweek').format("DD/MM/YYYY"),
            endDateOfWeek: moment(newDate).endOf('isoweek').format("DD/MM/YYYY"),
         });
-        this.setState({
-            flagLoad: true,
-        });
-        this.getListCalendar();
+        console.log('newDate', newDate);
+        console.log('startDateOfWeek', this.state.startDateOfWeek);
+        console.log('endDateOfWeek', this.state.endDateOfWeek);
+
+        this.props.dispatch(calendarAction.getCalendar(this.state.startDateOfWeek, this.state.endDateOfWeek));
     }
 
     getWeekNumber(date) {
@@ -112,7 +127,26 @@ export class LichCongTac extends Component {
         return Math.ceil((((d-new Date(d.getFullYear(),0,1))/8.64e7)+1)/7);
     }
 
+    convertDay(day){
+        switch(day){
+            case 'MON':
+                return 'Thứ 2';
+            case 'TUE':
+                return 'Thứ 3';
+            case 'WED':
+                return 'Thứ 4';
+            case 'THU':
+                return 'Thứ 5';
+            case 'FRI':
+                return 'Thứ 6';
+            case 'SAT':
+                return 'Thứ 7';
+            case 'SUN':
+                return 'Chủ nhật';
+    
+        }
 
+    }
 
     render() {
       
@@ -135,8 +169,10 @@ export class LichCongTac extends Component {
                 </TouchableOpacity>
 
             </View>
+            
             <View style={{ flex: 1, marginTop: Platform.OS === 'ios' ? 34 : 0 }}>
-                <SectionList
+                {this.state.hasCalendar? 
+                    <SectionList
                     renderItem={({ item, index, section }) => {
                         return (<SectionListItem item={item} index={index} >
                         
@@ -145,14 +181,23 @@ export class LichCongTac extends Component {
                     renderSectionHeader={({ section }) => {
                         return (<SectionHeader section={section} />);
                     }}
-                    sections={this.state.sectionListData}
-                    // sections={sectionListData}
+                    // sections={this.state.sectionListData}
+                    sections={sectionListData}
                     keyExtractor={(item, index) => item + index}
-                >
+                    >
 
-                </SectionList>
+                    </SectionList>
+                    :
+                    <View style={{flex: 1, alignItems: 'center', marginTop: 50}}>
+                        <Text style={itemStyles.textStyleRed}>
+                            {strings.khongCoLichCongTac}
+                        </Text>
+                    </View>
+
+                }
+                
             </View>
-            {/* {this.renderProgress()} */}
+            {this.renderProgress()}
         </View>
       )
     }
@@ -208,15 +253,43 @@ export class LichCongTac extends Component {
         color: 'white',
         padding: 10,
         fontSize: 16,  
-    }
+    },
+
+    textStyle1: {
+        color: 'grey',
+        padding: 10,
+        paddingLeft: 10,
+        fontSize: 14, 
+    },
+
+    textStyle2: {
+        color: 'blue',
+        paddingLeft: 10,
+        fontSize: 14, 
+    },
+    textStyleRed: {
+        fontSize: 16,
+        marginLeft: 10,
+        marginRight: 10,
+        color: 'red',
+        flex: 1,
+        alignContent: 'center',
+        justifyContent: 'center'
+    },
+    viewRowStyle1: {
+        flexDirection: 'row',
+        alignItems:'center',
+        paddingLeft: 4,
+    },
   });
 
   // section list
 
 class SectionListItem extends Component {
     render() {
-
+        
         return (
+            
             <View style={{
                 flex: 1,
                 flexDirection: 'column',
@@ -250,16 +323,32 @@ class SectionListItem extends Component {
                             color: 'grey',
                             marginLeft: 10,
                             
-                        }}>Sáng:
+                        }}>{strings.sang}
                       </Text>
-                      <Text style={{
+                      <View>
+                          <View style={itemStyles.viewRowStyle1}>
+                              <Text style={itemStyles.textStyle1}>{strings.noiDung}</Text>
+                              <Text style={itemStyles.textStyle2}>noiDung</Text>
+                          </View>
+
+                          <View style={itemStyles.viewRowStyle1}>
+                              <Text style={itemStyles.textStyle1}>{strings.thanhPhan}</Text>
+                              <Text style={itemStyles.textStyle2}>thanhPhan</Text>
+                          </View>
+
+                          <View style={itemStyles.viewRowStyle1}>
+                              <Text style={itemStyles.textStyle1}>{strings.diaDiem}</Text>
+                              <Text style={itemStyles.textStyle2}>diaDiem1</Text>
+                          </View>
+                      </View>
+                      {/* <Text style={{
                         fontSize: 16,
                         marginLeft: 10,
                         marginRight: 10,
                         
                         color: 'red',
                       }}>{this.props.item.lichSang}
-                      </Text>
+                      </Text> */}
                 </View>
                 <View style={{backgroundColor: 'rgb(77,120, 140)', height: 1, margin: 4, marginLeft: 10,marginRight: 10}}/>
 
@@ -271,15 +360,32 @@ class SectionListItem extends Component {
                             color: 'grey',
                             marginLeft: 10,
                             
-                        }}>Chiều:
+                        }}>{strings.chieu}
                       </Text>
-                      <Text style={{
+
+                      <View>
+                          <View style={itemStyles.viewRowStyle1}>
+                              <Text style={itemStyles.textStyle1}>{strings.noiDung}</Text>
+                              <Text style={itemStyles.textStyle2}>noiDung</Text>
+                          </View>
+
+                          <View style={itemStyles.viewRowStyle1}>
+                              <Text style={itemStyles.textStyle1}>{strings.thanhPhan}</Text>
+                              <Text style={itemStyles.textStyle2}>thanhPhan</Text>
+                          </View>
+
+                          <View style={itemStyles.viewRowStyle1}>
+                              <Text style={itemStyles.textStyle1}>{strings.diaDiem}</Text>
+                              <Text style={itemStyles.textStyle2}>diaDiem1</Text>
+                          </View>
+                      </View>
+                      {/* <Text style={{
                         fontSize: 16,
                         marginLeft: 10,
                         marginRight: 10,
                         color: 'red',
                       }}>{this.props.item.lichChieu}
-                      </Text>
+                      </Text> */}
                 </View>
                 <View style={{ height: 10, margin: 4, marginLeft: 10,marginRight: 10}}/>
 

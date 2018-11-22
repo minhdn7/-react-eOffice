@@ -6,11 +6,13 @@ export default function calendarReducer(state, action = {}) {
         console.log('action.calendarError', action.calendarError);
         return state.withMutations(state => state
           .set('progress', false)
+          .set('hasCalendar', false)
           .set('calendarError', action.calendarError));
       case actions.GET_CALENDAR_SUCCESS:
 
         return state.withMutations(state => state
           .set('progress', false)
+          .set('hasCalendar', true)
           .set('calendarData', action.calendarData));
       default:
         return state
