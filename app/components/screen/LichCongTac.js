@@ -58,14 +58,30 @@ export class LichCongTac extends Component {
 
     }
 
+    convertDataSectionList(fetchData){
+        sectionData = [];
+        for(i = 0; i < fetchData.length; i++){
+            title = this.convertDay(fetchData[i].dayOfWeek) + ', ' + fetchData[i].date;
+            data = fetchData[i].scheduleBosses;
+            object = {
+                title: title,
+                data: data
+            }
+            console.log('title:', title);
+            sectionData.push(object);
+        }
+        console.log('sectionList:', JSON.stringify(sectionData));
+        return  sectionData;   
+    }
+
     checkCalendar(){
         if(this.props.calendar.get('hasCalendar')){
             console.log('data 2:', "message");
-            data = this.props.calendar.get('calendarData');
-            console.log('Data Get:', String(data));
-            if(data != null){
+            fetchData = this.props.calendar.get('calendarData');
+            
+            if(fetchData != null){
                 this.setState({
-                    sectionListData : data,
+                    sectionListData : this.convertDataSectionList(fetchData),
                     hasCalendar: true,
                 });
                 return true;
@@ -112,7 +128,7 @@ export class LichCongTac extends Component {
            startDateOfWeek : moment(newDate).startOf('isoweek').format("DD/MM/YYYY"),
            endDateOfWeek: moment(newDate).endOf('isoweek').format("DD/MM/YYYY"),
         });
-        console.log('newDate', newDate);
+        // console.log('newDate', newDate);
         console.log('startDateOfWeek', this.state.startDateOfWeek);
         console.log('endDateOfWeek', this.state.endDateOfWeek);
 
@@ -181,8 +197,9 @@ export class LichCongTac extends Component {
                     renderSectionHeader={({ section }) => {
                         return (<SectionHeader section={section} />);
                     }}
-                    // sections={this.state.sectionListData}
-                    sections={sectionListData}
+                    
+                    sections={this.state.sectionListData}
+                    // sections={sectionListData}
                     keyExtractor={(item, index) => item + index}
                     >
 
@@ -295,14 +312,14 @@ class SectionListItem extends Component {
                 flexDirection: 'column',
                 backgroundColor: 'white'
             }}>
-                <View style={{flexDirection: 'row', backgroundColor: 'limegreen', height: 40, justifyContent:'center', alignItems: 'center'}}>
+                <View style={{flexDirection: 'column', backgroundColor: 'limegreen', justifyContent:'center', alignItems: 'center'}}>
                 <Text style={{
                       fontSize: 16,
                       fontWeight: 'bold',
                       color: 'white',
                       marginLeft: 20,
-                      
-                  }}>Đ/C:
+                      padding: 4
+                  }}>Đ/C: {this.props.item.username}
                   </Text>
                   <Text style={{
                       fontSize: 16,
@@ -310,11 +327,20 @@ class SectionListItem extends Component {
                       color: 'white',
                       marginLeft: 4,
                       marginRight: 10,
-                      
-                  }}>{this.props.item.name}
+                      padding: 4
+                  }}>{this.props.item.position}
                   </Text>
                 </View>
 
+                {/* {
+                    for(i = 0; i < this.props.item.parameters.size; i++){
+                        if(this.props.item.parameters[i].codeTime == 'SANG'){
+                            
+                        }else {
+
+                        }
+                    }
+                } */}
                  {/* sáng  */}
                  <View style={{flexDirection: 'row',marginTop: 6}}>
                       <Text style={{
@@ -326,29 +352,24 @@ class SectionListItem extends Component {
                         }}>{strings.sang}
                       </Text>
                       <View>
+
+
                           <View style={itemStyles.viewRowStyle1}>
                               <Text style={itemStyles.textStyle1}>{strings.noiDung}</Text>
-                              <Text style={itemStyles.textStyle2}>noiDung</Text>
+                              <Text style={itemStyles.textStyle2}>this.props.item.parameters[0].content</Text>
                           </View>
 
                           <View style={itemStyles.viewRowStyle1}>
                               <Text style={itemStyles.textStyle1}>{strings.thanhPhan}</Text>
-                              <Text style={itemStyles.textStyle2}>thanhPhan</Text>
+                              <Text style={itemStyles.textStyle2}>this.props.item.parameters[0].participation</Text>
                           </View>
 
                           <View style={itemStyles.viewRowStyle1}>
                               <Text style={itemStyles.textStyle1}>{strings.diaDiem}</Text>
-                              <Text style={itemStyles.textStyle2}>diaDiem1</Text>
+                              <Text style={itemStyles.textStyle2}>this.props.item.parameters[0].place</Text>
                           </View>
                       </View>
-                      {/* <Text style={{
-                        fontSize: 16,
-                        marginLeft: 10,
-                        marginRight: 10,
-                        
-                        color: 'red',
-                      }}>{this.props.item.lichSang}
-                      </Text> */}
+
                 </View>
                 <View style={{backgroundColor: 'rgb(77,120, 140)', height: 1, margin: 4, marginLeft: 10,marginRight: 10}}/>
 
@@ -395,6 +416,7 @@ class SectionListItem extends Component {
 
     
 }
+
 class SectionHeader extends Component {
 
     render() {
