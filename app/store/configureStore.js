@@ -15,6 +15,7 @@ import reportReducer from "../reducers/reportReducer";
 import rootReducer from "../reducers/rootReducer";
 import listReducer from "../reducers/listReducer";
 import detailsReducer from "../reducers/detailsReducer";
+import documentReducer from '../reducers/documentReducer';
 import createSagaMiddleware from "redux-saga";
 import * as loginSaga from "../saga/login-saga";
 import * as calendarSaga from "../saga/calendar-saga";
@@ -29,7 +30,8 @@ const combinedReducers = combineReducers({
   list: listReducer,
   details: detailsReducer,
   calendar: calendarReducer,
-  reportReducer: reportReducer
+  reportReducer: reportReducer,
+  documentReducer
 });
 
 const initialState = new Immutable.Map({

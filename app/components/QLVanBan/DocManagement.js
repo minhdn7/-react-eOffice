@@ -6,6 +6,10 @@ import dataJson from '../../data/flatListData';
 
 export default class DocManagement extends Component {
 
+    componentDidMount(){
+        this.props.onGetListDocumentAction(1);// chuyen vao loai van ban
+    }
+
     gotoDocumentDetail(){
         this.props.navigation.navigate('DocumentDetail');
     }

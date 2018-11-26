@@ -7,6 +7,8 @@ import queryString from "query-string";
 
 // work with api goes here
 
+const urlGetDocs = "";
+
 export function getRepositories(token, page, limit) {
   const params = queryString.stringify({
     access_token: token,
@@ -63,20 +65,20 @@ export function logOut(authId, username, password) {
     headers: getAuthHeader(username, password)
   })
     .then((user) => {
-      return  user.json();
+      return user.json();
     })
     .catch((error) => {
       console.log(error);
     });
 }
- 
+
 export function logIn(username, password) {
   return fetch(`https://api.github.com/authorizations/${authId}`, {
     method: 'DELETE',
     headers: getAuthHeader(username, password)
   })
     .then((user) => {
-      return  user.json();
+      return user.json();
     })
     .catch((error) => {
       console.log(error);
@@ -84,21 +86,21 @@ export function logIn(username, password) {
 }
 
 export function logInAccount(username, password, tokenFireBase) {
-      console.log("username:", username);
-      console.log("password:", password);
-      console.log("tokenFireBase:", tokenFireBase);
-      return fetch('http://14.225.6.6/qlvb/api/login/', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        "username": username,
-        "password": password,
-        "tokenFireBase": tokenFireBase
-      }),
-    })    
+  console.log("username:", username);
+  console.log("password:", password);
+  console.log("tokenFireBase:", tokenFireBase);
+  return fetch('http://14.225.6.6/qlvb/api/login/', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      "username": username,
+      "password": password,
+      "tokenFireBase": tokenFireBase
+    }),
+  })
     .then((response) => {
       console.log("body request: ", JSON.stringify({
         "username": username,
@@ -121,4 +123,20 @@ function getAuthHeader(username, password) {
     ...consts.BASE_HEADER,
     "Authorization": `Basic ${baseString}`
   }
+}
+
+function* getDocumentsFromApi() {
+  const response = yield fetch(urlGetDocs, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: ''
+  });
+  return response._bodyInit;
+}
+
+export const Api = {
+  getDocumentsFromApi
 }
