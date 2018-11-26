@@ -21,10 +21,14 @@ import DanhBa from "../screen/DanhBa";
 import DrawerMenu from "./DrawerMenu";
 import RepositoriesList from "../RepositoriesList";
 import RepositoryDetails from "../RepositoryDetails";
+import DocManagement from "../QLVanBan/DocManagement";
+import DocHistory from "../QLVanBan/DocHistory";
+import InfoExchange from "../QLVanBan/InfoExchange";
+import DocumentDetail from "../QLVanBan/DocumentDetail";
 
 const store = configureStore();
 const Routes = {
-  Login: {screen: Login},
+  //Login: {screen: Login},
   Home: {screen: Home},
   DanhBa: {screen: DanhBa},
   ThongTinDieuHanh: {screen: ThongTinDieuHanh},
@@ -40,6 +44,10 @@ const Routes = {
   DrawerMenu: {screen: DrawerMenu},
   // RepositoriesList: {screen: RepositoriesList},
   // RepositoryDetails: {screen: RepositoryDetails},
+  DocManagement: {screen: DocManagement},
+  DocHistory: {screen: DocHistory},
+  InfoExchange: {screen: InfoExchange},
+  DocumentDetail: {screen: DocumentDetail},
   
 };
 const Navigator = StackNavigator(Routes, {

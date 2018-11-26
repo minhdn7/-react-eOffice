@@ -38,6 +38,7 @@ export default class Home extends Component {
       // Alert.alert("" + id);
       switch (id) {
         case 1:
+        this.props.navigation.navigate('DocManagement');
           break;
         case 2:
           this.props.navigation.navigate('LichCongTac');
