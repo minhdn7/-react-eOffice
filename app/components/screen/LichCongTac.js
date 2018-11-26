@@ -167,7 +167,7 @@ export class LichCongTac extends Component {
     render() {
       
       return (
-        <View style = {{flex: 1}}>
+        <View style = {{flex: 1, justifyContent: 'center'}}>
             <DefaultHeader myTitle= "Lịch công tác lãnh đạo" navigator= {this.props.navigation} />
             <View style={{flexDirection: 'row', padding: 10, justifyContent: 'space-between'}}>
                 <TouchableOpacity onPress={() =>this.updateWeek(this.state.date, -7)}>
@@ -431,7 +431,6 @@ class SectionHeader extends Component {
                 <Text style={{
                     fontSize: 16,
                     fontWeight: 'bold',
-                    
                     color: 'white',
                     margin: 20
                 }}>{this.props.section.title}
