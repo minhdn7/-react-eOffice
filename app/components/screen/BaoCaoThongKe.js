@@ -20,7 +20,10 @@ import flatListData from '../../data/flatListData';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import Moment from 'moment';
 
-export default class BaoCaoThongKe extends Component {
+import * as reportAction from "../../actions/report-actions";
+import * as rootActions from "../../actions/root-actions";
+
+export class BaoCaoThongKe extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -44,7 +47,10 @@ export default class BaoCaoThongKe extends Component {
         };
       }
       
-
+    componentWillMount(){
+        this.props.dispatch(rootActions.controlProgress(false));
+        // this.props.dispatch(reportAction.getReportDocument);
+    }
 
     render() {
       
@@ -74,6 +80,7 @@ export default class BaoCaoThongKe extends Component {
                 <View style={{height: 40, backgroundColor: "#0d47a1", marginLeft:4, marginRight: 4, paddingLeft: 8, justifyContent: 'center', borderTopLeftRadius: 4, borderTopRightRadius: 4}}>
                        <Text style={{color: 'white', fontWeight: "bold", fontSize: 18}}>{strings.quanLyVanBan}</Text>    
                 </View>
+                
                 <View style={{backgroundColor: 'white', marginLeft:4, marginRight: 4}}>
                     <Text style={{color: 'black', fontWeight: "bold", paddingLeft: 10, fontSize: 16}}>{strings.vanBanDen}</Text>
                     <View style={{flexDirection:'row', padding: 4, paddingLeft: 10, paddingRight: 10}}>
@@ -112,8 +119,9 @@ export default class BaoCaoThongKe extends Component {
                     </View>
                 </View>
 
+                {/* Quản lý công việc */}
                <View style={{height: 40, backgroundColor: "#0d47a1", marginLeft:4, marginRight: 4, marginTop: 4, paddingLeft: 8, justifyContent: 'center', borderTopLeftRadius: 4, borderTopRightRadius: 4}}>
-                       <Text style={{color: 'white', fontWeight: "bold", fontSize: 18}}>{strings.quanLyVanBan}</Text>    
+                       <Text style={{color: 'white', fontWeight: "bold", fontSize: 18}}>{strings.quanLyCongViec}</Text>    
                 </View>
                 <View style={{backgroundColor: 'white', marginLeft:4, marginRight: 4}}>
                     
@@ -139,13 +147,31 @@ export default class BaoCaoThongKe extends Component {
                     </View>
                     
                 </View> 
+            
+                {this.renderProgress()}
             </View>
             
         </View>
       )
     }
     
-
+    renderProgress() {
+        if (this.props.root.get('progress')) {
+          return this.spinner()
+        } else {
+          return null;
+        }
+      }   
+    
+      spinner() {
+        return (
+          <Spinner
+            color={colors.accentColor}
+            animating={true}
+            size={'large'}
+            style={styles.progressStyle}/>
+        )
+      }
   }
 
 
@@ -182,5 +208,12 @@ export default class BaoCaoThongKe extends Component {
     }
   });
 
-  
+function mapStateToProps(state){
+    return {
+        reportReducer: state.get('reportReducer'),
+        root: state.get('root'),
+        // login: state.get('login')
+    }
+}
+export default connect(mapStateToProps)(BaoCaoThongKe)
   
