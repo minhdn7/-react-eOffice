@@ -28,7 +28,7 @@ import DocumentDetail from "../QLVanBan/DocumentDetail";
 
 const store = configureStore();
 const Routes = {
-  //Login: {screen: Login},
+  Login: {screen: Login},
   Home: {screen: Home},
   DanhBa: {screen: DanhBa},
   ThongTinDieuHanh: {screen: ThongTinDieuHanh},

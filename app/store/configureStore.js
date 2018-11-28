@@ -31,7 +31,7 @@ const combinedReducers = combineReducers({
   details: detailsReducer,
   calendar: calendarReducer,
   reportReducer: reportReducer,
-  documentReducer
+  documentReducer: documentReducer
 });
 
 const initialState = new Immutable.Map({

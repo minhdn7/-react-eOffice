@@ -1,9 +1,9 @@
-import { GET_LIST_DOCUMENT, GET_LIST_DOCUMENT_ERROR, GET_LIST_DOCUMENT_SUCCESS } from './action-types';
+import { GET_LIST_DOCUMENT, GET_LIST_DOCUMENT_ERROR, GET_LIST_DOCUMENT_SUCCESS } from '../actions/action-types';
 
-export const getListDocumentAction = (type) => {
+export const getListDocumentAction = () => {
     return {
         type: GET_LIST_DOCUMENT,
-        type
+
     }
 }
 

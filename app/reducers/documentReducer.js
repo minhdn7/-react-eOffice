@@ -1,4 +1,4 @@
-import { GET_LIST_DOCUMENT, GET_LIST_DOCUMENT_ERROR, GET_LIST_DOCUMENT_SUCCESS } from './action-types';
+import { GET_LIST_DOCUMENT, GET_LIST_DOCUMENT_ERROR, GET_LIST_DOCUMENT_SUCCESS } from '../actions/action-types';
 
 const docReducers = (docs = [], action) => {
     switch (action.type) {
