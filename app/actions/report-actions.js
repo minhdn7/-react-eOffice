@@ -5,13 +5,13 @@ import * as actions from "../actions/action-types";
 
 export function getReportDocument() {
   return {
-    type: actions.GET_REPORT_DOCUMENT
+    type: actions.GET_REPORT_DOCUMENT,
   }
 }
 
 export function getReportWord() {
     return {
-      type: actions.GET_REPORT_WORD
+      type: actions.GET_REPORT_WORD,
     }
 }
 

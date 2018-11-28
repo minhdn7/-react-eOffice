@@ -13,12 +13,13 @@ import consts from "../const";
 function getDocumentReportURL() {
 
     url = apiUrl.ROOT_URL + apiUrl.GET_REPORT_DOCUMENT_URL;
+    console.log("url getDocumentReport", url);
     return fetch(url, {
       method: 'GET',
       headers: consts.BASE_HEADER
     })
     .then((list) => {
-    return listContact.json();
+    return list.json();
     })
     .catch((error) => {
       console.log(String(error));
@@ -29,7 +30,7 @@ function getDocumentReportURL() {
 function getWordReportURL(month) {
 
     url = apiUrl.ROOT_URL + `api/report/jobreport/${month}/`;
-
+    console.log("url getWordReport", url);
     return fetch(url, {
       method: 'GET',
       headers: consts.BASE_HEADER
@@ -46,7 +47,7 @@ function getWordReportURL(month) {
 function* getDocumentReport() {
   try {
     response = yield call(getDocumentReportURL);
-    // console.log("getDocumentReport", response);
+    console.log("getDocumentReport", response);
     if(typeof(response) != "undefined"  && typeof(response.status) != "undefined"){
       if (response.status.code == "0") {
         yield put(reportActions.setReportDocumentSuccess(response.data));
@@ -70,7 +71,7 @@ function* getDocumentReport() {
 function* getWordReport(month) {
     try {
       response = yield call(getWordReportURL, month);
-
+      console.log("getWordReport", response);
       if(typeof(response) != "undefined"  && typeof(response.status) != "undefined"){
         if (response.status.code == "0") {
           yield put(reportActions.setReportWordSuccess(response.data));
