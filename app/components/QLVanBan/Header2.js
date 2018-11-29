@@ -13,7 +13,7 @@ export default class Header extends Component {
                     <TouchableOpacity onPress={this.props.onOpen}>
                         <MaterialIcons name="menu" size={40} color="#ffffff" />
                     </TouchableOpacity>
-                    <Text style={titleStyle}>Văn bản đến</Text>
+                    <Text style={titleStyle}>{this.props.myTitle}</Text>
                     <EvilIcons name="bell" size={40} color="#ffffff" />
                 </View>
                 <View style={styles.searchSection}  >

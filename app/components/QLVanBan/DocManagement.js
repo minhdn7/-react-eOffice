@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, FlatList, Text } from 'react-native';
-import Header from './Header';
+import Header from './Header2';
 import ItemDocument from './ItemDocument';
 import dataJson from '../../data/flatListData';
 
@@ -17,7 +17,7 @@ export default class DocManagement extends Component {
     render() {
         return (
             <View>
-                <Header />
+                <Header myTitle= 'Văn bản chờ xử lý'/>
                 <View style={{ backgroundColor: '#D3D3D3' }}>
                 <FlatList
                     data={dataJson} 

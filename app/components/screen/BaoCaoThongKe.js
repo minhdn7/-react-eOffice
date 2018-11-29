@@ -28,7 +28,7 @@ export class BaoCaoThongKe extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            week: moment().format('w'),
+            month: moment().format('m'),
             idReport: 0,
             typeReport: 'Chọn báo cáo',
             iDenChoXuLy: '0',
@@ -52,7 +52,7 @@ export class BaoCaoThongKe extends Component {
     componentWillMount(){
         this.props.dispatch(rootActions.controlProgress(false));
         this.props.dispatch(reportAction.getReportDocument());
-        this.props.dispatch(reportAction.getReportWord(this.state.week));
+        this.props.dispatch(reportAction.getReportWord(this.state.month));
     }
 
     render() {

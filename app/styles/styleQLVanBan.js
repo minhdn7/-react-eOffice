@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     wrapper: { height: height / 6, backgroundColor: backgroundColor, padding: 10, justifyContent: 'space-around' },
     row1: { flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10 },
     textInput: {
-        flex: 1, backgroundColor: '#FFF', paddingLeft: 0, paddingTop: 10,
+        backgroundColor: '#FFF', paddingLeft: 0, paddingTop: 10,
         paddingRight: 10,
         paddingBottom: 10,
         borderRadius: 4,
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     iconStyle: { width: 25, height: 25 },
     titleStyle: { color: '#FFF', fontSize: 20 },
     searchSection: {
-        flex: 1,
+        // flex: 1,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',

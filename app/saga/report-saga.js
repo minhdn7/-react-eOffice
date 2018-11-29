@@ -25,6 +25,7 @@ function getDocumentReportURL() {
       console.log(String(error));
     });
 
+    
 }
 
 function getWordReportURL(month) {
@@ -70,6 +71,7 @@ function* getDocumentReport() {
 
 function* getWordReport(month) {
     try {
+      console.log("month", month);
       response = yield call(getWordReportURL, month);
       console.log("getWordReport", response);
       if(typeof(response) != "undefined"  && typeof(response.status) != "undefined"){
@@ -99,7 +101,7 @@ export function* reportFlow() {
     yield call(getDocumentReport);
     yield put(rootActions.controlProgress(false));
 
-    yield take(actions.GET_REPORT_WORD);
+    const{month}= yield take(actions.GET_REPORT_WORD);
     yield put(rootActions.controlProgress(true));
     yield call(getWordReport, month);
     yield put(rootActions.controlProgress(false));

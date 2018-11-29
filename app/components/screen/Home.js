@@ -52,7 +52,6 @@ export default class Home extends Component {
         case 5:
           this.props.navigation.navigate('BaoCaoThongKe');
 
-
           break;
         case 6:
           Alert.alert('Thông báo',
