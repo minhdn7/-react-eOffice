@@ -9,9 +9,10 @@ export function getReportDocument() {
   }
 }
 
-export function getReportWord() {
+export function getReportWord(month) {
     return {
       type: actions.GET_REPORT_WORD,
+      month: month,
     }
 }
 

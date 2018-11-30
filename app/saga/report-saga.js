@@ -9,6 +9,7 @@ import * as reportActions from "../actions/report-actions";
 import * as rootActions from "../actions/root-actions";
 import apiUrl from "../network/apiUrl";
 import consts from "../const";
+import queryString from "query-string";
 
 function getDocumentReportURL() {
 
@@ -29,8 +30,10 @@ function getDocumentReportURL() {
 }
 
 function getWordReportURL(month) {
-
-    url = apiUrl.ROOT_URL + `api/report/jobreport/${month}/`;
+  // const params = queryString.stringify({
+  //   month: month,
+  // });
+    url = apiUrl.ROOT_URL + 'api/report/jobreport/' + month + '/';
     console.log("url getWordReport", url);
     return fetch(url, {
       method: 'GET',

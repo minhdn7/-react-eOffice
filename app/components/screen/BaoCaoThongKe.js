@@ -28,7 +28,8 @@ export class BaoCaoThongKe extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            month: moment().format('m'),
+            flagLoad: true,
+            month: moment().month() + 1,
             idReport: 0,
             typeReport: 'Chọn báo cáo',
             iDenChoXuLy: '0',
@@ -53,6 +54,39 @@ export class BaoCaoThongKe extends Component {
         this.props.dispatch(rootActions.controlProgress(false));
         this.props.dispatch(reportAction.getReportDocument());
         this.props.dispatch(reportAction.getReportWord(this.state.month));
+    }
+
+    componentDidUpdate(){
+        if(this.state.flagLoad == true){
+        this.setState({
+            flagLoad: false,
+        });
+        this.setDocumentData();
+        this.setWordData();
+        }
+    }
+
+    setDocumentData(){
+        if(this.props.reportReducer.get('isReportDocument')){
+            fetchData = this.props.reportReducer.get('reportDocumentData');
+
+
+        }
+    }
+
+    setWordData(){
+        if(this.props.reportReducer.get('isReportWord')){
+            fetchData = this.props.reportReducer.get('reportWordData');
+            this.setState({
+                iCongViecChoXuLy: fetchData.chuaThucHien,
+                iCongViecQuaHan: fetchData.quaHan,
+                iCongViecDangThucHien: fetchData.dangThucHien,
+                iCongViecDaThucHien: fetchData.daThucHien,
+                iCongViecDaHoanThanh: fetchData.dungHan,
+                // iCongViecDaHoanThanh: 1,
+            })
+
+        }
     }
 
     render() {

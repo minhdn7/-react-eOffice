@@ -48,7 +48,7 @@ export class LichCongTac extends Component {
 
 
 
-    componentDidUpdate(){
+    componentWillUpdate(){
         if(this.state.flagLoad == true){
             this.setState({
                 flagLoad: false,
