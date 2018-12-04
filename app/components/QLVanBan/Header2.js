@@ -1,17 +1,27 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Image } from 'react-native';
 import styles from '../../styles/styleQLVanBan';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import icBack from '../../image/back.png';
 
-export default class Header extends Component {
+export default class Header extends React.Component {
+    constructor(props){
+        super(props);
+    }
+
+    handleBackPress = () => {
+        this.props.navigator.goBack(null);
+        return true;
+    }
+    
     render() {
         const { wrapper, row1, textInput, iconStyle, titleStyle } = styles;
         return (
             <View style={wrapper}>
                 <View style={row1}>
-                    <TouchableOpacity onPress={this.props.onOpen}>
-                        <MaterialIcons name="menu" size={40} color="#ffffff" />
+                    <TouchableOpacity onPress={() => this.handleBackPress()}>
+                        <Image source={icBack} style={styles.iconStyle}/>
                     </TouchableOpacity>
                     <Text style={titleStyle}>{this.props.myTitle}</Text>
                     <EvilIcons name="bell" size={40} color="#ffffff" />
@@ -28,3 +38,5 @@ export default class Header extends Component {
         );
     }
 }
+
+

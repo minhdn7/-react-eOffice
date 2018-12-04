@@ -6,6 +6,8 @@ import {TouchableOpacity, ScrollView, Text, View, StyleSheet, Image} from 'react
 import {Collapse,CollapseHeader, CollapseBody, AccordionList} from 'accordion-collapse-react-native';
 import strings from "../../resources/strings";
 import {connect} from "react-redux";
+import * as documentAction from "../../actions/document-action";
+
 class SideMenu extends Component {
       constructor() {
         super();
@@ -32,7 +34,11 @@ class SideMenu extends Component {
     });
     this.props.navigation.dispatch(navigateAction);
   }
-
+  changeDocument = (type) => {
+    this.props.dispatch(documentAction.setTypeDocumentAction(type));
+    this.props.navigation.navigate('DocManagement'); 
+  }
+  
   render () {
     
     return (
@@ -82,39 +88,57 @@ class SideMenu extends Component {
                   <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
                 </CollapseHeader>
                 <CollapseBody style={{marginLeft: 10}}>
-                      <View style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
+                      <TouchableOpacity 
+                        typeDocument = 'vanBanChoXuLy'
+                        onPress={ 
+                          () => this.changeDocument(strings.vanBanChoXuLy)
+                        }
+
+                        style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
                         <Image style={{width: 30, height: 30, margin: 4}} 
-                        source={require('../../image/document.png')}/>
+                        source={require('../../image/document.png')}
+                        />
                         <Text style={{color: '#0d47a1', padding: 4}}>{strings.vanBanChoXuLy}</Text>
-                      </View>
+                      </TouchableOpacity>
                       <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
 
-                      <View style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
+                      <TouchableOpacity
+                        typeDocument = 'vanBanDaXuLy'
+                        onPress={ 
+                          () => this.changeDocument(strings.vanBanDaXuLy)
+                        }
+                        style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
                         <Image style={{width: 30, height: 30, margin: 4}} 
                         source={require('../../image/ic_doc_processed.png')}/>
                         <Text style={{color: '#0d47a1', padding: 4}}>{strings.vanBanDaXuLy}</Text>
-                      </View>
+                      </TouchableOpacity>
                       <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
 
-                      <View style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
+                      <TouchableOpacity
+                        onPress={ () => this.props.navigation.navigate('DanhBa') }
+                        style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
                         <Image style={{width: 30, height: 30, margin: 4}} 
                         source={require('../../image/ic_doc_notification.png')}/>
                         <Text style={{color: '#0d47a1', padding: 4}}>{strings.vanBanXemDeBiet}</Text>
-                      </View>
+                      </TouchableOpacity>
                       <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
 
-                      <View style={{flexDirection: 'row', alignItems: 'center', padding: 4,}}>
+                      <TouchableOpacity
+                        onPress={ () => this.props.navigation.navigate('DocManagement') }
+                        style={{flexDirection: 'row', alignItems: 'center', padding: 4,}}>
                         <Image style={{width: 30, height: 30, margin: 4}} 
                         source={require('../../image/ic_doc_expired.png')}/>
                         <Text style={{color: '#0d47a1', padding: 4}}>{strings.vanBanDanhDau}</Text>
-                      </View>
+                      </TouchableOpacity>
                       <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
 
-                      <View style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
+                      <TouchableOpacity
+                        onPress={ () => this.props.navigation.navigate('DocManagement') }
+                        style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
                         <Image style={{width: 30, height: 30, margin: 4}} 
                         source={require('../../image/ic_document_search.png')}/>
                         <Text style={{color: '#0d47a1', padding: 4}}>{strings.traCuuVanBan}</Text>
-                      </View>
+                      </TouchableOpacity>
                       <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
                 </CollapseBody>
             </Collapse>
@@ -236,8 +260,6 @@ class SideMenu extends Component {
                   <Text style={{color: '#0d47a1', padding: 4}}>{strings.dangXuat}</Text>
               </View>
               <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
-
-
             
           </View>
         </ScrollView>

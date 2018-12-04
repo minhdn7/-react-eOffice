@@ -3,7 +3,7 @@ import * as actions from "../actions/action-types";
 export default function calendarReducer(state, action = {}) {
   switch (action.type) {
       case actions.GET_CALENDAR_ERROR:
-        console.log('action.calendarError', action.calendarError);
+        // console.log('action.calendarError', action.calendarError);
         return state.withMutations(state => state
           .set('progress', false)
           .set('hasCalendar', false)
@@ -15,6 +15,6 @@ export default function calendarReducer(state, action = {}) {
           .set('hasCalendar', true)
           .set('calendarData', action.calendarData));
       default:
-        return state
+        return state;
   }
 }

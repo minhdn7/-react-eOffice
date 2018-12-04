@@ -23,7 +23,7 @@ export default class ItemDocument extends Component {
 }
 
     render() {
-        const { name } = this.props.data;
+        const { data } = this.props.item;
         let dataStr= ["Đánh dấu", "Trao đổi  thông tin", "Lịch sử xử lý"];
         return (
             <View style={styles.container}>
@@ -33,22 +33,22 @@ export default class ItemDocument extends Component {
                         <Text style={[styles.textColorBlack, { textAlign: 'center' }]}>01/01/2018</Text>
                     </View>
                     <View style={styles.center}>
-                        <Text style={[styles.centerText, styles.textTitle]}>{ name }</Text>
+                        <Text style={[styles.centerText, styles.textTitle]}>{ data.trichYeu }</Text>
                         <View style={styles.styleRow}>
                             <Text style={styles.textColor}>KH: </Text>
-                            <Text style={styles.textColorBlack}>4/2018-CV</Text>
+                            <Text style={styles.textColorBlack}>{data.soKihieu}</Text>
                         </View>
                         <View style={styles.styleRow}>
                             <Text style={styles.textColor}>CQBH:</Text>
-                            <Text style={styles.textColorBlack}>4/2018-CV</Text>
+                            <Text style={styles.textColorBlack}>{data.coQuanBanHanh}</Text>
                         </View>
                         <View style={styles.styleRow}>
                             <Text style={styles.textColor}>Ngày VB: </Text>
-                            <Text style={{ color: '#0033FF' }}>17/10/2018</Text>
+                            <Text style={{ color: '#0033FF' }}>{data.ngayVanBan}</Text>
                         </View>
                         <View style={styles.styleRow}>
                             <Text style={styles.textColor}>Độ khẩn: </Text>
-                            <Text>Hỏa tốc</Text>
+                            <Text>{data.doKhan}</Text>
                         </View>
                         <View style={styles.styleRow}>
                             <Text style={styles.textColor}>Tệp tin đính kèm:</Text>

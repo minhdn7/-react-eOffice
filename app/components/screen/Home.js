@@ -18,8 +18,9 @@ import BottomNavigation, { Tab } from 'react-native-material-bottom-navigation-p
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Header from '../navigation/Header';
 import consts from "../../const";
+import * as documentAction from "../../actions/document-action";
 
-export default class Home extends Component {
+export class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,7 +39,9 @@ export default class Home extends Component {
       // Alert.alert("" + id);
       switch (id) {
         case 1:
-        this.props.navigation.navigate('DocManagement');
+          this.props.dispatch(documentAction.setTypeDocumentAction(strings.vanBanChoXuLy));
+          this.props.navigation.navigate('DocManagement');
+        
           break;
         case 2:
           this.props.navigation.navigate('LichCongTac');
@@ -179,3 +182,12 @@ export default class Home extends Component {
       height: 50,
     },
   };
+
+  function mapStateToProps(state){
+    return {
+        documentReducer: state.get('documentReducer'),
+        root: state.get('root'),
+        login: state.get('login')
+    }
+}
+export default connect(mapStateToProps)(Home)

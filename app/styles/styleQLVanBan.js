@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet, Image } from 'react-native';
 
 const { height, width } = Dimensions.get('window');
 const backgroundColor = "#205AA7";
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         borderRadius: 4,
     },
-    iconStyle: { width: 25, height: 25 },
+    iconStyle: { width: 20, height: 20 },
     titleStyle: { color: '#FFF', fontSize: 20 },
     searchSection: {
         // flex: 1,
@@ -83,7 +83,9 @@ const styles = StyleSheet.create({
     },
     styleFontSize: {
         fontSize: 16,
-    }
+    },
+
+    iconStyle: { width: 20, height: 20 },
 });
 
 export default styles;

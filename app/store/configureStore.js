@@ -23,6 +23,7 @@ import * as logoutSaga from "../saga/logout-saga";
 import * as listSaga from "../saga/list-saga";
 import * as detailsSaga from "../saga/details-saga";
 import * as reportSaga from "../saga/report-saga";
+import * as documentSaga from "../saga/document-saga";
 
 const combinedReducers = combineReducers({
   root: rootReducer,
@@ -67,6 +68,10 @@ const initialState = new Immutable.Map({
     reportError: '',
     reportData: []
   }),
+
+  documentReducer: Immutable.Map({
+
+  }),
   
 });
 
@@ -91,7 +96,8 @@ export default function configureStore() {
       sagaMiddleware.run(logoutSaga.logoutFlow),
       sagaMiddleware.run(loginSaga.loginFlow),
       sagaMiddleware.run(calendarSaga.calendarFlow),
-      sagaMiddleware.run(reportSaga.reportFlow)
+      sagaMiddleware.run(reportSaga.reportFlow),
+      sagaMiddleware.run(documentSaga.documentFlow)
     ]
   };
 }
