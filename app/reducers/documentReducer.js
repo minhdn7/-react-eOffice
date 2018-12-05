@@ -21,6 +21,7 @@ export default function documentReducer(state, action = {}){
             return state.withMutations(state => state
                 .set('progress', false)
                 .set('hasDocument', false)
+                .set('listDocumentData', [])
                 .set('documentError', action.error));
         case actions.SET_TYPE_DOCUMENT:
             return state.withMutations(state => state

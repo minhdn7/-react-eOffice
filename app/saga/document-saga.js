@@ -42,6 +42,7 @@ function getProcessedDocumentURL(pageNo, pageRec, param) {
 
   url = apiUrl.ROOT_URL + apiUrl.GET_DOC_PROCECSSED_URL;
   console.log("url get processed document:", url);
+
   return fetch(url, {
   method: 'POST',
   headers: consts.BASE_HEADER,
@@ -67,9 +68,9 @@ function getProcessedDocumentURL(pageNo, pageRec, param) {
 function* getWaitingDocument(pageNo, pageRec, param) {
   try {
     response = yield call(getWaitingDocumentURL, pageNo, pageRec, param);
-    console.log("getDocumentReport", response);
+    console.log("wating data:", response);
     if(typeof(response) != "undefined"  && typeof(response.status) != "undefined"){
-      if (response.status.code == "0") {
+      if (response.status.code == "0" && typeof(response.data) != "undefined") {
         yield put(documentActions.setListWaitingDocumentSuccess(response.data));
         return response;
       } else {
@@ -87,10 +88,13 @@ function* getWaitingDocument(pageNo, pageRec, param) {
   }
 }
 
-function* getProcessedDocument(pageNo, pageRec, param) {
+function* getProcessedDocument(pageNo2, pageRec2, param2) {
   try {
-    response = yield call(getProcessedDocumentURL, pageNo, pageRec, param);
-    console.log("getDocumentReport", response);
+    console.log("pageNo2", pageNo2);
+    console.log("pageRec2", pageRec2);
+    console.log("param2", param2);
+    response = yield call(getProcessedDocumentURL, pageNo2, pageRec2, param2);
+    console.log("processed data", response);
     if(typeof(response) != "undefined"  && typeof(response.status) != "undefined"){
       if (response.status.code == "0") {
         yield put(documentActions.setListProcessedDocumentSuccess(response.data));
@@ -113,6 +117,8 @@ function* getProcessedDocument(pageNo, pageRec, param) {
 
 export function* documentFlow() {
   while (true) {
+
+
     const{pageNo, pageRec, param} = yield take(actions.GET_LIST_WAITING_DOCUMENT);
     yield put(rootActions.controlProgress(true));
     yield call(getWaitingDocument, pageNo, pageRec, param);
@@ -120,8 +126,9 @@ export function* documentFlow() {
 
     const {pageNo2, pageRec2, param2} = yield take(actions.GET_LIST_PROCESSED_DOCUMENT);
     yield put(rootActions.controlProgress(true));
-    yield call(getProcessedDocument, pageNo2, pageRec2, param2);
+    yield call(getProcessedDocument, pageNo2, pageRec2, pageRec2);
     yield put(rootActions.controlProgress(false));
+
   }
 }
 

@@ -25,30 +25,33 @@ export default class ItemDocument extends Component {
     render() {
         const { data } = this.props.item;
         let dataStr= ["Đánh dấu", "Trao đổi  thông tin", "Lịch sử xử lý"];
+        var date = this.props.item.ngayNhan.split(" ");
+         
+
         return (
             <View style={styles.container}>
                 <TouchableOpacity style={{ flexDirection: 'row' }} onPress={this.props.gotoDocumentDetail}>
                     <View style={styles.left}>
-                        <Text style={[styles.textTitle, { textAlign: 'center', color: '#B2001F' }]}>15:23</Text>
-                        <Text style={[styles.textColorBlack, { textAlign: 'center' }]}>01/01/2018</Text>
+                        <Text style={[styles.textTitle, { textAlign: 'center', color: '#B2001F' }]}>{date[1]}</Text>
+                        <Text style={[styles.textColorBlack, { textAlign: 'center' }]}>{date[0]}</Text>
                     </View>
                     <View style={styles.center}>
-                        <Text style={[styles.centerText, styles.textTitle]}>{ data.trichYeu }</Text>
+                        <Text style={[styles.centerText, styles.textTitle]}>{ this.props.item.trichYeu }</Text>
                         <View style={styles.styleRow}>
                             <Text style={styles.textColor}>KH: </Text>
-                            <Text style={styles.textColorBlack}>{data.soKihieu}</Text>
+                            <Text style={styles.textColorBlack}>{this.props.item.soKihieu}</Text>
                         </View>
                         <View style={styles.styleRow}>
                             <Text style={styles.textColor}>CQBH:</Text>
-                            <Text style={styles.textColorBlack}>{data.coQuanBanHanh}</Text>
+                            <Text style={styles.textColorBlack}>{this.props.item.coQuanBanHanh}</Text>
                         </View>
                         <View style={styles.styleRow}>
                             <Text style={styles.textColor}>Ngày VB: </Text>
-                            <Text style={{ color: '#0033FF' }}>{data.ngayVanBan}</Text>
+                            <Text style={{ color: '#0033FF' }}>{this.props.item.ngayVanBan}</Text>
                         </View>
                         <View style={styles.styleRow}>
                             <Text style={styles.textColor}>Độ khẩn: </Text>
-                            <Text>{data.doKhan}</Text>
+                            <Text>{this.props.item.doKhan}</Text>
                         </View>
                         <View style={styles.styleRow}>
                             <Text style={styles.textColor}>Tệp tin đính kèm:</Text>

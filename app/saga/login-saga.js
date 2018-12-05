@@ -63,7 +63,7 @@ function* login(username, password, tokenFireBase) {
     response = yield call(logInRequestURL, username, password, tokenFireBase);
     console.log("response log 2", response);
     if(typeof(response) != "undefined"  && typeof(response.status) != "undefined"){
-      if (response.status.code == "0") {
+      if (response.status.code == "0" && typeof(response.data) != "undefined") {
         yield put(loginActions.setLoginSuccess(response.data));
         // yield call(getContact);
         return response;

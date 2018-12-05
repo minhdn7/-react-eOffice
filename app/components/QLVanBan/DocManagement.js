@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, Text } from 'react-native';
+import { View, FlatList, Text, TouchableOpacity } from 'react-native';
 import Header from './Header2';
 import ItemDocument from './ItemDocument';
 import dataJson from '../../data/flatListData';
@@ -17,10 +17,19 @@ export class DocManagement extends Component {
             pageNo: "1",
             pageRec: "10",
             param: "",
-            dataDocument: {},
+            dataDocument: [],
+            
         };
       }
     componentDidMount(){
+        // if(this.props.documentReducer.get('hasDocument')){
+        //     if(this.props.documentReducer.get('hasDocument')){
+        //         listDocumentData = this.props.documentReducer.get('listDocumentData');
+        //         this.setState({
+        //             dataDocument: this.props.documentReducer.get('listDocumentData'),
+        //         });
+        //     }
+        // }
         // this.props.onGetListDocumentAction(1);// chuyen vao loai van ban
     }
 
@@ -47,34 +56,60 @@ export class DocManagement extends Component {
         this.props.dispatch(rootActions.controlProgress(false));
         typeDocument = this.props.documentReducer.get("typeDocument");
         this.checkTypeDocument(typeDocument);
+        this.setState({
+            dataDocument: this.props.documentReducer.get('listDocumentData'),
+        });
     }
 
-    componentDidUpdate(){
-        if(this.state.flagLoad == true){
-            this.setState({
-                flagLoad: false,
-                dataDocument: this.props.documentReducer.get('listDocumentData'),
-            });
-
-        }
+    componentDidMount(){
+        this.setState({
+            dataDocument: this.props.documentReducer.get('listDocumentData'),
+        });
     }
 
-    gotoDocumentDetail(){
+    gotoDocumentDetail = () =>{
         this.props.navigation.navigate('DocumentDetail');
     }
 
+    isEmpty(obj) {
+        for(var key in obj) {
+            if(obj.hasOwnProperty(key))
+                return false;
+        }
+        return true;
+    }
+
     render() {
+        let dataView;
+        if(this.state.dataDocument.length != 0){
+            dataView =      <FlatList
+                            data={this.state.dataDocument} 
+                            renderItem={({item, index})=>{
+                            return (
+                                <View onPress={ () => this.gotoDocumentDetail()}>
+                                    <ItemDocument item={item} index={index} >
+                                    
+                                    </ItemDocument>
+                                </View>);
+                
+                            }}
+                            // renderItem={(item) => <ItemDocument item={item} gotoDocumentDetail={this.gotoDocumentDetail.bind(this)} navigator= {this.props.navigation}/>}
+                            keyExtractor={(item, index) => index.toString()}
+                            />
+        }else{
+            dataView = <Text style={{textAlign: "center", fontSize: 18}}>Không có dữ liệu...</Text>
+        }
         return (
             <View>
                 <Header myTitle = {this.state.title} 
                     navigator = {this.props.navigation}
                 />
                 <View style={{ backgroundColor: '#D3D3D3' }}>
-                <FlatList
-                    data={this.state.dataDocument} 
-                    renderItem={(item) => <ItemDocument data={item} gotoDocumentDetail={this.gotoDocumentDetail.bind(this)} navigator= {this.props.navigation}/>}
-                    keyExtractor={(item, index) => index.toString()}
-                />
+
+                    {dataView}
+
+
+  
                 </View>
                 
             </View>

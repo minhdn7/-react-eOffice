@@ -56,14 +56,19 @@ export class BaoCaoThongKe extends Component {
         this.props.dispatch(reportAction.getReportWord(this.state.month));
     }
 
-    componentDidUpdate(){
-        if(this.state.flagLoad == true){
-        this.setState({
-            flagLoad: false,
-        });
+    componentDidMount(){
         this.setDocumentData();
         this.setWordData();
-        }
+    }
+
+    componentDidUpdate(){
+        // if(this.state.flagLoad == true){
+        // this.setState({
+        //     flagLoad: false,
+        // });
+        // this.setDocumentData();
+        // this.setWordData();
+        // }
     }
 
     setDocumentData(){
