@@ -93,7 +93,7 @@ export class DocManagement extends Component {
                             renderItem={({item, index})=>{
                             return (
                                 <TouchableOpacity onPress={ () => this.gotoDocumentDetail()}>
-                                    <ItemDocument item={item} index={index} >
+                                    <ItemDocument item={item} index={index} navigator= {this.props.navigation}>
                                     
                                     </ItemDocument>
                                 </TouchableOpacity>);
