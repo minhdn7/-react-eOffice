@@ -101,16 +101,6 @@ export class LichCongTac extends Component {
             this.setState({
                 hasCalendar: false,
             });
-            // Alert.alert(
-            //     'Thông báo',
-            //         message,
-            //     [
-            //         {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-            //         {text: 'OK', onPress: () => console.log('OK Pressed')},
-            //     ],
-            //     { cancelable: false }
-            //     )
-            //     return false;
         }
     }
 

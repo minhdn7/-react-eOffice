@@ -26,14 +26,14 @@ export default class Header extends React.Component {
                     <Text style={titleStyle}>{this.props.myTitle}</Text>
                     <EvilIcons name="bell" size={40} color="#ffffff" />
                 </View>
-                <View style={styles.searchSection}  >
+                {/* <View style={styles.searchSection}  >
                     <EvilIcons style={styles.searchIcon} name="search" size={20} color="#000" />
                     <TextInput
                         style={textInput}
                         underlineColorAndroid='transparent'
                         placeholder='Tìm kiếm'
                     />
-                </View>
+                </View> */}
             </View>
         );
     }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, Text, TouchableOpacity } from 'react-native';
+import { View, FlatList, Text, TouchableOpacity, TextInput } from 'react-native';
 import Header from './Header2';
 import ItemDocument from './ItemDocument';
 import dataJson from '../../data/flatListData';
@@ -7,6 +7,9 @@ import {connect} from "react-redux";
 import * as documentAction from "../../actions/document-action";
 import * as rootActions from "../../actions/root-actions";
 import strings from "../../resources/strings";
+import styles from '../../styles/styleQLVanBan';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 export class DocManagement extends Component {
     constructor(props) {
@@ -21,17 +24,7 @@ export class DocManagement extends Component {
             
         };
       }
-    componentDidMount(){
-        // if(this.props.documentReducer.get('hasDocument')){
-        //     if(this.props.documentReducer.get('hasDocument')){
-        //         listDocumentData = this.props.documentReducer.get('listDocumentData');
-        //         this.setState({
-        //             dataDocument: this.props.documentReducer.get('listDocumentData'),
-        //         });
-        //     }
-        // }
-        // this.props.onGetListDocumentAction(1);// chuyen vao loai van ban
-    }
+
 
     checkTypeDocument = (type) =>{
         switch (type){
@@ -48,7 +41,7 @@ export class DocManagement extends Component {
                 this.props.dispatch(documentAction.getListProcessedDocumentAction(this.state.pageNo, this.state.pageRec, this.state.param));
                 break
             default:
-                break       
+                break  
         }
     }
 
@@ -77,18 +70,33 @@ export class DocManagement extends Component {
         return true;
     }
 
+    searchSubmit(search){
+        console.log("text search", search);
+        switch (this.props.documentReducer.get("typeDocument")){
+            case strings.vanBanChoXuLy:
+                this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, this.state.param));
+                break
+            case strings.vanBanDaXuLy:
+                this.props.dispatch(documentAction.getListProcessedDocumentAction(this.state.pageNo, this.state.pageRec, search));
+                break
+            default:
+                break       
+        }
+        
+    }
+
     render() {
         let dataView;
-        if(this.state.dataDocument.length != 0){
+        if(this.state.dataDocument != null && this.state.dataDocument.length != 0){
             dataView =      <FlatList
                             data={this.state.dataDocument} 
                             renderItem={({item, index})=>{
                             return (
-                                <View onPress={ () => this.gotoDocumentDetail()}>
+                                <TouchableOpacity onPress={ () => this.gotoDocumentDetail()}>
                                     <ItemDocument item={item} index={index} >
                                     
                                     </ItemDocument>
-                                </View>);
+                                </TouchableOpacity>);
                 
                             }}
                             // renderItem={(item) => <ItemDocument item={item} gotoDocumentDetail={this.gotoDocumentDetail.bind(this)} navigator= {this.props.navigation}/>}
@@ -102,6 +110,20 @@ export class DocManagement extends Component {
                 <Header myTitle = {this.state.title} 
                     navigator = {this.props.navigation}
                 />
+                <View style={styles.wrapper}>
+                    <View style={styles.searchSection}  >
+                        <EvilIcons style={styles.searchIcon} name="search" size={20} color="#000" />
+                        <TextInput
+                            style={styles.textInput}
+                            underlineColorAndroid='transparent'
+                            placeholder='Tìm kiếm'
+                            returnKeyType='search'
+                            onSubmitEditing={(event) => this.searchSubmit( event.nativeEvent.text )}
+
+                        />
+                    </View>
+                </View>
+
                 <View style={{ backgroundColor: '#D3D3D3' }}>
 
                     {dataView}
