@@ -5,10 +5,11 @@ const backgroundColor = "#205AA7";
 
 const styles = StyleSheet.create({
     // style header
-    wrapper: { height: height / 6, backgroundColor: backgroundColor, padding: 10, justifyContent: 'space-around' },
+    wrapper: { backgroundColor: backgroundColor, padding: 10, justifyContent: 'space-around' },
     row1: { flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10 },
     textInput: {
         backgroundColor: '#FFF', paddingLeft: 0, paddingTop: 10,
+        
         paddingRight: 10,
         paddingBottom: 10,
         borderRadius: 4,
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
     searchSection: {
         // flex: 1,
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
         backgroundColor: '#fff',
         borderRadius: 4,
