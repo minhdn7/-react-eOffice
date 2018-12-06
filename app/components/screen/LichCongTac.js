@@ -46,17 +46,19 @@ export class LichCongTac extends Component {
         
     }
 
-
-
-    componentWillUpdate(){
-        if(this.state.flagLoad == true){
-            this.setState({
-                flagLoad: false,
-            });
-            this.checkCalendar();
-        }
-
+    componentWillReceiveProps(){
+        this.checkCalendar();
     }
+
+    // componentWillUpdate(){
+    //     if(this.state.flagLoad == true){
+    //         this.setState({
+    //             flagLoad: false,
+    //         });
+    //         this.checkCalendar();
+    //     }
+
+    // }
 
     convertDataSectionList(fetchData){
         sectionData = [];
