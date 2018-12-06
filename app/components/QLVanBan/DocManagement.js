@@ -56,12 +56,10 @@ export class DocManagement extends Component {
         this.props.dispatch(rootActions.controlProgress(false));
         typeDocument = this.props.documentReducer.get("typeDocument");
         this.checkTypeDocument(typeDocument);
-        this.setState({
-            dataDocument: this.props.documentReducer.get('listDocumentData'),
-        });
     }
 
-    componentDidMount(){
+
+    componentWillReceiveProps(){
         this.setState({
             dataDocument: this.props.documentReducer.get('listDocumentData'),
         });

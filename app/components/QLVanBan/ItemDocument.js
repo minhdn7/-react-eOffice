@@ -30,7 +30,7 @@ export default class ItemDocument extends Component {
 
         return (
             <View style={styles.container}>
-                <TouchableOpacity style={{ flexDirection: 'row' }} onPress={this.props.gotoDocumentDetail}>
+                <View style={{ flexDirection: 'row' }} onPress={this.props.gotoDocumentDetail}>
                     <View style={styles.left}>
                         <Text style={[styles.textTitle, { textAlign: 'center', color: '#B2001F' }]}>{date[1]}</Text>
                         <Text style={[styles.textColorBlack, { textAlign: 'center' }]}>{date[0]}</Text>
@@ -59,7 +59,7 @@ export default class ItemDocument extends Component {
                         </View>
 
                     </View>
-                </TouchableOpacity>
+                </View>
                 <View style={styles.right}>
                     <ModalDropdown
                         options={dataStr}
