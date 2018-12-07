@@ -10,6 +10,7 @@ export default {
   CLIENT_SECRET: 'd07dadbce095325cebfc40a46eb467e906063927',
   BASE_HEADER: {
     'Content-Type': 'application/json',
+    Accept: 'application/json',
     'X-Authentication-Token' : '',
   },
   USER_TOKEN: 'token',

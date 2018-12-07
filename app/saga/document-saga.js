@@ -90,9 +90,6 @@ function* getWaitingDocument(pageNo, pageRec, param) {
 
 function* getProcessedDocument(pageNo, pageRec, param) {
   try {
-    // console.log("pageNo2", pageNo);
-    // console.log("pageRec2", pageRec);
-    // console.log("param2", param);
     response = yield call(getProcessedDocumentURL, pageNo, pageRec, param);
     console.log("processed data", response);
     if(typeof(response) != "undefined"  && typeof(response.status) != "undefined"){

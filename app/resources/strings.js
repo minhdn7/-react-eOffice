@@ -100,7 +100,8 @@ module.exports = new LocalizedStrings({
     chieu: 'Chiều',
     khongCoLichCongTac: 'Không có lịch công tác',
 
+    // chi tiết văn bản
+    chiTietVanBan: 'Chi tiết văn bản',
     
-
   }
 });

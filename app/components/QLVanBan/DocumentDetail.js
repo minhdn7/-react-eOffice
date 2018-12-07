@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import styles from '../../styles/styleQLVanBan';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import strings from "../../resources/strings";
+import DefaultHeader from '../navigation/DefaultHeader';
 
 export default class DocumentDetail extends Component {
     constructor(props) {
@@ -12,11 +14,11 @@ export default class DocumentDetail extends Component {
 
     render() {
         return (
-
-            <View style={[styles.container, {padding:0}]}>
-                {/* <View style={{ height: height * 0.12, backgroundColor: '#205AA7' }}>
-                        <Text>Header</Text>
-                    </View> */}
+            <View>
+                <DefaultHeader myTitle= {strings.chiTietVanBan} navigator= {this.props.navigation} />
+            
+                {/* <View style={[styles.container, {padding:0}]}> */}
+           
                 <ScrollView>
                     <View style={styles.styleCenter}>
                         <View style={styles.content}>
@@ -99,7 +101,9 @@ export default class DocumentDetail extends Component {
                     </View>
                 </ScrollView>
 
+            {/* </View> */}
             </View>
+            
         );
     }
 }
