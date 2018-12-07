@@ -41,7 +41,6 @@ export class Home extends Component {
         case 1:
           this.props.dispatch(documentAction.setTypeDocumentAction(strings.vanBanChoXuLy));
           this.props.navigation.navigate('DocManagement');
-        
           break;
         case 2:
           this.props.navigation.navigate('LichCongTac');

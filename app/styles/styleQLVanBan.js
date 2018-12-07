@@ -87,6 +87,21 @@ const styles = StyleSheet.create({
     },
 
     iconStyle: { width: 20, height: 20 },
+
+    //
+    tableHeader: {
+        height: height*0.07, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', borderTopLeftRadius: 5, borderTopRightRadius: 5
+    },
+
+    width15: {
+        width: width*0.15,
+    },
+    width50: {
+        width: width*0.5,
+    },
+    styleCenterContent: {
+        flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'
+    }
 });
 
 export default styles;
