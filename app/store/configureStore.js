@@ -97,7 +97,8 @@ export default function configureStore() {
       sagaMiddleware.run(loginSaga.loginFlow),
       sagaMiddleware.run(calendarSaga.calendarFlow),
       sagaMiddleware.run(reportSaga.reportFlow),
-      sagaMiddleware.run(documentSaga.documentFlow)
+      sagaMiddleware.run(documentSaga.documentFlow),
+      sagaMiddleware.run(documentSaga.documentProcessedFlow)
     ]
   };
 }

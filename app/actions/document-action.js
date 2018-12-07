@@ -17,12 +17,12 @@ export const getListWaitingDocumentAction = (pageNo, pageRec, param) => {
 }
 
 export const getListProcessedDocumentAction = (pageNo, pageRec, param) => {
-
+    console.log("param:", param);
     return {
         type: actions.GET_LIST_PROCESSED_DOCUMENT,
-        pageNo2: pageNo,
-        pageRec2: pageRec,
-        param2: param,
+        pageNo: pageNo,
+        pageRec: pageRec,
+        param: param
     }
 }
 

@@ -74,13 +74,13 @@ export class DocManagement extends Component {
         console.log("text search", search);
         switch (this.props.documentReducer.get("typeDocument")){
             case strings.vanBanChoXuLy:
-                this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, this.state.param));
+                this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, search));
                 break
             case strings.vanBanDaXuLy:
                 this.props.dispatch(documentAction.getListProcessedDocumentAction(this.state.pageNo, this.state.pageRec, search));
                 break
             default:
-                break       
+                break 
         }
         
     }

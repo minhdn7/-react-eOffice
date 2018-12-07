@@ -88,12 +88,12 @@ function* getWaitingDocument(pageNo, pageRec, param) {
   }
 }
 
-function* getProcessedDocument(pageNo2, pageRec2, param2) {
+function* getProcessedDocument(pageNo, pageRec, param) {
   try {
     console.log("pageNo2", pageNo2);
     console.log("pageRec2", pageRec2);
     console.log("param2", param2);
-    response = yield call(getProcessedDocumentURL, pageNo2, pageRec2, param2);
+    response = yield call(getProcessedDocumentURL, pageNo, pageRec, param);
     console.log("processed data", response);
     if(typeof(response) != "undefined"  && typeof(response.status) != "undefined"){
       if (response.status.code == "0") {
@@ -118,15 +118,21 @@ function* getProcessedDocument(pageNo2, pageRec2, param2) {
 export function* documentFlow() {
   while (true) {
 
-
     const{pageNo, pageRec, param} = yield take(actions.GET_LIST_WAITING_DOCUMENT);
     yield put(rootActions.controlProgress(true));
     yield call(getWaitingDocument, pageNo, pageRec, param);
     yield put(rootActions.controlProgress(false));
 
-    const {pageNo2, pageRec2, param2} = yield take(actions.GET_LIST_PROCESSED_DOCUMENT);
+  }
+}
+
+
+export function* documentProcessedFlow() {
+  while (true) {
+
+    const {pageNo, pageRec, param} = yield take(actions.GET_LIST_PROCESSED_DOCUMENT);
     yield put(rootActions.controlProgress(true));
-    yield call(getProcessedDocument, pageNo2, pageRec2, pageRec2);
+    yield call(getProcessedDocument, pageNo, pageRec, param);
     yield put(rootActions.controlProgress(false));
 
   }
