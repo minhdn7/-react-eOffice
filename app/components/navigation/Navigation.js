@@ -25,6 +25,7 @@ import DocManagement from "../QLVanBan/DocManagement";
 import DocHistory from "../QLVanBan/DocHistory";
 import InfoExchange from "../QLVanBan/InfoExchange";
 import DocumentDetail from "../QLVanBan/DocumentDetail";
+import ChuyenXuLy from "../QLVanBan/ChuyenXuLy";
 
 const store = configureStore();
 const Routes = {
@@ -48,6 +49,7 @@ const Routes = {
   DocHistory: {screen: DocHistory},
   InfoExchange: {screen: InfoExchange},
   DocumentDetail: {screen: DocumentDetail},
+  ChuyenXuLy: {screen: ChuyenXuLy},
   
 };
 const Navigator = StackNavigator(Routes, {
