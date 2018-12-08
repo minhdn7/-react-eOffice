@@ -5,6 +5,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import strings from "../../resources/strings";
 import DefaultHeader from '../navigation/DefaultHeader';
 
+// test 2
+
 export default class DocumentDetail extends Component {
     constructor(props) {
         super(props);
