@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 
 import {NavigationActions} from 'react-navigation';
-import {TouchableOpacity, ScrollView, Text, View, StyleSheet, Image} from 'react-native';
+import {TouchableOpacity, ScrollView, Text, View, StyleSheet, Image, FlatList} from 'react-native';
 import {Collapse,CollapseHeader, CollapseBody, AccordionList} from 'accordion-collapse-react-native';
 import strings from "../../resources/strings";
 import {connect} from "react-redux";
@@ -19,12 +19,22 @@ class SideMenu extends Component {
     }
 
     componentWillMount() {
-      // console.log('token 3', this.props.login.get('token'));
+      
       loginData = this.props.login.get('loginData');
-      // res = this.props.login.get('token');
+      danhSachKho = [];
+      if(loginData.kho != null && loginData.kho.lenght > 0){
+        for(i = 0; i < loginData.kho.lenght; i++){
+            itemKho = {
+              key: i,
+              value: loginData.kho[i],
+            };
+            danhSachKho.push(itemKho);
+        }
+      }
       this.setState({
         name: loginData.username,
         address: loginData.unitName,
+        kho: loginData.kho,
       });
     }
 
@@ -40,7 +50,7 @@ class SideMenu extends Component {
   }
   
   render () {
-    
+
     return (
       <View style={menuStyles.container}>
         <ScrollView>
@@ -88,58 +98,21 @@ class SideMenu extends Component {
                   <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
                 </CollapseHeader>
                 <CollapseBody style={{marginLeft: 10}}>
-                      <TouchableOpacity 
-                        typeDocument = 'vanBanChoXuLy'
-                        onPress={ 
-                          () => this.changeDocument(strings.vanBanChoXuLy)
-                        }
+                <FlatList 
+                    data={this.state.kho}
+                    keyExtractor={(item, index) => item + index}
+                    renderItem={({item, index})=>{
+                        return (
 
-                        style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
-                        <Image style={{width: 30, height: 30, margin: 4}} 
-                        source={require('../../image/document.png')}
-                        />
-                        <Text style={{color: '#0d47a1', padding: 4}}>{strings.vanBanChoXuLy}</Text>
-                      </TouchableOpacity>
-                      <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
+                            <ListKhoItem item={item} index={index} >
+                            
+                            </ListKhoItem>
+                          );
+          
+                    }}
+                    >
 
-                      <TouchableOpacity
-                        typeDocument = 'vanBanDaXuLy'
-                        onPress={ 
-                          () => this.changeDocument(strings.vanBanDaXuLy)
-                        }
-                        style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
-                        <Image style={{width: 30, height: 30, margin: 4}} 
-                        source={require('../../image/ic_doc_processed.png')}/>
-                        <Text style={{color: '#0d47a1', padding: 4}}>{strings.vanBanDaXuLy}</Text>
-                      </TouchableOpacity>
-                      <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
-
-                      <TouchableOpacity
-                        onPress={ () => this.props.navigation.navigate('DanhBa') }
-                        style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
-                        <Image style={{width: 30, height: 30, margin: 4}} 
-                        source={require('../../image/ic_doc_notification.png')}/>
-                        <Text style={{color: '#0d47a1', padding: 4}}>{strings.vanBanXemDeBiet}</Text>
-                      </TouchableOpacity>
-                      <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
-
-                      <TouchableOpacity
-                        onPress={ () => this.props.navigation.navigate('DocManagement') }
-                        style={{flexDirection: 'row', alignItems: 'center', padding: 4,}}>
-                        <Image style={{width: 30, height: 30, margin: 4}} 
-                        source={require('../../image/ic_doc_expired.png')}/>
-                        <Text style={{color: '#0d47a1', padding: 4}}>{strings.vanBanDanhDau}</Text>
-                      </TouchableOpacity>
-                      <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
-
-                      <TouchableOpacity
-                        onPress={ () => this.props.navigation.navigate('DocManagement') }
-                        style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
-                        <Image style={{width: 30, height: 30, margin: 4}} 
-                        source={require('../../image/ic_document_search.png')}/>
-                        <Text style={{color: '#0d47a1', padding: 4}}>{strings.traCuuVanBan}</Text>
-                      </TouchableOpacity>
-                      <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
+                    </FlatList>   
                 </CollapseBody>
             </Collapse>
 
@@ -297,6 +270,36 @@ const menuStyles = StyleSheet.create({
   },
   
   });
+
+  class ListKhoItem extends Component {
+    render() {          
+        return (        
+            <View style={{
+                flex: 1,
+                flexDirection:'column',
+                backgroundColor: 'white',
+                paddingLeft: 10,
+                paddingRight: 10,
+                paddingTop: 2,                              
+            }}> 
+              <TouchableOpacity
+                typeDocument = 'vanBanDaXuLy'
+                name = {this.props.item}
+                onPress={ 
+                  () => this.changeDocument(this.name)
+                }
+                style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
+                <Image style={{width: 30, height: 30, margin: 4}} 
+                source={require('../../image/ic_doc_processed.png')}/>
+                <Text style={{color: '#0d47a1', padding: 4}}>{this.props.item}</Text>
+              </TouchableOpacity>
+              <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
+          </View>
+        );
+    }
+  }
+
+
 
   const mapStateToProps = (state) => ({
     login: state.get('login'),

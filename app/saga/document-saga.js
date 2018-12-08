@@ -11,19 +11,22 @@ import apiUrl from "../network/apiUrl";
 import consts from "../const";
 import queryString from "query-string";
 
-function getWaitingDocumentURL(pageNo, pageRec, param) {
+function getWaitingDocumentURL(pageNo, pageRec, kho, param) {
 
     url = apiUrl.ROOT_URL + apiUrl.GET_DOC_WAIT_URL;
     console.log("url get waiting document:", url);
+    console.log("pageNo:", pageNo);
+    console.log("pageRec:", pageRec);
+    console.log("kho:", kho);
+    console.log("param:", param);
     return fetch(url, {
     method: 'POST',
     headers: consts.BASE_HEADER,
     body: JSON.stringify({
       "pageNo": pageNo,
       "pageRec": pageRec,
-      "parameter": {
-        "param": param,
-      },
+      "kho": kho,
+      "param": param,
 
     }),
   })    
@@ -38,7 +41,7 @@ function getWaitingDocumentURL(pageNo, pageRec, param) {
 }
 
 
-function getProcessedDocumentURL(pageNo, pageRec, param) {
+function getProcessedDocumentURL(pageNo, pageRec, kho, param) {
 
   url = apiUrl.ROOT_URL + apiUrl.GET_DOC_PROCECSSED_URL;
   console.log("url get processed document:", url);
@@ -49,9 +52,11 @@ function getProcessedDocumentURL(pageNo, pageRec, param) {
   body: JSON.stringify({
     "pageNo": pageNo,
     "pageRec": pageRec,
-    "parameter": {
-      "param": param,
-    },
+    "kho": kho,
+    "param": param,
+    // "parameter": {
+    //   "param": param,
+    // },
 
   }),
 })    
@@ -65,9 +70,9 @@ function getProcessedDocumentURL(pageNo, pageRec, param) {
   
 }
 
-function* getWaitingDocument(pageNo, pageRec, param) {
+function* getWaitingDocument(pageNo, pageRec, kho, param) {
   try {
-    response = yield call(getWaitingDocumentURL, pageNo, pageRec, param);
+    response = yield call(getWaitingDocumentURL, pageNo, pageRec, kho, param);
     console.log("wating data:", response);
     if(typeof(response) != "undefined"  && typeof(response.status) != "undefined"){
       if (response.status.code == "0" && typeof(response.data) != "undefined") {
@@ -88,9 +93,9 @@ function* getWaitingDocument(pageNo, pageRec, param) {
   }
 }
 
-function* getProcessedDocument(pageNo, pageRec, param) {
+function* getProcessedDocument(pageNo, pageRec, kho, param) {
   try {
-    response = yield call(getProcessedDocumentURL, pageNo, pageRec, param);
+    response = yield call(getProcessedDocumentURL, pageNo, pageRec, kho, param);
     console.log("processed data", response);
     if(typeof(response) != "undefined"  && typeof(response.status) != "undefined"){
       if (response.status.code == "0") {
@@ -115,9 +120,9 @@ function* getProcessedDocument(pageNo, pageRec, param) {
 export function* documentFlow() {
   while (true) {
 
-    const{pageNo, pageRec, param} = yield take(actions.GET_LIST_WAITING_DOCUMENT);
+    const {pageNo, pageRec, kho, param}  = yield take(actions.GET_LIST_WAITING_DOCUMENT);
     yield put(rootActions.controlProgress(true));
-    yield call(getWaitingDocument, pageNo, pageRec, param);
+    yield call(getWaitingDocument, pageNo, pageRec, kho, param);
     yield put(rootActions.controlProgress(false));
 
   }
@@ -127,9 +132,9 @@ export function* documentFlow() {
 export function* documentProcessedFlow() {
   while (true) {
 
-    const {pageNo, pageRec, param} = yield take(actions.GET_LIST_PROCESSED_DOCUMENT);
+    const {pageNo, pageRec, kho, param} = yield take(actions.GET_LIST_PROCESSED_DOCUMENT);
     yield put(rootActions.controlProgress(true));
-    yield call(getProcessedDocument, pageNo, pageRec, param);
+    yield call(getProcessedDocument, pageNo, pageRec, kho, param);
     yield put(rootActions.controlProgress(false));
 
   }

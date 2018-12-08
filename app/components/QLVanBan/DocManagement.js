@@ -20,6 +20,7 @@ export class DocManagement extends Component {
             pageNo: "1",
             pageRec: "10",
             param: "",
+            kho: "",
             dataDocument: [],
             
         };
@@ -27,28 +28,34 @@ export class DocManagement extends Component {
 
 
     checkTypeDocument = (type) =>{
-        switch (type){
-            case strings.vanBanChoXuLy:
-                this.setState({
-                    title : strings.vanBanChoXuLy,     
-                });
-                this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, this.state.param));
-                break
-            case strings.vanBanDaXuLy:
-                this.setState({
-                    title : strings.vanBanDaXuLy,     
-                });
-                this.props.dispatch(documentAction.getListProcessedDocumentAction(this.state.pageNo, this.state.pageRec, this.state.param));
-                break
-            default:
-                break  
-        }
+        this.setState({
+            kho: type,
+        });
+        console.log('kho', this.state.kho);
+        console.log('type', this.state.type);
+        this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, type, this.state.param));
+        // switch (type){
+        //     case strings.vanBanChoXuLy:
+        //         this.setState({
+        //             title : strings.vanBanChoXuLy,     
+        //         });
+        //         this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, this.state.param));
+        //         break
+        //     case strings.vanBanDaXuLy:
+        //         this.setState({
+        //             title : strings.vanBanDaXuLy,     
+        //         });
+        //         this.props.dispatch(documentAction.getListProcessedDocumentAction(this.state.pageNo, this.state.pageRec, this.state.param));
+        //         break
+        //     default:
+        //         break  
+        // }
     }
 
     componentWillMount(){
         this.props.dispatch(rootActions.controlProgress(false));
-        typeDocument = this.props.documentReducer.get("typeDocument");
-        this.checkTypeDocument(typeDocument);
+        // typeDocument = this.props.documentReducer.get("typeDocument");
+        this.checkTypeDocument(this.props.documentReducer.get("typeDocument"));
     }
 
 
@@ -72,16 +79,17 @@ export class DocManagement extends Component {
 
     searchSubmit(search){
         console.log("text search", search);
-        switch (this.props.documentReducer.get("typeDocument")){
-            case strings.vanBanChoXuLy:
-                this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, search));
-                break
-            case strings.vanBanDaXuLy:
-                this.props.dispatch(documentAction.getListProcessedDocumentAction(this.state.pageNo, this.state.pageRec, search));
-                break
-            default:
-                break 
-        }
+        this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, this.state.kho, search));
+        // switch (this.props.documentReducer.get("typeDocument")){
+        //     case strings.vanBanChoXuLy:
+        //         this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, search));
+        //         break
+        //     case strings.vanBanDaXuLy:
+        //         this.props.dispatch(documentAction.getListProcessedDocumentAction(this.state.pageNo, this.state.pageRec, search));
+        //         break
+        //     default:
+        //         break 
+        // }
         
     }
 
@@ -99,7 +107,6 @@ export class DocManagement extends Component {
                                 </TouchableOpacity>);
                 
                             }}
-                            // renderItem={(item) => <ItemDocument item={item} gotoDocumentDetail={this.gotoDocumentDetail.bind(this)} navigator= {this.props.navigation}/>}
                             keyExtractor={(item, index) => index.toString()}
                             />
         }else{

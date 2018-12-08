@@ -7,11 +7,12 @@ export const getListDocumentAction = () => {
     }
 }
 
-export const getListWaitingDocumentAction = (pageNo, pageRec, param) => {
+export const getListWaitingDocumentAction = (pageNo, pageRec, kho, param) => {
     return {
         type: actions.GET_LIST_WAITING_DOCUMENT,
         pageNo: pageNo,
         pageRec: pageRec,
+        kho: kho,
         param: param,
     }
 }
@@ -22,7 +23,8 @@ export const getListProcessedDocumentAction = (pageNo, pageRec, param) => {
         type: actions.GET_LIST_PROCESSED_DOCUMENT,
         pageNo: pageNo,
         pageRec: pageRec,
-        param: param
+        kho: kho,
+        param: param,
     }
 }
 

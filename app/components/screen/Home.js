@@ -39,7 +39,13 @@ export class Home extends Component {
       // Alert.alert("" + id);
       switch (id) {
         case 1:
-          this.props.dispatch(documentAction.setTypeDocumentAction(strings.vanBanChoXuLy));
+          loginData = this.props.login.get('loginData');
+          if(loginData != null && loginData.kho != null && loginData.kho.length > 0){
+            this.props.dispatch(documentAction.setTypeDocumentAction(loginData.kho[0]));
+          }else{
+            this.props.dispatch(documentAction.setTypeDocumentAction(''));
+          }
+
           this.props.navigation.navigate('DocManagement');
           break;
         case 2:
