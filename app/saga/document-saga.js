@@ -70,6 +70,48 @@ function getProcessedDocumentURL(pageNo, pageRec, kho, param) {
   
 }
 
+function getDetailDocumentURL(documentID) {
+
+  url = apiUrl.ROOT_URL + apiUrl.GET_DETAIL_DOCUMENT_URL + documentID + '/';
+  console.log("url get detail document:", url);
+
+    return fetch(url, {
+    method: 'GET',
+    headers: consts.BASE_HEADER,
+  })    
+  .then((response) => {
+    return response.json();
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+
+  
+}
+
+function* getDetailDocument(documentID) {
+  try {
+    response = yield call(getDetailDocumentURL, documentID);
+    console.log("detail document data:", response);
+    if(typeof(response) != "undefined"  && typeof(response.status) != "undefined"){
+      if (response.status.code == "0" && typeof(response.data) != "undefined") {
+        yield put(documentActions.setDetailDocumentSuccessAction(response.data));
+        return response;
+      } else {
+        yield put(documentActions.setDetailDocumentErrorAction(response.status.message));
+        return undefined;
+      }
+    }else{
+      yield put(documentActions.setDetailDocumentErrorAction("Không lấy được dữ liệu!"));
+      return undefined;
+    }
+
+  } catch (error) {
+    
+    yield put(documentActions.setDetailDocumentErrorAction(String(error)));
+  }
+}
+
 function* getWaitingDocument(pageNo, pageRec, kho, param) {
   try {
     response = yield call(getWaitingDocumentURL, pageNo, pageRec, kho, param);
@@ -135,6 +177,17 @@ export function* documentProcessedFlow() {
     const {pageNo, pageRec, kho, param} = yield take(actions.GET_LIST_PROCESSED_DOCUMENT);
     yield put(rootActions.controlProgress(true));
     yield call(getProcessedDocument, pageNo, pageRec, kho, param);
+    yield put(rootActions.controlProgress(false));
+
+  }
+}
+
+export function* detailDocumentFlow() {
+  while (true) {
+
+    const {documentID} = yield take(actions.GET_DETAIL_DOCUMENT);
+    yield put(rootActions.controlProgress(true));
+    yield call(getDetailDocument, documentID);
     yield put(rootActions.controlProgress(false));
 
   }

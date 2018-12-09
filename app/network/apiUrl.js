@@ -22,7 +22,7 @@ const apiUrl = {
     GET_DOC_NOTIFICATION_URL : "api/document/getlistnotifydocument/",
     GET_COUNT_DOC_EXPIRED_URL : "api/document/getpagingoutdatedocument/",
     GET_DOC_EXPIRED_URL : "api/document/getlistoutdatedocument/",
-    GET_DETAIL_DOCUMENT_WAITING_URL : "api/document/getdetaildocument/{id}/",
+    GET_DETAIL_DOCUMENT_URL : "api/document/getdetaildocument/",
     GET_LOGS_DOCUMENT_WAITING_URL : "api/document/getactivitylog/{id}/",
     GET_ATTACH_FILE_DOCUMENT_WAITING_URL : "api/file/getfileattach/{id}/",
     GET_RELATED_DOCUMENT_WAITING_URL : "api/document/getdocrelated/{id}/",

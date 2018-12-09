@@ -62,3 +62,35 @@ export const setTypeDocumentAction = (type) => {
         typeDocument: type
     }
 }
+
+
+// detail document
+
+export const setIdDocumentAction = (documentID) => {
+    return {
+        type: actions.SET_ID_DOCUMENT,
+        documentID: documentID
+    }
+}
+
+
+export const getDetailDocumentAction = (documentID) => {
+    return {
+        type: actions.GET_DETAIL_DOCUMENT,
+        documentID: documentID
+    }
+}
+
+export const setDetailDocumentSuccessAction = (detailDocumentData) => {
+    return {
+        type: actions.GET_DETAIL_DOCUMENT_SUCESS,
+        detailDocumentData: detailDocumentData,
+    }
+}
+
+export const setDetailDocumentErrorAction = (error) => {
+    return {
+        type: actions.GET_LIST_DOCUMENT_ERROR,
+        error: error
+    }
+}

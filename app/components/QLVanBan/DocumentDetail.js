@@ -1,17 +1,36 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import styles from '../../styles/styleQLVanBan';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import strings from "../../resources/strings";
 import DefaultHeader from '../navigation/DefaultHeader';
-
+import {connect} from "react-redux";
+import * as documentAction from "../../actions/document-action";
 // test 2
 
-export default class DocumentDetail extends Component {
+export class DocumentDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            documentId : '',
+            dataDocument: {},
         };
+    }
+
+    componentWillMount(){
+        documentId = this.props.documentReducer.get('documentID');
+        this.setState({
+            documentId: documentId,
+        });
+        Alert.alert(this.props.documentReducer.get("documentID"));
+        this.props.dispatch(documentAction.getDetailDocumentAction(documentId));
+        
+    }
+
+    componentWillReceiveProps(){
+        this.setState({
+            dataDocument: this.props.documentReducer.get('detailDocumentData'),
+        });
     }
 
     render() {
@@ -26,35 +45,35 @@ export default class DocumentDetail extends Component {
                         <View style={styles.content}>
                             <View style={styles.rowCotent}>
                                 <Text style={[styles.textColor, styles.styleFontSize]}>Trích yếu: </Text>
-                                <Text style={[styles.textColorBlack, styles.styleFontSize, { fontWeight: 'bold' }]}>Trich Yeu abc</Text>
+                                <Text style={[styles.textColorBlack, styles.styleFontSize, { fontWeight: 'bold' }]}>{this.state.dataDocument.trichYeu}</Text>
                             </View>
                             <View style={styles.rowCotent}>
                                 <Text style={[styles.textColor, styles.styleFontSize]}>Số ioffice: </Text>
-                                <Text style={styles.textColorBlack}>1001775</Text>
+                                <Text style={styles.textColorBlack}>{this.state.dataDocument.ioffice}</Text>
                             </View>
                             <View style={styles.rowCotent}>
                                 <Text style={[styles.textColor, styles.styleFontSize]}>CQBH: </Text>
-                                <Text style={[styles.textColorBlack, styles.styleFontSize]}>UBNN HA NOI</Text>
+                                <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.donViBanHanh}</Text>
                             </View>
                             <View style={styles.rowCotent}>
                                 <Text style={[styles.textColor, styles.styleFontSize]}>Số ký hiệu: </Text>
-                                <Text style={[styles.textColorBlack, styles.styleFontSize, { color: 'red' }]}>ATVBNo1001775</Text>
+                                <Text style={[styles.textColorBlack, styles.styleFontSize, { color: 'red' }]}>{this.state.dataDocument.soKiHieu}</Text>
                             </View>
                             <View style={styles.rowCotent}>
                                 <Text style={[styles.textColor, styles.styleFontSize]}>Ngày đến:</Text>
-                                <Text style={[styles.textColorBlack, styles.styleFontSize]}>18/10/2018</Text>
+                                <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.ngayDenDi}</Text>
                             </View>
                             <View style={styles.rowCotent}>
                                 <Text style={[styles.textColor, styles.styleFontSize]}>Ngày VB:</Text>
-                                <Text style={[styles.textColorBlack, styles.styleFontSize]}>18/10/2018</Text>
+                                <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.ngayVanBan}</Text>
                             </View>
                             <View style={styles.rowCotent}>
                                 <Text style={[styles.textColor, styles.styleFontSize]}>Hình thức VB:</Text>
-                                <Text style={[styles.textColorBlack, styles.styleFontSize]}>Công văn</Text>
+                                <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.hinhThucGui}</Text>
                             </View>
                             <View style={styles.rowCotent}>
                                 <Text style={styles.textColor}>Độ khẩn:</Text>
-                                <Text style={[styles.textColorBlack, styles.styleFontSize]}>Thường</Text>
+                                <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.doMat}</Text>
                             </View>
                             <View style={styles.rowCotent}>
                                 <Text style={[styles.textColor, styles.styleFontSize]}>Tệp tin đính kèm:</Text>
@@ -109,3 +128,12 @@ export default class DocumentDetail extends Component {
         );
     }
 }
+
+function mapStateToProps(state){
+    return {
+        documentReducer: state.get('documentReducer'),
+        root: state.get('root'),
+        // login: state.get('login')
+    }
+}
+export default connect(mapStateToProps)(DocumentDetail)

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, Text, TouchableOpacity, TextInput } from 'react-native';
+import { View, FlatList, Text, TouchableOpacity, TextInput, Alert } from 'react-native';
 import Header from './Header2';
 import ItemDocument from './ItemDocument';
 import dataJson from '../../data/flatListData';
@@ -31,8 +31,8 @@ export class DocManagement extends Component {
         this.setState({
             kho: type,
         });
-        console.log('kho', this.state.kho);
-        console.log('type', this.state.type);
+        // console.log('kho', this.state.kho);
+        // console.log('type', this.state.type);
         this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, type, this.state.param));
         // switch (type){
         //     case strings.vanBanChoXuLy:
@@ -65,7 +65,9 @@ export class DocManagement extends Component {
         });
     }
 
-    gotoDocumentDetail = () =>{
+    gotoDocumentDetail = (documentId) =>{
+
+        this.props.dispatch(documentAction.setIdDocumentAction(documentId));
         this.props.navigation.navigate('DocumentDetail');
     }
 
@@ -100,7 +102,9 @@ export class DocManagement extends Component {
                             data={this.state.dataDocument} 
                             renderItem={({item, index})=>{
                             return (
-                                <TouchableOpacity onPress={ () => this.gotoDocumentDetail()}>
+                                <TouchableOpacity 
+
+                                onPress={ () => this.gotoDocumentDetail(item.id)}>
                                     <ItemDocument item={item} index={index} navigator= {this.props.navigation}>
                                     
                                     </ItemDocument>
