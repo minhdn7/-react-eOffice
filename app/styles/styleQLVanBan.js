@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
 
     // style DocumentDetail
     content: {
-        flex: 2,
         margin: 3,
         padding: 5,
         backgroundColor: '#ffffff'
@@ -76,7 +75,7 @@ const styles = StyleSheet.create({
         color: '#ffffff',
         textAlign: 'center',
     },
-    styleCenter: { backgroundColor: '#D7D7D7', height: height * 0.57, marginTop: 5 },
+    styleCenter: { flex: 1, backgroundColor: '#D7D7D7', height: height * 0.57, marginTop: 5 },
     rowFooter: { flex: 1, flexDirection: 'row', paddingLeft: 5, marginTop: 10 },
     rowCotent: {
         flexDirection: 'row',

@@ -94,3 +94,25 @@ export const setDetailDocumentErrorAction = (error) => {
         error: error
     }
 }
+
+
+export const getCommentDocumentAction = (documentID) => {
+    return {
+        type: actions.GET_LOG_COMMENT_DOCUMENT,
+        documentID: documentID
+    }
+}
+
+export const setCommentDocumentSuccessAction = (commentDocumentData) => {
+    return {
+        type: actions.GET_LOG_COMMENT_DOCUMENT_SUCESS,
+        commentDocumentData: commentDocumentData,
+    }
+}
+
+export const setCommentDocumentErrorAction = (error) => {
+    return {
+        type: actions.GET_LOG_COMMENT_DOCUMENT_ERROR,
+        error: error
+    }
+}

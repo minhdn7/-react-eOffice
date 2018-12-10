@@ -16,6 +16,8 @@ import rootReducer from "../reducers/rootReducer";
 import listReducer from "../reducers/listReducer";
 import detailsReducer from "../reducers/detailsReducer";
 import documentReducer from '../reducers/documentReducer';
+import fileReducer from '../reducers/fileReducer';
+
 import createSagaMiddleware from "redux-saga";
 import * as loginSaga from "../saga/login-saga";
 import * as calendarSaga from "../saga/calendar-saga";
@@ -24,6 +26,7 @@ import * as listSaga from "../saga/list-saga";
 import * as detailsSaga from "../saga/details-saga";
 import * as reportSaga from "../saga/report-saga";
 import * as documentSaga from "../saga/document-saga";
+import * as fileSaga from "../saga/file-saga";
 
 const combinedReducers = combineReducers({
   root: rootReducer,
@@ -32,7 +35,8 @@ const combinedReducers = combineReducers({
   details: detailsReducer,
   calendar: calendarReducer,
   reportReducer: reportReducer,
-  documentReducer: documentReducer
+  documentReducer: documentReducer,
+  fileReducer: fileReducer
 });
 
 const initialState = new Immutable.Map({
@@ -40,16 +44,6 @@ const initialState = new Immutable.Map({
     progress: undefined,
   }),
   login: Immutable.Map({
-    // isLoggedIn: false,
-    // token: '',
-    // loginError: '',
-    // username:'',
-    // password:'',
-    // authorizationId:'',
-    // loginData:{},
-    // hasContact: false,
-    // contactError: '',
-    // dataContact: {}
 
   }),
   list: Immutable.Map({
@@ -70,6 +64,10 @@ const initialState = new Immutable.Map({
   }),
 
   documentReducer: Immutable.Map({
+
+  }),
+
+  fileReducer: Immutable.Map({
 
   }),
   
@@ -99,7 +97,9 @@ export default function configureStore() {
       sagaMiddleware.run(reportSaga.reportFlow),
       sagaMiddleware.run(documentSaga.documentFlow),
       sagaMiddleware.run(documentSaga.documentProcessedFlow),
-      sagaMiddleware.run(documentSaga.detailDocumentFlow)
+      sagaMiddleware.run(documentSaga.detailDocumentFlow),
+      sagaMiddleware.run(documentSaga.logCommentDocumentFlow),
+      sagaMiddleware.run(fileSaga.attackFileFlow)
     ]
   };
 }

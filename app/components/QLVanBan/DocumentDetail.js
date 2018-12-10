@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Alert, FlatList, Image } from 'react-native';
 import styles from '../../styles/styleQLVanBan';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import strings from "../../resources/strings";
 import DefaultHeader from '../navigation/DefaultHeader';
 import {connect} from "react-redux";
 import * as documentAction from "../../actions/document-action";
+import * as fileAction from "../../actions/file-actions";
 // test 2
 
 export class DocumentDetail extends Component {
@@ -14,6 +15,25 @@ export class DocumentDetail extends Component {
         this.state = {
             documentId : '',
             dataDocument: {},
+            dataFileAttack: [],
+            dataLogDocument: [
+                {
+                    "schema": "",
+                    "unit": "",
+                    "parameter": [
+                        {
+                            "fullName": "",
+                            "updateBy": "",
+                            "updateDate": "",
+                            "status": "",
+                            "comment": "",
+                            "chuyenToi": "",
+                            "action": "",
+                            "lanhDaoChiDao": {}
+                        }
+                    ]
+                }
+            ],
         };
     }
 
@@ -22,18 +42,56 @@ export class DocumentDetail extends Component {
         this.setState({
             documentId: documentId,
         });
-        Alert.alert(this.props.documentReducer.get("documentID"));
+
         this.props.dispatch(documentAction.getDetailDocumentAction(documentId));
-        
+        this.props.dispatch(fileAction.getAttackFileAction(documentId));
+        this.props.dispatch(documentAction.getCommentDocumentAction(documentId));
     }
 
     componentWillReceiveProps(){
-        this.setState({
-            dataDocument: this.props.documentReducer.get('detailDocumentData'),
-        });
+        if(this.props.documentReducer.get('detailDocumentData') != null && this.props.documentReducer.get('detailDocumentData').length != 0){
+            this.setState({
+                dataDocument: this.props.documentReducer.get('detailDocumentData'),               
+            });
+        }
+        if(this.props.fileReducer.get('attackFileData') != null){
+            this.setState({
+                dataFileAttack: this.props.fileReducer.get('attackFileData'),               
+            });
+        }
+        if(this.props.documentReducer.get('commentDocumentData') != null && this.props.documentReducer.get('commentDocumentData').length != 0){
+            this.setState({
+                dataLogDocument: this.props.documentReducer.get('commentDocumentData'),               
+            });
+        }
+        // this.setState({
+        //     dataDocument: this.props.documentReducer.get('detailDocumentData'),
+        //     dataFileAttack: this.props.fileReducer.get('attackFileData'),
+        //     dataLogDocument: this.props.documentReducer.get('commentDocumentData'),
+            
+        // });
+
     }
 
     render() {
+        let viewAttackFile = <View >
+                                <Text style={[styles.textColor, styles.styleFontSize]}>Tệp tin đính kèm:</Text>
+                                {/* <MaterialIcons name="insert-link" size={23} color="black" /> */}
+                                <FlatList
+                                    data={this.state.dataFileAttack} 
+                                    renderItem={({item, index})=>{
+                                    return (
+                                        <TouchableOpacity >
+                                            <AttackFileItem item={item} index={index}>
+                                            
+                                            </AttackFileItem>
+                                        </TouchableOpacity>);
+                        
+                                    }}
+                                    keyExtractor={(item, index) => index.toString()}
+                                    />
+                            </View>
+
         return (
             <View>
                 <DefaultHeader myTitle= {strings.chiTietVanBan} navigator= {this.props.navigation} />
@@ -75,10 +133,11 @@ export class DocumentDetail extends Component {
                                 <Text style={styles.textColor}>Độ khẩn:</Text>
                                 <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.doMat}</Text>
                             </View>
-                            <View style={styles.rowCotent}>
-                                <Text style={[styles.textColor, styles.styleFontSize]}>Tệp tin đính kèm:</Text>
-                                <MaterialIcons name="insert-link" size={23} color="black" />
-                            </View>
+
+                            {/* tập tin đính kèm */}
+                            {
+                                viewAttackFile 
+                            }
                             <View style={styles.rowCotent}>
                                 <TouchableOpacity style={[styles.btn, { backgroundColor: '#EE7C6B' }]}>
                                     <Text style={styles.btnText}>Kết thúc</Text>
@@ -89,37 +148,35 @@ export class DocumentDetail extends Component {
                             </View>
                             <Text style={{ height: 1, borderWidth: 1, borderStyle: 'solid', borderColor: '#D7D7D7', backgroundColor: '#D7D7D7', marginTop: 5 }} />
                         </View>
-                        <Text style={{ color: '#205AA7', fontWeight: 'bold', fontSize: 16, paddingTop: 12 }}>Tổng hợp ý kiến xử lý</Text>
+                        <Text style={{ color: '#205AA7', fontWeight: 'bold', fontSize: 16, paddingTop: 12, paddingLeft: 12 }}>Tổng hợp ý kiến xử lý</Text>
+
+                        <View style={{ margin: 3, flex: 1, backgroundColor: '#ffffff', padding: 4 }}>
+                            <View style={{ height: 40, justifyContent: 'center', backgroundColor: '#0099FF' }}>
+                                <Text style={{ textAlign: 'center', color: '#ffffff', fontWeight: 'bold' }}>
+                                    {this.state.dataLogDocument[0].unit}
+                                </Text>
+                            </View>
+                            {/* FlatList commnent */}
+                            <FlatList
+                                    data={this.state.dataLogDocument[0].parameter} 
+                                    style={{flex: 1}}
+                                    renderItem={({item, index})=>{
+                                    return (
+                                        <TouchableOpacity >
+                                            <LogCommentItem item={item} index={index}>
+                                            
+                                            </LogCommentItem>
+                                        </TouchableOpacity>);
+                        
+                                    }}
+                                    keyExtractor={(item, index) => index.toString()}
+                            />
+                                
+
+                        </View>
+                            
                     </View>
-                    <View style={{ margin: 3, flex: 1 }}>
-                        <View style={{ height: 40, justifyContent: 'center', backgroundColor: '#0099FF' }}>
-                            <Text style={{ textAlign: 'center', color: '#ffffff', fontWeight: 'bold' }}>Tập đoàn Bưu chính Viễn thông</Text>
-                        </View>
-                        <View style={{ height: 50, justifyContent: 'space-between', backgroundColor: '#CCCCCC', flexDirection: 'row' }}>
-                            <View style={{ flex : 1, flexDirection: 'column', paddingTop: 5, paddingLeft: 5 }}>
-                                <Text style={{ fontWeight: 'bold' }}>Nguyễn Thanh Thảo</Text>
-                                <Text>(thanh thao)</Text>
-                            </View>
-                            <View style={{ flex : 1, flexDirection: 'column', alignItems: 'flex-end', paddingTop: 5, paddingRight: 4 }}>
-                                <Text>18/10/2018</Text>
-                                <Text>15:26</Text>
-                            </View>
-                        </View>
-                        <View style={{ marginTop: 5 }}>
-                            <View style={styles.rowFooter}>
-                                <Text>Chuyển tới:</Text>
-                                <Text style={{ marginLeft: 10, fontWeight: 'bold' }}>Phạm Đức Long</Text>
-                            </View>
-                            <View style={styles.rowFooter}>
-                                <Text>Đồng xử lý:</Text>
-                                <Text style={{ marginLeft: 10, fontWeight: 'bold' }}>Phạm Đức Long</Text>
-                            </View>
-                            <View style={styles.rowFooter}>
-                                <Text>Đồng gửi:</Text>
-                                <Text style={{ marginLeft: 10, fontWeight: 'bold' }}>Phạm Đức Long</Text>
-                            </View>
-                        </View>
-                    </View>
+
                 </ScrollView>
 
             {/* </View> */}
@@ -129,11 +186,51 @@ export class DocumentDetail extends Component {
     }
 }
 
+
+class AttackFileItem extends Component {
+    render() {          
+        return (        
+            <View style={[styles.rowCotent, {paddingLeft: 20, marginTop: 4, marginBottom: 10}]}> 
+                <Image source={require('../../image/ic_file_pdf.png')} style={styles.iconStyle}/>
+                <Text style={{margin: 4}}>{this.props.item.name}</Text>
+            </View>
+        );
+    }
+  }
+  
+  class LogCommentItem extends Component {
+    render() {          
+        return (        
+            <View>
+                    <View style={{ height: 50, justifyContent: 'space-between', backgroundColor: '#D7D7D7', flexDirection: 'row' }}>
+                            <View style={{ flex : 1, flexDirection: 'column', paddingTop: 5, paddingLeft: 5 }}>
+                                <Text style={{ fontWeight: 'bold' }}>{this.props.item.fullName}</Text>
+                                <Text>({this.props.item.updateBy})</Text>
+                            </View>
+                            <View style={{ flex : 1, flexDirection: 'column', alignItems: 'flex-end', paddingTop: 5, paddingRight: 4 }}>
+                                <Text>{this.props.item.updateDate}</Text>
+
+                            </View>
+                        </View>
+                        <Text style={{ marginLeft: 10, padding: 4, color: '#205AA7'}}>{this.props.item.comment}</Text>
+                        <View style={{ height: 1, backgroundColor: '#D7D7D7'}}/>
+                        <View style={{ margin: 5, backgroundColor: '#ffffff' }}>
+                            <View >
+                                <Text style={{ marginLeft: 10 }}>{this.props.item.chuyenToi}</Text>
+                            </View>
+                        </View>
+            </View>
+        );
+    }
+  }
+
 function mapStateToProps(state){
     return {
         documentReducer: state.get('documentReducer'),
+        fileReducer: state.get('fileReducer'),
         root: state.get('root'),
-        // login: state.get('login')
+        login: state.get('login'),
+
     }
 }
 export default connect(mapStateToProps)(DocumentDetail)

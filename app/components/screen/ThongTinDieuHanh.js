@@ -111,6 +111,7 @@ export default class ThongTinDieuHanh extends Component {
                 <View style={{flex: 1, flexDirection:'row', margin: 4, marginTop: 16}}>
                     <FlatList 
                     data={flatListData}
+                    keyExtractor={(item, index) => index.toString()}
                     renderItem={({item, index})=>{
                         return (
                           <TouchableOpacity onPress={ () => this.openDetailControls(item)}>
