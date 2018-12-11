@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 
 import {NavigationActions} from 'react-navigation';
-import {TouchableOpacity, ScrollView, Text, View, StyleSheet, Image, FlatList} from 'react-native';
+import {TouchableOpacity,TouchableWithoutFeedback, ScrollView, Text, View, StyleSheet, Image, FlatList} from 'react-native';
 import {Collapse,CollapseHeader, CollapseBody, AccordionList} from 'accordion-collapse-react-native';
 import strings from "../../resources/strings";
 import {connect} from "react-redux";
@@ -44,6 +44,7 @@ class SideMenu extends Component {
     });
     this.props.navigation.dispatch(navigateAction);
   }
+
   changeDocument = (type) => {
     this.props.dispatch(documentAction.setTypeDocumentAction(type));
     this.props.navigation.navigate('DocManagement'); 
@@ -103,10 +104,11 @@ class SideMenu extends Component {
                     keyExtractor={(item, index) => item + index}
                     renderItem={({item, index})=>{
                         return (
-
+                          <TouchableOpacity onPress={ () => this.changeDocument(item)}>
                             <ListKhoItem item={item} index={index} >
                             
                             </ListKhoItem>
+                          </TouchableOpacity>
                           );
           
                     }}
@@ -282,17 +284,14 @@ const menuStyles = StyleSheet.create({
                 paddingRight: 10,
                 paddingTop: 2,                              
             }}> 
-              <TouchableOpacity
+              <View
                 typeDocument = 'vanBanDaXuLy'
-                name = {this.props.item}
-                onPress={ 
-                  () => this.changeDocument(this.name)
-                }
+                // name = {this.props.item}
                 style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
                 <Image style={{width: 30, height: 30, margin: 4}} 
                 source={require('../../image/ic_doc_processed.png')}/>
                 <Text style={{color: '#0d47a1', padding: 4}}>{this.props.item}</Text>
-              </TouchableOpacity>
+              </View>
               <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
           </View>
         );

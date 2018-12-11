@@ -64,12 +64,6 @@ export class DocumentDetail extends Component {
                 dataLogDocument: this.props.documentReducer.get('commentDocumentData'),               
             });
         }
-        // this.setState({
-        //     dataDocument: this.props.documentReducer.get('detailDocumentData'),
-        //     dataFileAttack: this.props.fileReducer.get('attackFileData'),
-        //     dataLogDocument: this.props.documentReducer.get('commentDocumentData'),
-            
-        // });
 
     }
 
