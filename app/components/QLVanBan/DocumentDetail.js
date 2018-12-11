@@ -16,6 +16,9 @@ export class DocumentDetail extends Component {
             documentId : '',
             dataDocument: {},
             dataFileAttack: [],
+            isChuyen: true,
+            isKetThuc: false,
+            isDanhDau: true,
             dataLogDocument: [
                 {
                     "schema": "",
@@ -86,6 +89,30 @@ export class DocumentDetail extends Component {
                                     />
                             </View>
 
+        let btnChuyen = <Text/>;
+        let btnKetThuc = <Text/>;
+        let btnDanhDau = <View/>;
+              
+        if(this.state.isChuyen){
+            btnChuyen =     <TouchableOpacity style={[styles.btn, { backgroundColor: '#4169E1' }]}>
+                                    <Text style={styles.btnText}>{strings.chuyen}</Text>
+                                </TouchableOpacity>;
+        }
+
+        if(this.state.isKetThuc){
+            btnKetThuc =    <TouchableOpacity style={[styles.btn, { backgroundColor: '#EE7C6B' }]}>
+                                <Text style={styles.btnText}>{strings.ketThuc}</Text>
+                            </TouchableOpacity>  
+        }
+
+        if(this.state.isDanhDau){
+            btnDanhDau =    <TouchableOpacity style={[styles.btn, { backgroundColor: '#367517' }]}>
+                                <Text style={styles.btnText}>{strings.danhDau}</Text>
+                            </TouchableOpacity>
+        }
+                                        
+
+
         return (
             <View>
                 <DefaultHeader myTitle= {strings.chiTietVanBan} navigator= {this.props.navigation} />
@@ -132,13 +159,12 @@ export class DocumentDetail extends Component {
                             {
                                 viewAttackFile 
                             }
+                            {/* 3 button chuyển, đánh dấu, kết thúc */}
                             <View style={styles.rowCotent}>
-                                <TouchableOpacity style={[styles.btn, { backgroundColor: '#EE7C6B' }]}>
-                                    <Text style={styles.btnText}>Kết thúc</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={[styles.btn, { backgroundColor: '#367517' }]}>
-                                    <Text style={styles.btnText}>Đánh dấu</Text>
-                                </TouchableOpacity>
+                                {btnChuyen}
+                                {btnKetThuc}
+                                {btnDanhDau}
+ 
                             </View>
                             <Text style={{ height: 1, borderWidth: 1, borderStyle: 'solid', borderColor: '#D7D7D7', backgroundColor: '#D7D7D7', marginTop: 5 }} />
                         </View>
@@ -193,7 +219,21 @@ class AttackFileItem extends Component {
   }
   
   class LogCommentItem extends Component {
-    render() {          
+    findAndReplace(string, target, replacement) {         
+        for (i = 0; i < string.length; i++) {           
+          string = string.replace(target, replacement);           
+        }          
+        return string;
+
+    }
+    render() {
+
+        if(this.props.item.chuyenToi != null && this.props.item.chuyenToi.length > 0){
+            chuyenToi = this.findAndReplace(this.props.item.chuyenToi, "|", "\n");   
+        }else{
+            chuyenToi = ""
+        }
+      
         return (        
             <View>
                     <View style={{ height: 50, justifyContent: 'space-between', backgroundColor: '#D7D7D7', flexDirection: 'row' }}>
@@ -210,7 +250,7 @@ class AttackFileItem extends Component {
                         <View style={{ height: 1, backgroundColor: '#D7D7D7'}}/>
                         <View style={{ margin: 5, backgroundColor: '#ffffff' }}>
                             <View >
-                                <Text style={{ marginLeft: 10 }}>{this.props.item.chuyenToi}</Text>
+                                <Text style={{ marginLeft: 10 }}>{chuyenToi}</Text>
                             </View>
                         </View>
             </View>

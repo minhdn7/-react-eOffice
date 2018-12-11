@@ -102,6 +102,8 @@ module.exports = new LocalizedStrings({
 
     // chi tiết văn bản
     chiTietVanBan: 'Chi tiết văn bản',
-    
+    chuyen: "Chuyển",
+    ketThuc: "Kết thúc",
+    danhDau: "Đánh dấu",
   }
 });

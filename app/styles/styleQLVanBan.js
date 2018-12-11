@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         color: '#ffffff',
         textAlign: 'center',
     },
-    styleCenter: { flex: 1, backgroundColor: '#D7D7D7', height: height * 0.57, marginTop: 5 },
+    styleCenter: { flex: 1, backgroundColor: '#D7D7D7', marginTop: 5 },
     rowFooter: { flex: 1, flexDirection: 'row', paddingLeft: 5, marginTop: 10 },
     rowCotent: {
         flexDirection: 'row',

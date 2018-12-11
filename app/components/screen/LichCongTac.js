@@ -47,18 +47,12 @@ export class LichCongTac extends Component {
     }
 
     componentWillReceiveProps(){
-        this.checkCalendar();
+        // if(this.props.calendar.get('calendarData') != null && this.props.calendar.get('calendarData') != 0){
+            this.checkCalendar();
+
+
     }
 
-    // componentWillUpdate(){
-    //     if(this.state.flagLoad == true){
-    //         this.setState({
-    //             flagLoad: false,
-    //         });
-    //         this.checkCalendar();
-    //     }
-
-    // }
 
     convertDataSectionList(fetchData){
         sectionData = [];
@@ -324,16 +318,7 @@ class SectionListItem extends Component {
                   </Text>
                 </View>
 
-                {/* {
-                    for(i = 0; i < this.props.item.parameters.size; i++){
-                        if(this.props.item.parameters[i].codeTime == 'SANG'){
-                            
-                        }else {
 
-                        }
-                    }
-                } */}
-                 {/* sáng  */}
                  <View style={{flexDirection: 'row',marginTop: 6}}>
                       <Text style={{
                             fontSize: 16,
@@ -379,17 +364,17 @@ class SectionListItem extends Component {
                       <View>
                           <View style={itemStyles.viewRowStyle1}>
                               <Text style={itemStyles.textStyle1}>{strings.noiDung}</Text>
-                              <Text style={itemStyles.textStyle2}>noiDung</Text>
+                              <Text style={itemStyles.textStyle2}>this.props.item.parameters[0].content</Text>
                           </View>
 
                           <View style={itemStyles.viewRowStyle1}>
                               <Text style={itemStyles.textStyle1}>{strings.thanhPhan}</Text>
-                              <Text style={itemStyles.textStyle2}>thanhPhan</Text>
+                              <Text style={itemStyles.textStyle2}>this.props.item.parameters[0].participation</Text>
                           </View>
 
                           <View style={itemStyles.viewRowStyle1}>
                               <Text style={itemStyles.textStyle1}>{strings.diaDiem}</Text>
-                              <Text style={itemStyles.textStyle2}>diaDiem1</Text>
+                              <Text style={itemStyles.textStyle2}>this.props.item.parameters[0].place</Text>
                           </View>
                       </View>
                       {/* <Text style={{
