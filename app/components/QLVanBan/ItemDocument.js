@@ -14,10 +14,10 @@ export default class ItemDocument extends Component {
 
     gotoScreen(option) {
         if (option == 1) {
-            this.props.navigator.navigate('DocHistory');
+            this.props.navigator.navigate('InfoExchange');
         }
         else if (option == 2) {
-            this.props.navigator.navigate('InfoExchange');
+            this.props.navigator.navigate('DocHistory');
         }
         // load data
 }

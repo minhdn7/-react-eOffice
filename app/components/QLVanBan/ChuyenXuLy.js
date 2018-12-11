@@ -6,9 +6,9 @@ import AntDesign from "react-native-vector-icons/AntDesign"
 import Octicons from "react-native-vector-icons/Octicons";
 import Icon from 'react-native-vector-icons/Entypo';
 import HeaderChuyenXuLy from '../QLVanBan/HeaderChuyenXuLy';
+import TreeViewChuyenXuLy from '../QLVanBan/TreeView'
 import styles from '../../styles/styleQLVanBan';
-import TreeView from "@zaguini/react-native-tree-view";
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
+
 
 const { height, width } = Dimensions.get('window');
 
@@ -47,9 +47,6 @@ export class ChuyenXuLy extends Component {
 
     }
 
-    handleRadioButtonClick(value){
-        alert("Test: " + value);
-    }
 
     gotoScreen(value) {
         alert(value);
@@ -63,9 +60,7 @@ export class ChuyenXuLy extends Component {
     state = {}
     render() {
         let dataStr = ["Đánh dấu", "Trao đổi  thông tin", "Lịch sử xử lýyyyyyy yyyyyyyyyyyy yyyyyyyyyyyyyyy yyyyyyyyyyyyyy yyyyyyyyyyyyyy"];
-        var radio_props = [
-            { label: '', value: 0 },
-        ];
+
         return (
             <View style={{ flex: 1 }}>
                 <HeaderChuyenXuLy myTitle='Chọn người nhận văn bản' navigator={this.props.navigation} />
@@ -111,92 +106,66 @@ export class ChuyenXuLy extends Component {
                     </View>
                 </View>
                 <View style={{ flex: 5, margin: 5 }}>
-                
-                    <View style={[styles.tableHeader, { backgroundColor: '#205AA7' }]}>
-                        <View style={styles.width50}>
-                            <Text style={styles.btnText}>Họ tên</Text>
-                        </View>
-                        <View style={styles.width15}>
-                            <Text style={styles.btnText}>XLC</Text>
-                        </View>
-                        <View style={styles.width15}>
-                            <Text style={styles.btnText}>PH</Text>
-                        </View>
-                        <View style={styles.width15}>
-                            <Text style={styles.btnText}>Xem</Text>
-                        </View>
-                    </View>
-                    <View style={{ height: height * 0.05, backgroundColor: '#D7D7D7', }}>
-                        <TouchableOpacity
-                            style={styles.styleCenterContent}
-                            onPress={() => this.handleShowHide()}
-                        >
-                            <AntDesign name={this.state.iconThugon} size={30} color="black" />
-                            <Text>{this.state.textThugon}</Text>
-                        </TouchableOpacity>
-                    </View>
                     <ScrollView style={{ flex: 1 }}>
-                        <View style={{ flex: 1 }}>
-                            <TreeView
-                                ref={ref => (this.treeView = ref)}
+                        {/* <View style={{ flex: 1 }}> */}
 
-                                data={[dataConvert]}
-
-                                // data={ContactData}
-                                deleteOnLongPress
-                                renderItem={(item, level) => (
-                                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                                        <View style={styles.width50}>
-                                            <Text
-                                                style={{
-                                                    marginLeft: 25 * level,
-                                                    fontSize: 14
-                                                }}
-                                            >
-                                                {item.collapsed !== null ? (
-                                                    <Text style={{ fontSize: 14 }}>
-                                                        {item.collapsed ?
-                                                            <Octicons
-                                                                name='diff-added'
-                                                                color='#000'
-                                                                size={14}
-                                                            />
-                                                            :
-                                                            <AntDesign
-                                                                name='minussquareo'
-                                                                color='#000'
-                                                                size={14}
-                                                            />
-                                                        }
-                                                    </Text>
-                                                ) : (
-
-                                                        <Text>
-                                                            <AntDesign
-                                                                name='minussquareo'
-                                                                color='#000'
-                                                                size={14}
-                                                            />
-                                                        </Text>
-                                                    )}
-                                                {" "}
-                                                {item.userName}
-                                            </Text>
-                                        </View>
-                                        <View style={[styles.width15, {height: height*0.05}]}>
-                                        <RadioForm
-                                                radio_props={radio_props}
-                                                initial={-1}
-                                                buttonSize={10}
-                                                selectedButtonColor={'black'}
-                                                buttonColor={'black'}
-                                                onPress={(value) => { this.handleRadioButtonClick({ value: value }) }}
-                                            />
-                                        </View>
-                                    </View>
-                                )}
-                            />
+                        <View style={[styles.tableHeader, { backgroundColor: '#205AA7' }]}>
+                            <View style={styles.width50}>
+                                <Text style={styles.btnText}>Họ tên</Text>
+                            </View>
+                            <View style={styles.width15}>
+                                <Text style={styles.btnText}>XLC</Text>
+                            </View>
+                            <View style={styles.width15}>
+                                <Text style={styles.btnText}>PH</Text>
+                            </View>
+                            <View style={styles.width15}>
+                                <Text style={styles.btnText}>Xem</Text>
+                            </View>
                         </View>
+                        <View style={{ height: height * 0.05, backgroundColor: '#D7D7D7', }}>
+                            <TouchableOpacity
+                                style={styles.styleCenterContent}
+                                onPress={() => this.handleShowHide()}
+                            >
+                                <AntDesign name={this.state.iconThugon} size={30} color="black" />
+                                <Text>{this.state.textThugon}</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        <TreeViewChuyenXuLy data={[dataConvert]} />
+
+                        {/* </View> */}
+
+                        {/* <View style={{ flex: 1, margin: 5 }}> */}
+
+                        <View style={[styles.tableHeader, { backgroundColor: "#32CD32" }]}>
+                            <View style={styles.width50}>
+                                <Text style={styles.btnText}>Đơn vị</Text>
+                            </View>
+                            <View style={styles.width15}>
+                                <Text style={styles.btnText}>XLC</Text>
+                            </View>
+                            <View style={styles.width15}>
+                                <Text style={styles.btnText}>PH</Text>
+                            </View>
+                            <View style={styles.width15}>
+                                <Text style={styles.btnText}>Xem</Text>
+                            </View>
+                        </View>
+                        <View style={{ height: height * 0.05, backgroundColor: '#D7D7D7', }}>
+                            <TouchableOpacity
+                                style={styles.styleCenterContent}
+                                onPress={() => this.handleShowHide()}
+                            >
+                                <AntDesign name={this.state.iconThugon} size={30} color="black" />
+                                <Text>{this.state.textThugon}</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        {/* <TreeViewChuyenXuLy data={[dataConvert]} /> */}
+
+                        {/* </View> */}
                     </ScrollView>
                 </View>
             </View>
