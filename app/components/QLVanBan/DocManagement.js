@@ -65,9 +65,10 @@ export class DocManagement extends Component {
         });
     }
 
-    gotoDocumentDetail = (documentId) =>{
+    gotoDocumentDetail = (item) =>{
 
-        this.props.dispatch(documentAction.setIdDocumentAction(documentId));
+        this.props.dispatch(documentAction.setIdDocumentAction(item.id));
+        this.props.dispatch(documentAction.setItemDocumentEventAction(item));
         this.props.navigation.navigate('DocumentDetail');
     }
 
@@ -104,7 +105,7 @@ export class DocManagement extends Component {
                             return (
                                 <TouchableOpacity 
 
-                                onPress={ () => this.gotoDocumentDetail(item.id)}>
+                                onPress={ () => this.gotoDocumentDetail(item)}>
                                     <ItemDocument item={item} index={index} navigator= {this.props.navigation}>
                                     
                                     </ItemDocument>

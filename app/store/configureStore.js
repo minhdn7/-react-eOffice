@@ -99,6 +99,7 @@ export default function configureStore() {
       sagaMiddleware.run(documentSaga.documentProcessedFlow),
       sagaMiddleware.run(documentSaga.detailDocumentFlow),
       sagaMiddleware.run(documentSaga.logCommentDocumentFlow),
+      sagaMiddleware.run(documentSaga.checkFinishDocumentFlow),
       sagaMiddleware.run(fileSaga.attackFileFlow)
     ]
   };

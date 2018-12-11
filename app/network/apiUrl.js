@@ -102,7 +102,7 @@ const apiUrl = {
     GET_PERSON_REPLY_CHIDAO_URL : "api/information/getlistuser/",
     GET_PERSON_RECEIVED_CHIDAO_URL : "api/information/getuserreceiver/",
     FINISH_DOC_URL : "api/document/finish/{id}/",
-    CHECK_FINISH_DOC_URL : "api/document/checkfinish/{id}/",
+    CHECK_FINISH_DOC_URL : "api/document/checkfinish/",
     GET_LIEN_THONG_XL_URL : "api/unit/getlistinternaltranfer/",
     GET_LIEN_THONG_BH_URL : "api/unit/getlistinternal/{id}/",
     GET_SCHEDULES_BOSS_URL : "api/schedule/getlistworkingschedule/",

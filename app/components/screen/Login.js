@@ -62,6 +62,7 @@ componentDidUpdate() {
 
 
 
+
   checkLogin(){
 
     console.log('isLoggedIn:', this.props.login.get('isLoggedIn'));

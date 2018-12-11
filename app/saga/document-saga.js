@@ -108,6 +108,47 @@ function getCommentDocumentURL(documentID) {
   
 }
 
+function getFinishDocumentURL(documentID) {
+
+  url = apiUrl.ROOT_URL + apiUrl.CHECK_FINISH_DOC_URL + documentID + '/';
+  console.log("url get comment document:", url);
+
+    return fetch(url, {
+    method: 'GET',
+    headers: consts.BASE_HEADER,
+  })
+  .then((response) => {
+    return response.json();
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+
+  
+}
+
+function* getFinishDocument(documentID) {
+  try {
+    response = yield call(getFinishDocumentURL, documentID);
+    console.log("check finish document data:", response);
+    if(typeof(response) != "undefined"  && typeof(response.status) != "undefined"){
+      if (response.status.code == "0" && typeof(response.data) != "undefined") {
+        yield put(documentActions.setFinishDocumentSuccessAction(response.data));
+        return response;
+      } else {
+        yield put(documentActions.setFinishDocumentErrorAction(response.status.message));
+        return undefined;
+      }
+    }else{
+      yield put(documentActions.setFinishDocumentErrorAction("Không lấy được dữ liệu!"));
+      return undefined;
+    }
+
+  } catch (error) {
+    
+    yield put(documentActions.setFinishDocumentErrorAction(String(error)));
+  }
+}
 
 function* getCommentDocument(documentID) {
   try {
@@ -243,6 +284,17 @@ export function* logCommentDocumentFlow() {
     const {documentID} = yield take(actions.GET_LOG_COMMENT_DOCUMENT);
     yield put(rootActions.controlProgress(true));
     yield call(getCommentDocument, documentID);
+    yield put(rootActions.controlProgress(false));
+
+  }
+}
+
+export function* checkFinishDocumentFlow() {
+  while (true) {
+
+    const {documentID} = yield take(actions.GET_FINISH_DOCUMENT);
+    yield put(rootActions.controlProgress(true));
+    yield call(getFinishDocument, documentID);
     yield put(rootActions.controlProgress(false));
 
   }

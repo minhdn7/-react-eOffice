@@ -17,7 +17,7 @@ export class DocumentDetail extends Component {
             dataDocument: {},
             dataFileAttack: [],
             isChuyen: true,
-            isKetThuc: false,
+            isKetThuc: true,
             isDanhDau: true,
             dataLogDocument: [
                 {
@@ -40,18 +40,64 @@ export class DocumentDetail extends Component {
         };
     }
 
+    checkButton(){
+        itemData = this.props.documentReducer.get('itemDocumentData');
+        
+        if(itemData != null && itemData.isCheck == '0'){
+            this.setState({
+                isKetThuc: true,
+            });
+        }else{
+            this.setState({
+                isKetThuc: false,
+            });
+        }
+
+        if(itemData != null && itemData.isChuTri.toLowerCase() == 'true'){
+            this.setState({
+                isChuyen: true,
+            });
+        }else{
+            this.setState({
+                isChuyen: false,
+            });
+        }
+    }
+
     componentWillMount(){
         documentId = this.props.documentReducer.get('documentID');
         this.setState({
             documentId: documentId,
         });
+        
+        this.checkButton();
 
+        if(itemData != null && itemData.isCheck == '0'){
+            this.setState({
+                isKetThuc: true,
+            });
+        }else{
+            this.setState({
+                isKetThuc: false,
+            });
+        }
         this.props.dispatch(documentAction.getDetailDocumentAction(documentId));
         this.props.dispatch(fileAction.getAttackFileAction(documentId));
         this.props.dispatch(documentAction.getCommentDocumentAction(documentId));
+        this.props.dispatch(documentAction.getFinishDocumentAction(documentId));
     }
 
     componentWillReceiveProps(){
+        if(this.props.documentReducer.get('finishDocumentData') != null && this.props.documentReducer.get('finishDocumentData').toLowerCase() == "true"){
+            this.setState({
+                isKetThuc: true,               
+            });
+        }else{
+            this.setState({
+                isKetThuc: false,               
+            });
+        }
+
         if(this.props.documentReducer.get('detailDocumentData') != null && this.props.documentReducer.get('detailDocumentData').length != 0){
             this.setState({
                 dataDocument: this.props.documentReducer.get('detailDocumentData'),               
@@ -91,7 +137,7 @@ export class DocumentDetail extends Component {
 
         let btnChuyen = <Text/>;
         let btnKetThuc = <Text/>;
-        let btnDanhDau = <View/>;
+        let btnDanhDau = <Text/>;
               
         if(this.state.isChuyen){
             btnChuyen =     <TouchableOpacity style={[styles.btn, { backgroundColor: '#4169E1' }]}>

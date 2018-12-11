@@ -64,7 +64,13 @@ export const setTypeDocumentAction = (type) => {
 }
 
 
-// detail document
+// 
+export const setItemDocumentEventAction = (itemDocumentData) => {
+    return {
+        type: actions.GET_ITEM_DOCUMENT_EVENT,
+        itemDocumentData: itemDocumentData
+    }
+}
 
 export const setIdDocumentAction = (documentID) => {
     return {
@@ -73,7 +79,7 @@ export const setIdDocumentAction = (documentID) => {
     }
 }
 
-
+// detail document
 export const getDetailDocumentAction = (documentID) => {
     return {
         type: actions.GET_DETAIL_DOCUMENT,
@@ -94,8 +100,8 @@ export const setDetailDocumentErrorAction = (error) => {
         error: error
     }
 }
-
-
+// end
+// log comment document
 export const getCommentDocumentAction = (documentID) => {
     return {
         type: actions.GET_LOG_COMMENT_DOCUMENT,
@@ -113,6 +119,27 @@ export const setCommentDocumentSuccessAction = (commentDocumentData) => {
 export const setCommentDocumentErrorAction = (error) => {
     return {
         type: actions.GET_LOG_COMMENT_DOCUMENT_ERROR,
+        error: error
+    }
+}
+
+export const getFinishDocumentAction = (documentID) => {
+    return {
+        type: actions.GET_FINISH_DOCUMENT,
+        documentID: documentID
+    }
+}
+
+export const setFinishDocumentSuccessAction = (finishDocumentData) => {
+    return {
+        type: actions.GET_FINISH_DOCUMENT_SUCESS,
+        finishDocumentData: finishDocumentData,
+    }
+}
+
+export const setFinishDocumentErrorAction = (error) => {
+    return {
+        type: actions.GET_FINISH_DOCUMENT_ERROR,
         error: error
     }
 }

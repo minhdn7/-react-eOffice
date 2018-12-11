@@ -49,7 +49,18 @@ export default function documentReducer(state, action = {}){
             return state.withMutations(state => state
                 .set('progress', false)
                 .set('commentDocumentData', [])
-                .set('commentDocumentError', action.error));        
+                .set('commentDocumentError', action.error));
+                
+        case actions.GET_ITEM_DOCUMENT_EVENT:
+            return state.withMutations(state => state
+                .set('itemDocumentData', action.itemDocumentData));
+        
+        case actions.GET_FINISH_DOCUMENT_SUCESS:
+            return state.withMutations(state => state
+                .set('finishDocumentData', action.finishDocumentData));
+        case actions.GET_FINISH_DOCUMENT_ERROR:
+            return state.withMutations(state => state
+                .set('finishDocumentError', action.error));        
         default:
             return state;
     }
