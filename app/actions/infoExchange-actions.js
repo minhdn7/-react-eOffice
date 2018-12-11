@@ -4,6 +4,8 @@ export const getListCommentAction = (pageNo, pageRec, param) => {
     console.log("param:", param);
     return {
         type: actions.GET_LIST_COMMENT,
+        pageNo: pageNo,
+        pageRec: pageRec,
         param: param,
     }
 }
@@ -12,5 +14,12 @@ export const setListCommentSuccessAction = (receivedCmts) => {
     return {
         type: actions.GET_LIST_COMMENT_SUCCESS,
         listComment: receivedCmts
+    }
+}
+
+export const setListCommentErrorAction = (error) => {
+    return {
+        type: actions.GET_LIST_COMMENT_ERROR,
+        error: error
     }
 }

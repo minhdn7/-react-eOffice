@@ -12,9 +12,12 @@ export default class ItemDocument extends Component {
         };
     }
 
-    gotoScreen(option) {
+    gotoScreen(option, idDocument, title) {
         if (option == 1) {
-            this.props.navigator.navigate('InfoExchange');
+            this.props.navigator.navigate('InfoExchange', {
+                idDocument: idDocument,
+                title: title
+            });
         }
         else if (option == 2) {
             this.props.navigator.navigate('DocHistory');
@@ -24,7 +27,7 @@ export default class ItemDocument extends Component {
 
     render() {
         const { data } = this.props.item;
-        let dataStr= ["Đánh dấu", "Trao đổi  thông tin", "Lịch sử xử lý"];
+        let dataStr= ["Đánh dấu", "Trao đổi thông tin", "Lịch sử xử lý"];
         var date = this.props.item.ngayNhan.split(" ");
          
 
@@ -65,7 +68,7 @@ export default class ItemDocument extends Component {
                         options={dataStr}
                         dropdownStyle={{ width: 120, height: 142, backgroundColor: "#0033FF", }}
                         dropdownTextStyle={{ color: "#ffffff", fontSize: 15, backgroundColor: "#0033FF" }}
-                        onSelect={ (idx, value) => this.gotoScreen(idx) }
+                        onSelect={ (idx, value) => this.gotoScreen(idx, this.props.item.id, this.props.item.trichYeu) }
                     >
                         <Icon name="dots-three-vertical" size={20} />
                     </ModalDropdown>

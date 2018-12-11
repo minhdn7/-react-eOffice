@@ -17,6 +17,7 @@ import listReducer from "../reducers/listReducer";
 import detailsReducer from "../reducers/detailsReducer";
 import documentReducer from '../reducers/documentReducer';
 import fileReducer from '../reducers/fileReducer';
+import infoExchangeReducer from '../reducers/infoExchangeReducer';
 
 import createSagaMiddleware from "redux-saga";
 import * as loginSaga from "../saga/login-saga";
@@ -27,6 +28,7 @@ import * as detailsSaga from "../saga/details-saga";
 import * as reportSaga from "../saga/report-saga";
 import * as documentSaga from "../saga/document-saga";
 import * as fileSaga from "../saga/file-saga";
+import * as infoExchangeSaga from "../saga/infoExchange-saga";
 
 const combinedReducers = combineReducers({
   root: rootReducer,
@@ -36,7 +38,8 @@ const combinedReducers = combineReducers({
   calendar: calendarReducer,
   reportReducer: reportReducer,
   documentReducer: documentReducer,
-  fileReducer: fileReducer
+  fileReducer: fileReducer,
+  infoExchangeReducer: infoExchangeReducer
 });
 
 const initialState = new Immutable.Map({
@@ -70,6 +73,10 @@ const initialState = new Immutable.Map({
   fileReducer: Immutable.Map({
 
   }),
+
+  infoExchangeReducer: Immutable.Map({
+
+  }),
   
 });
 
@@ -99,8 +106,13 @@ export default function configureStore() {
       sagaMiddleware.run(documentSaga.documentProcessedFlow),
       sagaMiddleware.run(documentSaga.detailDocumentFlow),
       sagaMiddleware.run(documentSaga.logCommentDocumentFlow),
+
       sagaMiddleware.run(documentSaga.checkFinishDocumentFlow),
-      sagaMiddleware.run(fileSaga.attackFileFlow)
+      sagaMiddleware.run(fileSaga.attackFileFlow),
+
+      sagaMiddleware.run(fileSaga.attackFileFlow),
+      sagaMiddleware.run(infoExchangeSaga.infoExchangeFlow)
+
     ]
   };
 }

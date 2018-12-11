@@ -113,5 +113,6 @@ const apiUrl = {
     GET_PERSONS_SEND_PROCESS_URL : "api/document/getlistusertranfer/",
     GET_UNIT_CLERK_URL : "api/document/getlistunitpublish/",
     CHECK_STORE_DOC_URL : "api/notifycation/getdetailnotify/{id}/",
+    GET_LIST_COMMENT_URL : "api/document/getlistcomment/",
 }
 export default apiUrl;
