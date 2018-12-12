@@ -111,6 +111,7 @@ export default function configureStore() {
       sagaMiddleware.run(fileSaga.attackFileFlow),
 
       sagaMiddleware.run(fileSaga.attackFileFlow),
+      sagaMiddleware.run(fileSaga.viewFileFlow),
       sagaMiddleware.run(infoExchangeSaga.infoExchangeFlow)
 
     ]

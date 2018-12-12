@@ -7,6 +7,10 @@ import DefaultHeader from '../navigation/DefaultHeader';
 import {connect} from "react-redux";
 import * as documentAction from "../../actions/document-action";
 import * as fileAction from "../../actions/file-actions";
+import loading from '../Loading';
+import {Button, Container, Content, Spinner} from "native-base";
+import colors from "../../resources/colors";
+import * as rootActions from "../../actions/root-actions";
 // test 2
 
 export class DocumentDetail extends Component {
@@ -65,6 +69,7 @@ export class DocumentDetail extends Component {
     }
 
     componentWillMount(){
+        this.props.dispatch(fileAction.setViewFileErrorAction(''));
         documentId = this.props.documentReducer.get('documentID');
         this.setState({
             documentId: documentId,
@@ -114,7 +119,39 @@ export class DocumentDetail extends Component {
             });
         }
 
+        if(this.props.fileReducer.get('viewFileData') != null && this.props.fileReducer.get('viewFileData') != ''){
+            this.props.navigation.navigate('ViewFile', {
+                dataUrl: this.props.fileReducer.get('viewFileData'),
+              });
+
+        }else if(this.props.fileReducer.get('viewFileError') != null && this.props.fileReducer.get('viewFileError') != ''){
+            Alert.alert(this.props.fileReducer.get('viewFileError'));
+        }
+
     }
+
+    viewFile = (item) =>{
+        this.props.dispatch(rootActions.controlProgress(true));
+        this.props.dispatch(fileAction.getViewFileAction(item.id));
+
+    }
+    renderProgress() {
+        if (this.props.root.get('progress')) {
+          return this.spinner()
+        } else {
+          return null;
+        }
+      }   
+    
+      spinner() {
+        return (
+          <Spinner
+            color={colors.accentColor}
+            animating={true}
+            size={'large'}
+            style={styles.progressStyle}/>
+        )
+      }
 
     render() {
         let viewAttackFile = <View >
@@ -124,7 +161,7 @@ export class DocumentDetail extends Component {
                                     data={this.state.dataFileAttack} 
                                     renderItem={({item, index})=>{
                                     return (
-                                        <TouchableOpacity >
+                                        <TouchableOpacity onPress ={() => this.viewFile(item)}>
                                             <AttackFileItem item={item} index={index}>
                                             
                                             </AttackFileItem>
@@ -214,6 +251,8 @@ export class DocumentDetail extends Component {
                             </View>
                             <Text style={{ height: 1, borderWidth: 1, borderStyle: 'solid', borderColor: '#D7D7D7', backgroundColor: '#D7D7D7', marginTop: 5 }} />
                         </View>
+                        
+                        {this.renderProgress()}
                         <Text style={{ color: '#205AA7', fontWeight: 'bold', fontSize: 16, paddingTop: 12, paddingLeft: 12 }}>Tổng hợp ý kiến xử lý</Text>
 
                         <View style={{ margin: 3, flex: 1, backgroundColor: '#ffffff', padding: 4 }}>

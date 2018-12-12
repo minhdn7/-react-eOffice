@@ -28,6 +28,25 @@ function getAttackFileURL(documentID) {
   
     
   }
+
+  function getViewFileURL(fileID) {
+
+    url = apiUrl.ROOT_URL + apiUrl.GET_FILE_URL_DOC + fileID + '/';
+    console.log("url get view file:", url);
+  
+      return fetch(url, {
+      method: 'GET',
+      headers: consts.BASE_HEADER,
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  
+    
+  }
   
   function* getAttackFile(documentID) {
     try {
@@ -52,6 +71,29 @@ function getAttackFileURL(documentID) {
     }
   }
 
+  function* getViewFile(fileID) {
+    try {
+      response = yield call(getViewFileURL, fileID);
+      console.log("view file data:", response);
+      if(typeof(response) != "undefined"  && typeof(response.status) != "undefined"){
+        if (response.status.code == "0" && typeof(response.data) != "undefined") {
+          yield put(fileActions.setViewFileSuccessAction(response.data));
+          return response;
+        } else {
+          yield put(fileActions.setViewFileErrorAction(response.status.message));
+          return undefined;
+        }
+      }else{
+        yield put(fileActions.setViewFileErrorAction("Không lấy được dữ liệu!"));
+        return undefined;
+      }
+  
+    } catch (error) {
+      
+      yield put(fileActions.setViewFileErrorAction(String(error)));
+    }
+  }
+
 export function* attackFileFlow() {
     while (true) {
   
@@ -61,4 +103,15 @@ export function* attackFileFlow() {
       yield put(rootActions.controlProgress(false));
   
     }
+}
+
+export function* viewFileFlow() {
+  while (true) {
+
+    const {fileID} = yield take(actions.GET_VIEW_FILE);
+    yield put(rootActions.controlProgress(true));
+    yield call(getViewFile, fileID);
+    yield put(rootActions.controlProgress(false));
+
   }
+}

@@ -14,6 +14,15 @@ export default function documentReducer(state, action = {}){
                 .set('attackFileData', [])
                 .set('attackFileError', action.error));
         
+        case actions.GET_VIEW_FILE_SUCESS:
+            return state.withMutations(state => state
+                .set('progress', false)
+                .set('viewFileData', action.viewFileData));
+        case actions.GET_VIEW_FILE_ERROR:
+            return state.withMutations(state => state
+                .set('progress', false)
+                .set('viewFileData', '')
+                .set('viewFileError', action.error));        
         default:
             return state;
     }

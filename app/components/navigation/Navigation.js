@@ -26,6 +26,7 @@ import DocHistory from "../QLVanBan/DocHistory";
 import InfoExchange from "../QLVanBan/InfoExchange";
 import DocumentDetail from "../QLVanBan/DocumentDetail";
 import ChuyenXuLy from "../QLVanBan/ChuyenXuLy";
+import ViewFile from "../QLVanBan/ViewFile";
 
 const store = configureStore();
 const Routes = {

@@ -81,7 +81,7 @@ const apiUrl = {
     GET_JOB_POSSITION_URL : "api/jobposition/getlistjobposition/",
     GET_UNIT_URL : "api/document/getlistunit/",
     DOWNLOAD_FILE_URL : "api/file/download/{id}/",
-    GET_FILE_URL_DOC : "api/generateotp/{id}/",
+    GET_FILE_URL_DOC : "api/generateotp/",
     GET_AVATAR_URL : "api/getavatar/{userid}/",
     GET_CHIDAO_NHAN_URL : "api/information/getlistreceive/",
     GET_CHIDAO_GUI_URL : "api/information/getlistsend/",
