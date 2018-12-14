@@ -51,7 +51,7 @@ const Routes = {
   InfoExchange: {screen: InfoExchange},
   DocumentDetail: {screen: DocumentDetail},
   ChuyenXuLy: {screen: ChuyenXuLy},
-  
+  ViewFile: {screen: ViewFile},
 };
 const Navigator = StackNavigator(Routes, {
   headerMode: 'none',

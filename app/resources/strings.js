@@ -105,5 +105,8 @@ module.exports = new LocalizedStrings({
     chuyen: "Chuyển",
     ketThuc: "Kết thúc",
     danhDau: "Đánh dấu",
+
+    // view file
+    noiDungFile: "Nội dung File"
   }
 });

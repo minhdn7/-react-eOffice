@@ -30,7 +30,7 @@ export class Login extends Component {
   constructor(){
     super();
     this.password = "Al@nwalker1901";
-    this.email = "longpd";
+    this.email = "liemhq";
     // this.password = "";
     // this.email = "";
     this.tokenFirebase = "";

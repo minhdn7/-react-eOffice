@@ -23,6 +23,7 @@ export class DocumentDetail extends Component {
             isChuyen: true,
             isKetThuc: true,
             isDanhDau: true,
+            isViewFile: false,
             dataLogDocument: [
                 {
                     "schema": "",
@@ -119,7 +120,13 @@ export class DocumentDetail extends Component {
             });
         }
 
-        if(this.props.fileReducer.get('viewFileData') != null && this.props.fileReducer.get('viewFileData') != ''){
+        if(this.props.fileReducer.get('viewFileData') != null 
+        && this.props.fileReducer.get('viewFileData') != ''
+        && this.state.isViewFile){
+            // Alert.alert(this.props.fileReducer.get('viewFileData'));
+            this.setState({
+                isViewFile: false,
+            });
             this.props.navigation.navigate('ViewFile', {
                 dataUrl: this.props.fileReducer.get('viewFileData'),
               });
@@ -131,9 +138,12 @@ export class DocumentDetail extends Component {
     }
 
     viewFile = (item) =>{
+        this.setState({
+            isViewFile: true,
+        });
         this.props.dispatch(rootActions.controlProgress(true));
         this.props.dispatch(fileAction.getViewFileAction(item.id));
-
+        
     }
     renderProgress() {
         if (this.props.root.get('progress')) {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Alert, FlatList, Image } from 'react-native';
-import styles from '../../styles/styleQLVanBan';
+import { View, Text, TouchableOpacity, ScrollView, Alert, FlatList, Image, WebView, StyleSheet} from 'react-native';
+// import styles from '../../styles/styleQLVanBan';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import strings from "../../resources/strings";
 import DefaultHeader from '../navigation/DefaultHeader';
@@ -24,19 +24,45 @@ export class ViewFile extends Component {
 
 
     render() {
-
+        const { navigation } = this.props;
+        const dataUrl = navigation.getParam('dataUrl', '');
+        Alert.alert(dataUrl);
         return (
-            <View>
-                <DefaultHeader myTitle= {strings.chiTietVanBan} navigator= {this.props.navigation} />
-            
-                
+            <View style={{flex: 1, flexDirection: 'column'}}>
+                <DefaultHeader myTitle= {strings.noiDungFile} navigator= {this.props.navigation} />
+                {/* <Text>ABV</Text> */}
+                <View style={styles.container}>
+                    <WebView
+                    style = {styles.webview}
+                    source={{ uri: dataUrl }}
+                    // source={{ uri: 'https://github.com/facebook/react-native' }}
+                    scalesPageToFit={true}
+                    />
+                </View>
+
             </View>
             
         );
     }
 }
 
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      flexDirection: 'column',
+      overflow:'hidden'
+    },
+    webview: {
+      flex: 1,
+    //   maxHeight: 480,
+        // marginTop: 20,
+        width: 320,
+        maxHeight: 480,
 
+    }
+  });
 
 
 function mapStateToProps(state){
