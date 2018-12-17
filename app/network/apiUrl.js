@@ -60,7 +60,7 @@ const apiUrl = {
     GET_RELATED_FILE_MARK_URL : "api/file/getfilerelated/{id}/",
     GET_SCHEDULES_URL : "api/schedule/getlistworkingschedule/",
     CHECK_MARK_DOC_URL : "api/document/checksigneddocument/{id}/",
-    MARK_DOC_URL : "api/document/signeddocument/{id}/",
+    MARK_DOC_URL : "api/document/signeddocument/",
     SIGN_DOC_URL : "VNPTsignature/rest/ioffice/signature",
     GET_DETAIL_SCHEDULE_MEETING_URL : "api/schedule/getdetailmeetingschedule/{id}/",
     GET_DETAIL_SCHEDULE_BUSSINESS_URL : "api/schedule/getdetailworkingschedule/{id}/",

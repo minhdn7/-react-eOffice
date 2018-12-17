@@ -60,7 +60,11 @@ export default function documentReducer(state, action = {}){
                 .set('finishDocumentData', action.finishDocumentData));
         case actions.GET_FINISH_DOCUMENT_ERROR:
             return state.withMutations(state => state
-                .set('finishDocumentError', action.error));        
+                .set('finishDocumentError', action.error));
+                
+        case actions.CHECK_SIGNED_DOCUMENT_RESULT:
+                return state.withMutations(state => state
+                    .set('signedDocumentResult', action.signedDocumentResult));
         default:
             return state;
     }

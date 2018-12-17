@@ -75,7 +75,12 @@ export const GET_FINISH_DOCUMENT = "GET_FINISH_DOCUMENT";
 export const GET_FINISH_DOCUMENT_SUCESS = "GET_FINISH_DOCUMENT_SUCESS";
 export const GET_FINISH_DOCUMENT_ERROR = "GET_FINISH_DOCUMENT_ERROR";
 
-// check button finish document
+// check signed document
 export const GET_VIEW_FILE = "GET_VIEW_FILE";
 export const GET_VIEW_FILE_SUCESS = "GET_VIEW_FILE_SUCESS";
 export const GET_VIEW_FILE_ERROR = "GET_VIEW_FILE_ERROR";
+
+// check button finish document
+export const CHECK_SIGNED_DOCUMENT = "CHECK_SIGNED_DOCUMENT";
+export const CHECK_SIGNED_DOCUMENT_RESULT = "CHECK_SIGNED_DOCUMENT_RESULT";
+

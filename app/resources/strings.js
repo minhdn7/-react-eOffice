@@ -105,7 +105,9 @@ module.exports = new LocalizedStrings({
     chuyen: "Chuyển",
     ketThuc: "Kết thúc",
     danhDau: "Đánh dấu",
-
+    huyDanhDau: "Hủy Đánh dấu",
+    danhDauThanhCong: "Văn bản đã được đánh dấu!",
+    huyDanhDauThanhCong: "Văn bản đã được bỏ đánh dấu!",
     // view file
     noiDungFile: "Nội dung File"
   }

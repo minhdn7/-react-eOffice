@@ -123,6 +123,7 @@ export const setCommentDocumentErrorAction = (error) => {
     }
 }
 
+// check finish document
 export const getFinishDocumentAction = (documentID) => {
     return {
         type: actions.GET_FINISH_DOCUMENT,
@@ -143,3 +144,21 @@ export const setFinishDocumentErrorAction = (error) => {
         error: error
     }
 }
+
+// end
+
+// check signed document
+export const getSignedDocumentAction = (documentID) => {
+    return {
+        type: actions.CHECK_SIGNED_DOCUMENT,
+        documentID: documentID
+    }
+}
+
+export const setSignedDocumentResultAction = (signedDocumentResult) => {
+    return {
+        type: actions.CHECK_SIGNED_DOCUMENT_RESULT,
+        signedDocumentResult: signedDocumentResult
+    }
+}
+

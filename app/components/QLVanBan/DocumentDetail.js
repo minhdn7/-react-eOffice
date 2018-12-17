@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Alert, FlatList, Image } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Alert, FlatList, Image, ToastAndroid } from 'react-native';
 import styles from '../../styles/styleQLVanBan';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import strings from "../../resources/strings";
@@ -11,6 +11,7 @@ import loading from '../Loading';
 import {Button, Container, Content, Spinner} from "native-base";
 import colors from "../../resources/colors";
 import * as rootActions from "../../actions/root-actions";
+import { documentProcessedFlow } from '../../saga/document-saga';
 // test 2
 
 export class DocumentDetail extends Component {
@@ -24,6 +25,8 @@ export class DocumentDetail extends Component {
             isKetThuc: true,
             isDanhDau: true,
             isViewFile: false,
+            isTrangThaiDanhDau: false,
+            danhDau: strings.danhDau,
             dataLogDocument: [
                 {
                     "schema": "",
@@ -43,6 +46,11 @@ export class DocumentDetail extends Component {
                 }
             ],
         };
+    }
+
+    checkSignedDocument = () =>{
+        this.props.dispatch(rootActions.controlProgress(true));
+        this.props.dispatch(documentAction.getSignedDocumentAction(this.state.documentId));
     }
 
     checkButton(){
@@ -71,6 +79,7 @@ export class DocumentDetail extends Component {
 
     componentWillMount(){
         this.props.dispatch(fileAction.setViewFileErrorAction(''));
+        this.props.dispatch(documentAction.setSignedDocumentResultAction(""));
         documentId = this.props.documentReducer.get('documentID');
         this.setState({
             documentId: documentId,
@@ -93,7 +102,39 @@ export class DocumentDetail extends Component {
         this.props.dispatch(documentAction.getFinishDocumentAction(documentId));
     }
 
+    checkStatusDocument(){
+        if(this.props.documentReducer.get('signedDocumentResult') != null){
+            if()
+            if(this.props.documentReducer.get('signedDocumentResult').toLowerCase() == "true"){
+                this.props.dispatch(documentAction.setSignedDocumentResultAction(""));
+                if(this.state.danhDau == strings.danhDau){
+                    this.setState({
+                        danhDau : strings.huyDanhDau,
+                    });
+                    ToastAndroid.show(strings.huyDanhDauThanhCong, ToastAndroid.SHORT);
+                    return;
+                }
+                // else{
+                //     this.setState({
+                //         danhDau : strings.danhDau,
+                //     });
+                //     ToastAndroid.show(strings.danhDauThanhCong, ToastAndroid.SHORT);
+                //     return;
+                // }
+ 
+                
+            }else if(this.props.documentReducer.get('signedDocumentResult') != ''){
+                ToastAndroid.show(this.props.documentReducer.get('signedDocumentResult'), ToastAndroid.SHORT);
+            }
+        }
+    }
+
+
     componentWillReceiveProps(){
+
+        this.checkStatusDocument();
+
+
         if(this.props.documentReducer.get('finishDocumentData') != null && this.props.documentReducer.get('finishDocumentData').toLowerCase() == "true"){
             this.setState({
                 isKetThuc: true,               
@@ -199,8 +240,9 @@ export class DocumentDetail extends Component {
         }
 
         if(this.state.isDanhDau){
-            btnDanhDau =    <TouchableOpacity style={[styles.btn, { backgroundColor: '#367517' }]}>
-                                <Text style={styles.btnText}>{strings.danhDau}</Text>
+            btnDanhDau =    <TouchableOpacity style={[styles.btn, { backgroundColor: '#367517' }]}
+                            onPress = {() => this.checkSignedDocument()}>
+                                <Text style={styles.btnText}>{this.state.danhDau}</Text>
                             </TouchableOpacity>
         }
                                         
