@@ -49,6 +49,9 @@ export class DocumentDetail extends Component {
     }
 
     checkSignedDocument = () =>{
+        this.setState({
+            isTrangThaiDanhDau: true,
+        })
         this.props.dispatch(rootActions.controlProgress(true));
         this.props.dispatch(documentAction.getSignedDocumentAction(this.state.documentId));
     }
@@ -104,23 +107,23 @@ export class DocumentDetail extends Component {
 
     checkStatusDocument(){
         if(this.props.documentReducer.get('signedDocumentResult') != null){
-            if()
             if(this.props.documentReducer.get('signedDocumentResult').toLowerCase() == "true"){
                 this.props.dispatch(documentAction.setSignedDocumentResultAction(""));
-                if(this.state.danhDau == strings.danhDau){
+                if(this.state.danhDau == strings.danhDau && this.state.isTrangThaiDanhDau){
                     this.setState({
                         danhDau : strings.huyDanhDau,
+                        isTrangThaiDanhDau : false,
                     });
                     ToastAndroid.show(strings.huyDanhDauThanhCong, ToastAndroid.SHORT);
+                }
+                else if(this.state.isTrangThaiDanhDau){
+                    this.setState({
+                        danhDau : strings.danhDau,
+                        isTrangThaiDanhDau : false,
+                    });
+                    ToastAndroid.show(strings.danhDauThanhCong, ToastAndroid.SHORT);
                     return;
                 }
-                // else{
-                //     this.setState({
-                //         danhDau : strings.danhDau,
-                //     });
-                //     ToastAndroid.show(strings.danhDauThanhCong, ToastAndroid.SHORT);
-                //     return;
-                // }
  
                 
             }else if(this.props.documentReducer.get('signedDocumentResult') != ''){
