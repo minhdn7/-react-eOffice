@@ -114,5 +114,6 @@ const apiUrl = {
     GET_UNIT_CLERK_URL : "api/document/getlistunitpublish/",
     CHECK_STORE_DOC_URL : "api/notifycation/getdetailnotify/{id}/",
     GET_LIST_COMMENT_URL : "api/document/getlistcomment/",
+    GUI_Y_KIEN_TRAO_DOI : "api/outgoingdocument/contributecomments/",
 }
 export default apiUrl;

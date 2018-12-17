@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, TextInput, TouchableOpacity, Text, KeyboardAvoidingView } from 'react-native';
+import { View, ScrollView, Dimensions, TextInput, TouchableOpacity, Text, KeyboardAvoidingView, FlatList } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { connect } from 'react-redux';
 import * as infoExchangeAction from "../../actions/infoExchange-actions";
@@ -15,8 +15,10 @@ export class InfoExchange extends Component {
             flagLoad: true,
             pageNo: "1",
             pageRec: "10",
-            param: "",
+            docId: "",
             listComment: [],
+            text: "",
+            //result: "",
         }
     }
 
@@ -24,15 +26,34 @@ export class InfoExchange extends Component {
         this.props.dispatch(rootActions.controlProgress(false));
         var idDocument = this.props.navigation.getParam('idDocument', 'NO-ID');
         this.setState({
-            param: idDocument,
+            docId: idDocument,
         });
-        this.props.dispatch(infoExchangeAction.getListCommentAction(this.state.pageNo, this.state.pageRec, this.state.param));
+        this.props.dispatch(infoExchangeAction.getListCommentAction(this.state.pageNo, this.state.pageRec, idDocument));
     }
 
     componentWillReceiveProps() {
         this.setState({
             listComment: this.props.infoExchangeReducer.get('listComment'),
+            //result: this.props.infoExchangeReducer.get('result'),
         });
+        var result = "";
+        result = this.props.infoExchangeReducer.get('result')
+        console.log("test result: " + result);
+        if(result == "TRUE" && result != "undefined"){
+            this.props.dispatch(infoExchangeAction.getListCommentAction(this.state.pageNo, this.state.pageRec, this.state.docId));
+            result = "";
+        }
+    }
+
+    searchSubmit() {
+        //this.props.dispatch(infoExchangeAction.guiYKienTraoDoiAction(this.state.docId, event));
+        if(this.state.text != "" && this.state.text != null && this.state.text != "undefined"){
+            this.props.dispatch(infoExchangeAction.guiYKienTraoDoiAction(this.state.docId, this.state.text));
+            this.setState({
+                text: "",
+            });
+        }
+        
     }
 
     render() {
@@ -71,6 +92,9 @@ export class InfoExchange extends Component {
                                     style={{ fontSize: 18 }}
                                     placeholder='Nhập tin nhắn'
                                     underlineColorAndroid='#00B2BF'
+                                    onChangeText={(value) => this.setState({ text: value })}
+                                    value={this.state.text}
+                                    onSubmitEditing={(event) => this.searchSubmit(event.nativeEvent.text)}
                                 />
                             </View>
 
@@ -83,8 +107,8 @@ export class InfoExchange extends Component {
                                         height: 50,
                                         borderRadius: 100,
                                         backgroundColor: '#205AA7',
-
                                     }}
+                                    onPress={ () => this.searchSubmit()} 
                                 >
                                     <Entypo name="direction" size={30} color="white" />
                                 </TouchableOpacity>
