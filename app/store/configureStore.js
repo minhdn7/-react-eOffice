@@ -107,6 +107,7 @@ export default function configureStore() {
       sagaMiddleware.run(documentSaga.detailDocumentFlow),
       sagaMiddleware.run(documentSaga.logCommentDocumentFlow),
       sagaMiddleware.run(documentSaga.checkFinishDocumentFlow),
+      sagaMiddleware.run(documentSaga.checkFinishDocumentTypeFlow),
       sagaMiddleware.run(documentSaga.checkSignedDocumentFlow),
 
       sagaMiddleware.run(fileSaga.attackFileFlow),

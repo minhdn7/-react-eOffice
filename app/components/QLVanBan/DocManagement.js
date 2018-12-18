@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, Text, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { View, FlatList, Text, TouchableOpacity, TextInput, Alert, ToastAndroid } from 'react-native';
 import Header from './Header2';
 import ItemDocument from './ItemDocument';
 import dataJson from '../../data/flatListData';
@@ -14,15 +14,17 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 export class DocManagement extends Component {
     constructor(props) {
         super(props);
+        this.onEndReachedCalledDuringMomentum = true;
         this.state = {
             flagLoad: true,
             title: 'Văn bản chờ xử lý',
-            pageNo: "1",
-            pageRec: "10",
+            pageNo: 1,
+            pageRec: 10,
+            isLoadMore: true,
             param: "",
             kho: "",
             dataDocument: [],
-            
+
         };
       }
 
@@ -31,8 +33,7 @@ export class DocManagement extends Component {
         this.setState({
             kho: type,
         });
-        // console.log('kho', this.state.kho);
-        // console.log('type', this.state.type);
+
         this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, type, this.state.param));
         // switch (type){
         //     case strings.vanBanChoXuLy:
@@ -60,9 +61,21 @@ export class DocManagement extends Component {
 
 
     componentWillReceiveProps(){
-        this.setState({
-            dataDocument: this.props.documentReducer.get('listDocumentData'),
-        });
+        if(this.props.documentReducer.get('listDocumentData') != null
+        && this.props.documentReducer.get('listDocumentData').length > 0
+        && this.state.isLoadMore){
+            updateData = this.state.dataDocument.concat(this.props.documentReducer.get('listDocumentData'));
+            this.props.dispatch(documentAction.setListWaitingDocumentSuccess([]));
+            this.setState({
+                dataDocument: updateData,
+                isLoadMore: false,
+            });
+        }else if(this.props.documentReducer.get('documentError') != null
+            && this.props.documentReducer.get('documentError') != ''){
+                this.props.dispatch(documentAction.setListDocumentErrorAction(''));
+                ToastAndroid.show(this.props.documentReducer.get('documentError'), ToastAndroid.SHORT);
+            }
+
     }
 
     gotoDocumentDetail = (item) =>{
@@ -79,6 +92,23 @@ export class DocManagement extends Component {
         }
         return true;
     }
+
+    loadMore = () => {
+        if(this.props.documentReducer.get('listDocumentData') != null
+        && this.props.documentReducer.get('listDocumentData').length >= 10)
+        {
+            this.setState({
+                isLoadMore: true,
+                pageNo: this.state.pageNo + 1,
+            });
+            this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, this.props.documentReducer.get("typeDocument"), this.state.param));
+        }else{
+            this.setState({
+                isLoadMore: false,
+            });
+        }
+
+   }
 
     searchSubmit(search){
         console.log("text search", search);
@@ -100,7 +130,10 @@ export class DocManagement extends Component {
         let dataView;
         if(this.state.dataDocument != null && this.state.dataDocument.length != 0){
             dataView =      <FlatList
-                            data={this.state.dataDocument} 
+                            data={this.state.dataDocument}
+                            style={{marginBottom: 100}}
+                            onEndReached={() => this.loadMore()}
+                            onEndReachedThreshold={0.5}
                             renderItem={({item, index})=>{
                             return (
                                 <TouchableOpacity 
@@ -140,7 +173,7 @@ export class DocManagement extends Component {
 
                     {dataView}
 
-
+                    
   
                 </View>
                 
@@ -156,5 +189,6 @@ function mapStateToProps(state){
         root: state.get('root'),
         // login: state.get('login')
     }
+    
 }
 export default connect(mapStateToProps)(DocManagement)

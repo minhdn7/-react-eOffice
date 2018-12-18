@@ -12,6 +12,7 @@ import {Button, Container, Content, Spinner} from "native-base";
 import colors from "../../resources/colors";
 import * as rootActions from "../../actions/root-actions";
 import { documentProcessedFlow } from '../../saga/document-saga';
+import { Navigation } from 'react-native-navigation';
 // test 2
 
 export class DocumentDetail extends Component {
@@ -26,7 +27,12 @@ export class DocumentDetail extends Component {
             isDanhDau: true,
             isViewFile: false,
             isTrangThaiDanhDau: false,
+            isTrangThaiKetThuc: false,
+            isGetListData: false,
             danhDau: strings.danhDau,
+            pageNo: 1,
+            pageRec: 10,
+            param: "",
             dataLogDocument: [
                 {
                     "schema": "",
@@ -56,6 +62,60 @@ export class DocumentDetail extends Component {
         this.props.dispatch(documentAction.getSignedDocumentAction(this.state.documentId));
     }
 
+    finishDocument = () =>{
+        this.setState({
+            isTrangThaiKetThuc: true,
+        })
+        this.props.dispatch(rootActions.controlProgress(true));
+        this.props.dispatch(documentAction.getFinishDocumentAction(this.state.documentId));
+    }
+
+    checkFinishDocument = () =>{
+        if(this.props.documentReducer.get('finishDocumentData') != null
+          && this.props.documentReducer.get('finishDocumentData').toLowerCase() == "true"
+          && this.state.isTrangThaiKetThuc){
+            this.props.dispatch(documentAction.setFinishDocumentSuccessAction(""));
+            this.setState({
+                isTrangThaiKetThuc: false,
+                isGetListData: true,
+            });
+            ToastAndroid.show(strings.ketThucVanBanThanhCong, ToastAndroid.SHORT);
+            this.props.dispatch(rootActions.controlProgress(true));
+            // lấy lại danh sách văn bản
+            this.props.dispatch(rootActions.controlProgress(true));
+
+            this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, this.props.documentReducer.get("typeDocument"), this.state.param));
+          }
+        else if (this.state.isTrangThaiKetThuc
+                && this.props.documentReducer.get('finishDocumentError') != null
+                && this.props.documentReducer.get('finishDocumentError') == ""){
+                    this.setState({
+                        isTrangThaiKetThuc: false,
+                    });
+                    ToastAndroid.show(this.props.documentReducer.get('finishDocumentError'), ToastAndroid.SHORT);
+                    this.props.dispatch(documentAction.setFinishDocumentErrorAction(""));
+        }
+
+        if(this.props.documentReducer.get('listDocumentData') != null
+            && this.state.isGetListData){
+            // load lại dữ liệu thành công back về màn hình list
+            this.setState({
+                isGetListData: false,
+            });
+            this.props.navigation.goBack(null);
+            ToastAndroid.show("Cập nhật danh sách văn bản thành công", ToastAndroid.SHORT);
+        }else if(this.props.documentReducer.get('documentError') != null
+            && this.props.documentReducer.get('documentError') != ''){
+                this.props.dispatch(documentAction.setListDocumentErrorAction(''));
+                this.setState({
+                    isGetListData: false,
+                });
+                ToastAndroid.show(this.props.documentReducer.get('documentError'), ToastAndroid.SHORT);
+        }
+
+    }
+
+
     checkButton(){
         itemData = this.props.documentReducer.get('itemDocumentData');
         
@@ -80,9 +140,12 @@ export class DocumentDetail extends Component {
         }
     }
 
+
+
     componentWillMount(){
         this.props.dispatch(fileAction.setViewFileErrorAction(''));
         this.props.dispatch(documentAction.setSignedDocumentResultAction(""));
+        this.props.dispatch(documentAction.setFinishDocumentSuccessAction(""));
         documentId = this.props.documentReducer.get('documentID');
         this.setState({
             documentId: documentId,
@@ -102,7 +165,7 @@ export class DocumentDetail extends Component {
         this.props.dispatch(documentAction.getDetailDocumentAction(documentId));
         this.props.dispatch(fileAction.getAttackFileAction(documentId));
         this.props.dispatch(documentAction.getCommentDocumentAction(documentId));
-        this.props.dispatch(documentAction.getFinishDocumentAction(documentId));
+        this.props.dispatch(documentAction.getFinishDocumentTypeAction(documentId));
     }
 
     checkStatusDocument(){
@@ -136,9 +199,9 @@ export class DocumentDetail extends Component {
     componentWillReceiveProps(){
 
         this.checkStatusDocument();
+        this.checkFinishDocument();
 
-
-        if(this.props.documentReducer.get('finishDocumentData') != null && this.props.documentReducer.get('finishDocumentData').toLowerCase() == "true"){
+        if(this.props.documentReducer.get('finishDocumentTypeData') != null && this.props.documentReducer.get('finishDocumentTypeData').toLowerCase() == "true"){
             this.setState({
                 isKetThuc: true,               
             });
@@ -237,7 +300,8 @@ export class DocumentDetail extends Component {
         }
 
         if(this.state.isKetThuc){
-            btnKetThuc =    <TouchableOpacity style={[styles.btn, { backgroundColor: '#EE7C6B' }]}>
+            btnKetThuc =    <TouchableOpacity style={[styles.btn, { backgroundColor: '#EE7C6B' }]}
+                            onPress = {() => this.finishDocument()}>
                                 <Text style={styles.btnText}>{strings.ketThuc}</Text>
                             </TouchableOpacity>  
         }

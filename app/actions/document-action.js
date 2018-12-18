@@ -123,24 +123,24 @@ export const setCommentDocumentErrorAction = (error) => {
     }
 }
 
-// check finish document
-export const getFinishDocumentAction = (documentID) => {
+// check type finish document button
+export const getFinishDocumentTypeAction = (documentID) => {
     return {
-        type: actions.GET_FINISH_DOCUMENT,
+        type: actions.GET_FINISH_DOCUMENT_TYPE,
         documentID: documentID
     }
 }
 
-export const setFinishDocumentSuccessAction = (finishDocumentData) => {
+export const setFinishDocumentTypeSuccessAction = (finishDocumentTypeData) => {
     return {
-        type: actions.GET_FINISH_DOCUMENT_SUCESS,
-        finishDocumentData: finishDocumentData,
+        type: actions.GET_FINISH_DOCUMENT_TYPE_SUCCESS,
+        finishDocumentTypeData: finishDocumentTypeData,
     }
 }
 
-export const setFinishDocumentErrorAction = (error) => {
+export const setFinishDocumentTypeErrorAction = (error) => {
     return {
-        type: actions.GET_FINISH_DOCUMENT_ERROR,
+        type: actions.GET_FINISH_DOCUMENT_TYPE_ERROR,
         error: error
     }
 }
@@ -162,3 +162,27 @@ export const setSignedDocumentResultAction = (signedDocumentResult) => {
     }
 }
 
+
+// check type finish document button
+export const getFinishDocumentAction = (documentID) => {
+    return {
+        type: actions.GET_FINISH_DOCUMENT,
+        documentID: documentID
+    }
+}
+
+export const setFinishDocumentSuccessAction = (finishDocumentData) => {
+    return {
+        type: actions.GET_FINISH_DOCUMENT_SUCCESS,
+        finishDocumentData: finishDocumentData,
+    }
+}
+
+export const setFinishDocumentErrorAction = (error) => {
+    return {
+        type: actions.GET_FINISH_DOCUMENT_ERROR,
+        error: error
+    }
+}
+
+// end

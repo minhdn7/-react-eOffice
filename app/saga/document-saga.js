@@ -108,10 +108,10 @@ function getCommentDocumentURL(documentID) {
   
 }
 
-function getFinishDocumentURL(documentID) {
+function getFinishDocumentTypeURL(documentID) {
 
   url = apiUrl.ROOT_URL + apiUrl.CHECK_FINISH_DOC_URL + documentID + '/';
-  console.log("url get comment document:", url);
+  console.log("url get finish document type:", url);
 
     return fetch(url, {
     method: 'GET',
@@ -146,6 +146,49 @@ function getSignedDocumentURL(documentID) {
   
 }
 
+function getFinishDocumentURL(documentID) {
+
+  url = apiUrl.ROOT_URL + apiUrl.FINISH_DOC_URL + documentID + '/';
+  console.log("url get finish document:", url);
+
+    return fetch(url, {
+    method: 'GET',
+    headers: consts.BASE_HEADER,
+  })
+  .then((response) => {
+    return response.json();
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+
+  
+}
+
+function* getFinishDocument(documentID) {
+  try {
+    response = yield call(getFinishDocumentURL, documentID);
+    console.log("check finish document data:", response);
+    if(typeof(response) != "undefined"  && typeof(response.status) != "undefined"){
+      if (response.status.code == "0" && typeof(response.data) != "undefined") {
+        yield put(documentActions.setFinishDocumentSuccessAction(response.data));
+        return response;
+      } else {
+        yield put(documentActions.setFinishDocumentSuccessAction(response.status.message));
+        return undefined;
+      }
+    }else{
+      yield put(documentActions.setFinishDocumentErrorAction("Không lấy được dữ liệu!"));
+      return undefined;
+    }
+
+  } catch (error) {
+    
+    yield put(documentActions.setFinishDocumentErrorAction(String(error)));
+  }
+}
+
+
 function* getSignedDocument(documentID) {
   try {
     response = yield call(getSignedDocumentURL, documentID);
@@ -169,26 +212,27 @@ function* getSignedDocument(documentID) {
   }
 }
 
-function* getFinishDocument(documentID) {
+
+function* getFinishDocumentType(documentID) {
   try {
-    response = yield call(getFinishDocumentURL, documentID);
+    response = yield call(getFinishDocumentTypeURL, documentID);
     console.log("check finish document data:", response);
     if(typeof(response) != "undefined"  && typeof(response.status) != "undefined"){
       if (response.status.code == "0" && typeof(response.data) != "undefined") {
-        yield put(documentActions.setFinishDocumentSuccessAction(response.data));
+        yield put(documentActions.setFinishDocumentTypeSuccessAction(response.data));
         return response;
       } else {
-        yield put(documentActions.setFinishDocumentErrorAction(response.status.message));
+        yield put(documentActions.setFinishDocumentTypeErrorAction(response.status.message));
         return undefined;
       }
     }else{
-      yield put(documentActions.setFinishDocumentErrorAction("Không lấy được dữ liệu!"));
+      yield put(documentActions.setFinishDocumentTypeErrorAction("Không lấy được dữ liệu!"));
       return undefined;
     }
 
   } catch (error) {
     
-    yield put(documentActions.setFinishDocumentErrorAction(String(error)));
+    yield put(documentActions.setFinishDocumentTypeErrorAction(String(error)));
   }
 }
 
@@ -244,7 +288,12 @@ function* getWaitingDocument(pageNo, pageRec, kho, param) {
     console.log("wating data:", response);
     if(typeof(response) != "undefined"  && typeof(response.status) != "undefined"){
       if (response.status.code == "0" && typeof(response.data) != "undefined") {
-        yield put(documentActions.setListWaitingDocumentSuccess(response.data));
+        if(response.data != null && response.data.length > 0){
+          yield put(documentActions.setListWaitingDocumentSuccess(response.data));
+        }else{
+          yield put(documentActions.setListWaitingDocumentSuccess([]));
+        }
+
         return response;
       } else {
         yield put(documentActions.setListDocumentErrorAction(response.status.message));
@@ -267,7 +316,12 @@ function* getProcessedDocument(pageNo, pageRec, kho, param) {
     console.log("processed data", response);
     if(typeof(response) != "undefined"  && typeof(response.status) != "undefined"){
       if (response.status.code == "0") {
-        yield put(documentActions.setListProcessedDocumentSuccess(response.data));
+        if(response.data != null && response.data.length > 0){
+          yield put(documentActions.setListProcessedDocumentSuccess(response.data));
+        }else{
+          yield put(documentActions.setListProcessedDocumentSuccess([]));
+        }
+
         return response;
       } else {
         yield put(documentActions.setListDocumentErrorAction(response.status.message));
@@ -331,12 +385,12 @@ export function* logCommentDocumentFlow() {
   }
 }
 
-export function* checkFinishDocumentFlow() {
+export function* checkFinishDocumentTypeFlow() {
   while (true) {
 
-    const {documentID} = yield take(actions.GET_FINISH_DOCUMENT);
+    const {documentID} = yield take(actions.GET_FINISH_DOCUMENT_TYPE);
     yield put(rootActions.controlProgress(true));
-    yield call(getFinishDocument, documentID);
+    yield call(getFinishDocumentType, documentID);
     yield put(rootActions.controlProgress(false));
 
   }
@@ -348,6 +402,17 @@ export function* checkSignedDocumentFlow() {
     const {documentID} = yield take(actions.CHECK_SIGNED_DOCUMENT);
     yield put(rootActions.controlProgress(true));
     yield call(getSignedDocument, documentID);
+    yield put(rootActions.controlProgress(false));
+
+  }
+}
+
+export function* checkFinishDocumentFlow() {
+  while (true) {
+
+    const {documentID} = yield take(actions.GET_FINISH_DOCUMENT);
+    yield put(rootActions.controlProgress(true));
+    yield call(getFinishDocument, documentID);
     yield put(rootActions.controlProgress(false));
 
   }
