@@ -14,13 +14,14 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 export class DocManagement extends Component {
     constructor(props) {
         super(props);
-        this.onEndReachedCalledDuringMomentum = true;
+        this.onEndReachedCalledDuringMomentum = false;
         this.state = {
             flagLoad: true,
             title: 'Văn bản chờ xử lý',
             pageNo: 1,
             pageRec: 10,
-            isLoadMore: true,
+            isLoading: true,
+            refreshing: false,
             param: "",
             kho: "",
             dataDocument: [],
@@ -53,6 +54,18 @@ export class DocManagement extends Component {
         // }
     }
 
+    onRefresh = () => {
+        ToastAndroid.show("Refresh", ToastAndroid.SHORT);
+        this.setState({  
+         dataDocument: [],  
+         isLoading : true,  
+         refreshing : false,
+         pageNo: 1,
+         pageRec: 10,
+        });
+        this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, this.props.documentReducer.get("typeDocument"), this.state.param));
+    }  
+
     componentWillMount(){
         this.props.dispatch(rootActions.controlProgress(false));
         // typeDocument = this.props.documentReducer.get("typeDocument");
@@ -63,12 +76,13 @@ export class DocManagement extends Component {
     componentWillReceiveProps(){
         if(this.props.documentReducer.get('listDocumentData') != null
         && this.props.documentReducer.get('listDocumentData').length > 0
-        && this.state.isLoadMore){
+        && this.state.isLoading){
+            listDocumentData = this.props.documentReducer.get('listDocumentData');
             updateData = this.state.dataDocument.concat(this.props.documentReducer.get('listDocumentData'));
-            this.props.dispatch(documentAction.setListWaitingDocumentSuccess([]));
+            // this.props.dispatch(documentAction.setListWaitingDocumentSuccess([]));
             this.setState({
                 dataDocument: updateData,
-                isLoadMore: false,
+                isLoading: false,
             });
         }else if(this.props.documentReducer.get('documentError') != null
             && this.props.documentReducer.get('documentError') != ''){
@@ -94,17 +108,20 @@ export class DocManagement extends Component {
     }
 
     loadMore = () => {
+        listDocumentData = this.props.documentReducer.get('listDocumentData');
         if(this.props.documentReducer.get('listDocumentData') != null
-        && this.props.documentReducer.get('listDocumentData').length >= 10)
+        && this.props.documentReducer.get('listDocumentData').length >= 9)
         {
+            ToastAndroid.show('loading more', ToastAndroid.SHORT);
+            page = this.state.pageNo + 1;
             this.setState({
-                isLoadMore: true,
-                pageNo: this.state.pageNo + 1,
+                isLoading: true,
+                pageNo: page,
             });
-            this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, this.props.documentReducer.get("typeDocument"), this.state.param));
+            this.props.dispatch(documentAction.getListWaitingDocumentAction(page, this.state.pageRec, this.props.documentReducer.get("typeDocument"), this.state.param));
         }else{
             this.setState({
-                isLoadMore: false,
+                isLoading: false,
             });
         }
 
@@ -127,13 +144,26 @@ export class DocManagement extends Component {
     }
 
     render() {
-        let dataView;
+        let CheckData;
         if(this.state.dataDocument != null && this.state.dataDocument.length != 0){
-            dataView =      <FlatList
+            CheckData = <View></View>
+        }else{
+            CheckData = <View >
+                            <Text style={{textAlign: "center", fontSize: 18}}>Không có dữ liệu...</Text>
+                        </View>
+        }
+        let  dataView =      
+                        <View>
+                            {        
+                                CheckData
+                            }   
+                            <FlatList
                             data={this.state.dataDocument}
                             style={{marginBottom: 100}}
-                            onEndReached={() => this.loadMore()}
-                            onEndReachedThreshold={0.5}
+                            onEndReached={this.loadMore}
+                            onEndReachedThreshold={0.1}
+                            onRefresh={this.onRefresh}
+                            refreshing={this.state.refreshing} 
                             renderItem={({item, index})=>{
                             return (
                                 <TouchableOpacity 
@@ -147,9 +177,11 @@ export class DocManagement extends Component {
                             }}
                             keyExtractor={(item, index) => index.toString()}
                             />
-        }else{
-            dataView = <Text style={{textAlign: "center", fontSize: 18}}>Không có dữ liệu...</Text>
-        }
+                        </View>
+                            
+        // }else{
+        //     dataView = <Text style={{textAlign: "center", fontSize: 18}}>Không có dữ liệu...</Text>
+        // }
         return (
             <View>
                 <Header myTitle = {this.state.title} 
@@ -169,7 +201,7 @@ export class DocManagement extends Component {
                     </View>
                 </View>
 
-                <View style={{ backgroundColor: '#D3D3D3' }}>
+                <View>
 
                     {dataView}
 

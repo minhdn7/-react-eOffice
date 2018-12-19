@@ -291,7 +291,7 @@ function* getWaitingDocument(pageNo, pageRec, kho, param) {
         if(response.data != null && response.data.length > 0){
           yield put(documentActions.setListWaitingDocumentSuccess(response.data));
         }else{
-          yield put(documentActions.setListWaitingDocumentSuccess([]));
+          yield put(documentActions.setListDocumentErrorAction());
         }
 
         return response;

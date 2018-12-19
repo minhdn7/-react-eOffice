@@ -18,6 +18,7 @@ import detailsReducer from "../reducers/detailsReducer";
 import documentReducer from '../reducers/documentReducer';
 import fileReducer from '../reducers/fileReducer';
 import infoExchangeReducer from '../reducers/infoExchangeReducer';
+import notificationReducer from '../reducers/notificationReducer';
 
 import createSagaMiddleware from "redux-saga";
 import * as loginSaga from "../saga/login-saga";
@@ -29,6 +30,7 @@ import * as reportSaga from "../saga/report-saga";
 import * as documentSaga from "../saga/document-saga";
 import * as fileSaga from "../saga/file-saga";
 import * as infoExchangeSaga from "../saga/infoExchange-saga";
+import * as notificationSaga from "../saga/notification-saga
 
 const combinedReducers = combineReducers({
   root: rootReducer,
@@ -78,6 +80,9 @@ const initialState = new Immutable.Map({
 
   }),
   
+  notificationReducer: Immutable.Map({
+
+  }),
 });
 
 export default function configureStore() {
@@ -116,6 +121,7 @@ export default function configureStore() {
 
       sagaMiddleware.run(infoExchangeSaga.infoExchangeFlow),
       sagaMiddleware.run(infoExchangeSaga.guiYKienTraoDoiFlow),
+      sagaMiddleware.run(notificationSaga.listNotificationFlow)
 
     ]
   };
