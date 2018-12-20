@@ -141,10 +141,11 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
+
     // google firebase services
-    implementation "com.google.android.gms:play-services-base:15.0.0"
-    implementation "com.google.firebase:firebase-core:15.0.2"
-    implementation "com.google.firebase:firebase-messaging:15.0.2"
+    // implementation "com.google.android.gms:play-services-base:15.0.0"
+    // implementation "com.google.firebase:firebase-core:15.0.2"
+    // implementation "com.google.firebase:firebase-messaging:15.0.2"
 }
 
 // Run this once to be able to run the application with BUCK
@@ -153,4 +154,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
-apply plugin: 'com.google.gms.google-services'
+// apply plugin: 'com.google.gms.google-services'

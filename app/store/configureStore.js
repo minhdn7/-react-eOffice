@@ -30,7 +30,7 @@ import * as reportSaga from "../saga/report-saga";
 import * as documentSaga from "../saga/document-saga";
 import * as fileSaga from "../saga/file-saga";
 import * as infoExchangeSaga from "../saga/infoExchange-saga";
-import * as notificationSaga from "../saga/notification-saga
+import * as notificationSaga from "../saga/notification-saga";
 
 const combinedReducers = combineReducers({
   root: rootReducer,
@@ -41,7 +41,9 @@ const combinedReducers = combineReducers({
   reportReducer: reportReducer,
   documentReducer: documentReducer,
   fileReducer: fileReducer,
-  infoExchangeReducer: infoExchangeReducer
+  infoExchangeReducer: infoExchangeReducer,
+  notificationReducer: notificationReducer,
+  
 });
 
 const initialState = new Immutable.Map({
