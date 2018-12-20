@@ -18,6 +18,9 @@ import detailsReducer from "../reducers/detailsReducer";
 import documentReducer from '../reducers/documentReducer';
 import fileReducer from '../reducers/fileReducer';
 import infoExchangeReducer from '../reducers/infoExchangeReducer';
+import lichSuXuLyReducer from '../reducers/lichSuXuLyReducer';
+import luongVanBanReducer from '../reducers/luongVanBanReducer';
+import chuyenXuLyReducer from '../reducers/chuyenXuLyReducer';
 
 import createSagaMiddleware from "redux-saga";
 import * as loginSaga from "../saga/login-saga";
@@ -29,6 +32,9 @@ import * as reportSaga from "../saga/report-saga";
 import * as documentSaga from "../saga/document-saga";
 import * as fileSaga from "../saga/file-saga";
 import * as infoExchangeSaga from "../saga/infoExchange-saga";
+import * as lichSuXuLySaga from "../saga/lichSuXuLy-saga";
+import * as luongVanBanSaga from "../saga/luongVanBan-saga";
+import * as chuyenXuLySaga from "../saga/chuyenXuLy-saga";
 
 const combinedReducers = combineReducers({
   root: rootReducer,
@@ -39,7 +45,10 @@ const combinedReducers = combineReducers({
   reportReducer: reportReducer,
   documentReducer: documentReducer,
   fileReducer: fileReducer,
-  infoExchangeReducer: infoExchangeReducer
+  infoExchangeReducer: infoExchangeReducer,
+  lichSuXuLyReducer: lichSuXuLyReducer,
+  luongVanBanReducer: luongVanBanReducer,
+  chuyenXuLyReducer: chuyenXuLyReducer
 });
 
 const initialState = new Immutable.Map({
@@ -75,6 +84,17 @@ const initialState = new Immutable.Map({
   }),
 
   infoExchangeReducer: Immutable.Map({
+
+  }),
+
+  lichSuXuLyReducer: Immutable.Map({
+
+  }),
+  luongVanBanReducer: Immutable.Map({
+
+  }),
+
+  chuyenXuLyReducer: Immutable.Map({
 
   }),
   
@@ -115,6 +135,10 @@ export default function configureStore() {
 
       sagaMiddleware.run(infoExchangeSaga.infoExchangeFlow),
       sagaMiddleware.run(infoExchangeSaga.guiYKienTraoDoiFlow),
+      sagaMiddleware.run(lichSuXuLySaga.lichSuXuLyFlow),
+      sagaMiddleware.run(luongVanBanSaga.luongVanBanFlow),
+
+      sagaMiddleware.run(chuyenXuLySaga.chuyenXuLyFlow),
 
     ]
   };

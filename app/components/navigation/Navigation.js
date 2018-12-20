@@ -27,6 +27,7 @@ import InfoExchange from "../QLVanBan/InfoExchange";
 import DocumentDetail from "../QLVanBan/DocumentDetail";
 import ChuyenXuLy from "../QLVanBan/ChuyenXuLy";
 import ViewFile from "../QLVanBan/ViewFile";
+import LuongVanBan from "../QLVanBan/LuongVanBan";
 
 const store = configureStore();
 const Routes = {
@@ -52,6 +53,7 @@ const Routes = {
   DocumentDetail: {screen: DocumentDetail},
   ChuyenXuLy: {screen: ChuyenXuLy},
   ViewFile: {screen: ViewFile},
+  LuongVanBan: {screen: LuongVanBan},
 };
 const Navigator = StackNavigator(Routes, {
   headerMode: 'none',

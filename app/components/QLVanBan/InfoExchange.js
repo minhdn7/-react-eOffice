@@ -72,7 +72,7 @@ export class InfoExchange extends Component {
                 keyExtractor={(item, index) => index.toString()}
             />
         } else {
-            data = "";
+            dataView = <Text></Text>;
         }
         return (
             <View style={{ flex: 1 }}>

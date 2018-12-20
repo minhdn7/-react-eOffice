@@ -8,9 +8,12 @@ import Icon from 'react-native-vector-icons/Entypo';
 import HeaderChuyenXuLy from '../QLVanBan/HeaderChuyenXuLy';
 import TreeViewChuyenXuLy from '../QLVanBan/TreeView'
 import styles from '../../styles/styleQLVanBan';
+import * as chuyenXuLyAction from "../../actions/chuyenXuLy-actions";
+import * as rootActions from "../../actions/root-actions";
 
 
 const { height, width } = Dimensions.get('window');
+var dataConvert = [];
 
 export class ChuyenXuLy extends Component {
     constructor() {
@@ -18,7 +21,9 @@ export class ChuyenXuLy extends Component {
         this.state = {
             flagThugon: true,
             textThugon: "Thu gọn",
-            iconThugon: "arrowup"
+            iconThugon: "arrowup",
+            lstUnit: [],
+            txtUnit: "--Chọn đơn vị--",
         }
     }
 
@@ -49,17 +54,32 @@ export class ChuyenXuLy extends Component {
 
 
     gotoScreen(value) {
-        alert(value);
+        this.setState({
+            txtUnit: value,
+        });
     }
 
     componentWillMount() {
-        dataConvert = this.props.login.get('dataContact');
+        this.props.dispatch(chuyenXuLyAction.getListUnitAction());
+
+    }
+
+    componentWillReceiveProps() {
+        //dataConvert = this.props.login.get('dataContact');
+        dataConvert = [];
+        this.setState({
+            lstUnit: this.props.chuyenXuLyReducer.get('listUnit'),
+        });
+        console.log("componentWillReceiveProps list unit:", this.state.lstUnit);
         //dataConvert = [];
     }
 
     state = {}
     render() {
-        let dataStr = ["Đánh dấu", "Trao đổi  thông tin", "Lịch sử xử lýyyyyyy yyyyyyyyyyyy yyyyyyyyyyyyyyy yyyyyyyyyyyyyy yyyyyyyyyyyyyy"];
+        let dataStr = [];
+        if (this.state.lstUnit != null && this.state.lstUnit.length != 0) {
+            dataStr = this.state.lstUnit.map((item) => { return item.name });
+        }
 
         return (
             <View style={{ flex: 1 }}>
@@ -75,11 +95,11 @@ export class ChuyenXuLy extends Component {
                             <ModalDropdown
                                 options={dataStr}
                                 dropdownStyle={{ backgroundColor: "#ffffff", color: 'black', fontSize: 16, }}
-                                dropdownTextStyle={{ color: "black", fontSize: 16, backgroundColor: "#ffffff", width: width * 0.9 }}
+                                dropdownTextStyle={{ flex: 1, color: "black", fontSize: 16, backgroundColor: "#ffffff", width: width * 0.9, height: height*0.8}}
                                 onSelect={(idx, value) => this.gotoScreen(value)}
                             >
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 7 }}>
-                                    <Text style={{ color: 'black', fontSize: 16 }}>--Chọn đơn vị--</Text>
+                                    {/* <Text style={{ color: 'black', fontSize: 14 }}>{this.state.txtUnit}</Text> */}
                                     <Icon name="chevron-small-down" size={23} color='black' />
                                 </View>
                             </ModalDropdown>
@@ -175,7 +195,7 @@ export class ChuyenXuLy extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    login: state.get('login'),
+    chuyenXuLyReducer: state.get('chuyenXuLyReducer'),
     root: state.get('root'),
 });
 

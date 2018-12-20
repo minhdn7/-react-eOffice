@@ -69,7 +69,9 @@ export class DocManagement extends Component {
 
         this.props.dispatch(documentAction.setIdDocumentAction(item.id));
         this.props.dispatch(documentAction.setItemDocumentEventAction(item));
-        this.props.navigation.navigate('DocumentDetail');
+        this.props.navigation.navigate('DocumentDetail',{
+            navigator: this.props.navigation,
+        });
     }
 
     isEmpty(obj) {

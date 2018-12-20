@@ -115,5 +115,8 @@ const apiUrl = {
     CHECK_STORE_DOC_URL : "api/notifycation/getdetailnotify/{id}/",
     GET_LIST_COMMENT_URL : "api/document/getlistcomment/",
     GUI_Y_KIEN_TRAO_DOI : "api/outgoingdocument/contributecomments/",
+    GET_LIST_ACTIVITY_LOG_URL : "api/document/getactivitylog/",
+    GET_LUONG_VAN_BAN_URL : "http://14.225.6.6/qlvbdh/view_img.jsp?",
+    GET_LIST_UNIT_URL : "api/document/getlistunit/",
 }
 export default apiUrl;

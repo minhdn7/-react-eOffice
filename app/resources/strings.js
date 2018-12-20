@@ -109,6 +109,13 @@ module.exports = new LocalizedStrings({
     danhDauThanhCong: "Văn bản đã được đánh dấu!",
     huyDanhDauThanhCong: "Văn bản đã được bỏ đánh dấu!",
     // view file
-    noiDungFile: "Nội dung File"
+    noiDungFile: "Nội dung File",
+
+    // modal dropdown
+    choXuLy: "Chờ xử lý",
+    dangXuLy: "Đang xử lý",
+    daXuLy: "Đã xử lý",
+    chuyenXuLy: "Chuyển xử lý",
+    traoDoiThongTin: "Trao đổi thông tin",
   }
 });

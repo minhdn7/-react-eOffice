@@ -20,7 +20,9 @@ export default class ItemDocument extends Component {
             });
         }
         else if (option == 2) {
-            this.props.navigator.navigate('DocHistory');
+            this.props.navigator.navigate('DocHistory', {
+                idDocument: idDocument,
+            });
         }
         // load data
 }
@@ -66,8 +68,9 @@ export default class ItemDocument extends Component {
                 <View style={styles.right}>
                     <ModalDropdown
                         options={dataStr}
-                        dropdownStyle={{ width: 120, height: 142, backgroundColor: "#0033FF", }}
-                        dropdownTextStyle={{ color: "#ffffff", fontSize: 15, backgroundColor: "#0033FF" }}
+                        dropdownStyle={styles.dropdownStyle}
+                        dropdownTextStyle={styles.dropdownTextStyle}
+                        dropdownTextHighlightStyle={styles.dropdownTextHighlightStyle}
                         onSelect={ (idx, value) => this.gotoScreen(idx, this.props.item.id, this.props.item.trichYeu) }
                     >
                         <Icon name="dots-three-vertical" size={20} />
