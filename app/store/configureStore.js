@@ -43,6 +43,7 @@ const combinedReducers = combineReducers({
   fileReducer: fileReducer,
   infoExchangeReducer: infoExchangeReducer,
   notificationReducer: notificationReducer,
+  
 });
 
 const initialState = new Immutable.Map({
