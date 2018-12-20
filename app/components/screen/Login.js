@@ -19,6 +19,8 @@ import * as loginActions from "../../actions/login-actions";
 import * as rootActions from "../../actions/root-actions";
 import {connect} from "react-redux";
 import Color from 'react-native-material-color';
+// import firebase from 'react-native-firebase';
+// import type { Notification, NotificationOpen } from 'react-native-firebase';
 
 type Props = {};
 export class Login extends Component {
@@ -43,10 +45,12 @@ export class Login extends Component {
       isLoggedIn: false,
     }
      
- }
+  }
 
- componentDidMount() {
-  this.props.dispatch(rootActions.controlProgress(false));
+
+  async componentDidMount() {
+    this.props.dispatch(rootActions.controlProgress(false));
+
   }
 
 componentDidUpdate() {
