@@ -19,6 +19,7 @@ import * as loginActions from "../../actions/login-actions";
 import * as rootActions from "../../actions/root-actions";
 import {connect} from "react-redux";
 import Color from 'react-native-material-color';
+import { AsyncStorage } from 'react-native';
 import firebase from 'react-native-firebase';
 // import type { Notification, NotificationOpen } from 'react-native-firebase';
 
@@ -69,6 +70,7 @@ componentDidUpdate() {
     this.setState({isfirstLoad: false});
     if(this.checkLogin()){
       this.checkContact();
+
     }
   }
 
@@ -86,7 +88,7 @@ componentDidUpdate() {
 
   //3
 async getToken() {
-  let fcmToken = await AsyncStorage.getItem('fcmToken', value);
+  let fcmToken = await AsyncStorage.getItem('fcmToken');
   if (!fcmToken) {
       fcmToken = await firebase.messaging().getToken();
       if (fcmToken) {
@@ -111,13 +113,13 @@ async requestPermission() {
 async createNotificationListeners() {
   // create topic 
   firebase.messaging().subscribeToTopic('news');
-
+  firebase.messaging().subscribeToTopic('global');
   /*
   * Triggered when a particular notification has been received in foreground
   * */
   this.notificationListener = firebase.notifications().onNotification((notification) => {
       const { title, body } = notification;
-      // this.showAlert(title, body);
+      this.showAlert(title, body);
   });
 
   /*
@@ -145,7 +147,15 @@ async createNotificationListeners() {
   });
 }
 
-
+showAlert(title, body) {
+  Alert.alert(
+    title, body,
+    [
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
+    ],
+    { cancelable: false },
+  );
+}
 
   checkLogin(){
 
