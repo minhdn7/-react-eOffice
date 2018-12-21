@@ -32,7 +32,7 @@ export class ChuyenXuLy extends Component {
     }
 
     handleChonTheoNhomCaNhan = () => {
-        alert("Chọn theo nhóm cá nhâ");
+        alert("Chọn theo nhóm cá nhân");
     }
 
     handleShowHide = () => {
@@ -54,24 +54,22 @@ export class ChuyenXuLy extends Component {
 
 
     gotoScreen(value) {
-        this.setState({
-            txtUnit: value,
-        });
+        // this.setState({
+        //     txtUnit: value,
+        // });
     }
 
     componentWillMount() {
         this.props.dispatch(chuyenXuLyAction.getListUnitAction());
-
+        dataConvert = this.props.login.get('dataContact');
     }
 
     componentWillReceiveProps() {
         //dataConvert = this.props.login.get('dataContact');
-        dataConvert = [];
         this.setState({
             lstUnit: this.props.chuyenXuLyReducer.get('listUnit'),
         });
         console.log("componentWillReceiveProps list unit:", this.state.lstUnit);
-        //dataConvert = [];
     }
 
     state = {}
@@ -94,12 +92,13 @@ export class ChuyenXuLy extends Component {
                         <View style={{ flex: 1, backgroundColor: '#ffffff', height: 40, }}>
                             <ModalDropdown
                                 options={dataStr}
+                                style={{ flex: 1 }}
                                 dropdownStyle={{ backgroundColor: "#ffffff", color: 'black', fontSize: 16, }}
-                                dropdownTextStyle={{ flex: 1, color: "black", fontSize: 16, backgroundColor: "#ffffff", width: width * 0.9, height: height*0.8}}
-                                onSelect={(idx, value) => this.gotoScreen(value)}
+                                dropdownTextStyle={{ flex: 1, color: "black", fontSize: 16, backgroundColor: "#ffffff", width: width * 0.9 }}
+                                onSelect={(idx, value) => this.gotoScreen(idx)}
                             >
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 7 }}>
-                                    {/* <Text style={{ color: 'black', fontSize: 14 }}>{this.state.txtUnit}</Text> */}
+                                    <Text style={{ color: 'black', fontSize: 14 }}>{this.state.txtUnit}</Text>
                                     <Icon name="chevron-small-down" size={23} color='black' />
                                 </View>
                             </ModalDropdown>
@@ -196,6 +195,7 @@ export class ChuyenXuLy extends Component {
 
 const mapStateToProps = (state) => ({
     chuyenXuLyReducer: state.get('chuyenXuLyReducer'),
+    login: state.get('login'),
     root: state.get('root'),
 });
 
