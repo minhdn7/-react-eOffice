@@ -50,7 +50,7 @@ const combinedReducers = combineReducers({
   infoExchangeReducer: infoExchangeReducer,
   lichSuXuLyReducer: lichSuXuLyReducer,
   luongVanBanReducer: luongVanBanReducer,
-  chuyenXuLyReducer: chuyenXuLyReducer
+  chuyenXuLyReducer: chuyenXuLyReducer,
   notificationReducer: notificationReducer,
 });
 
@@ -142,7 +142,7 @@ export default function configureStore() {
 
       sagaMiddleware.run(infoExchangeSaga.infoExchangeFlow),
       sagaMiddleware.run(infoExchangeSaga.guiYKienTraoDoiFlow),
-      sagaMiddleware.run(notificationSaga.listNotificationFlow)
+      sagaMiddleware.run(notificationSaga.listNotificationFlow),
       sagaMiddleware.run(lichSuXuLySaga.lichSuXuLyFlow),
       sagaMiddleware.run(luongVanBanSaga.luongVanBanFlow),
 
