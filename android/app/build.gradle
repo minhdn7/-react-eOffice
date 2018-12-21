@@ -147,13 +147,19 @@ dependencies {
 
 
     // google firebase services
-    implementation "com.google.android.gms:play-services-base:15.0.0"
-    implementation "com.google.firebase:firebase-core:15.0.2"
-    implementation "com.google.firebase:firebase-messaging:15.0.2"
+    // implementation "com.google.android.gms:play-services-base:15.0.0"
+    // implementation "com.google.firebase:firebase-core:15.0.2"
+    // implementation "com.google.firebase:firebase-messaging:15.0.2"
 
+    // older lib
         // implementation "com.google.firebase:firebase-core:11.0.2"
         // implementation 'com.google.firebase:firebase-messaging:11.0.2'
         // implementation "com.google.android.gms:play-services-base:11.0.2"
+
+    // newest lib
+    implementation "com.google.android.gms:play-services-base:15.0.0"
+    implementation "com.google.firebase:firebase-core:16.0.6"
+    implementation "com.google.firebase:firebase-messaging:17.3.4"  
 }
 
 // Run this once to be able to run the application with BUCK

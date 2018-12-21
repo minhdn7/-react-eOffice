@@ -32,7 +32,7 @@ export class Login extends Component {
   constructor(){
     super();
     this.password = "Al@nwalker1901";
-    this.email = "longpd";
+    this.email = "liemhq";
     // this.password = "";
     // this.email = "";
     this.tokenFirebase = "";
@@ -110,14 +110,14 @@ async requestPermission() {
 
 async createNotificationListeners() {
   // create topic 
-  // firebase.messaging().subscribeToTopic('news');
+  firebase.messaging().subscribeToTopic('news');
 
   /*
   * Triggered when a particular notification has been received in foreground
   * */
   this.notificationListener = firebase.notifications().onNotification((notification) => {
       const { title, body } = notification;
-      this.showAlert(title, body);
+      // this.showAlert(title, body);
   });
 
   /*
