@@ -55,16 +55,23 @@ export default function documentReducer(state, action = {}){
             return state.withMutations(state => state
                 .set('itemDocumentData', action.itemDocumentData));
         
-        case actions.GET_FINISH_DOCUMENT_SUCESS:
+        case actions.GET_FINISH_DOCUMENT_TYPE_SUCCESS:
             return state.withMutations(state => state
-                .set('finishDocumentData', action.finishDocumentData));
-        case actions.GET_FINISH_DOCUMENT_ERROR:
+                .set('finishDocumentTypeData', action.finishDocumentTypeData));
+        case actions.GET_FINISH_DOCUMENT_TYPE_ERROR:
             return state.withMutations(state => state
-                .set('finishDocumentError', action.error));
+                .set('finishDocumentTypeError', action.error));
                 
         case actions.CHECK_SIGNED_DOCUMENT_RESULT:
                 return state.withMutations(state => state
                     .set('signedDocumentResult', action.signedDocumentResult));
+
+        case actions.GET_FINISH_DOCUMENT_SUCCESS:
+                return state.withMutations(state => state
+                    .set('finishDocumentData', action.finishDocumentData));
+        case actions.GET_FINISH_DOCUMENT_ERROR:
+                return state.withMutations(state => state
+                    .set('finishDocumentError', action.error));            
         default:
             return state;
     }

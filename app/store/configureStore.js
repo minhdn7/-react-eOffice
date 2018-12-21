@@ -18,6 +18,7 @@ import detailsReducer from "../reducers/detailsReducer";
 import documentReducer from '../reducers/documentReducer';
 import fileReducer from '../reducers/fileReducer';
 import infoExchangeReducer from '../reducers/infoExchangeReducer';
+import notificationReducer from '../reducers/notificationReducer';
 import lichSuXuLyReducer from '../reducers/lichSuXuLyReducer';
 import luongVanBanReducer from '../reducers/luongVanBanReducer';
 import chuyenXuLyReducer from '../reducers/chuyenXuLyReducer';
@@ -32,6 +33,7 @@ import * as reportSaga from "../saga/report-saga";
 import * as documentSaga from "../saga/document-saga";
 import * as fileSaga from "../saga/file-saga";
 import * as infoExchangeSaga from "../saga/infoExchange-saga";
+import * as notificationSaga from "../saga/notification-saga";
 import * as lichSuXuLySaga from "../saga/lichSuXuLy-saga";
 import * as luongVanBanSaga from "../saga/luongVanBan-saga";
 import * as chuyenXuLySaga from "../saga/chuyenXuLy-saga";
@@ -49,6 +51,7 @@ const combinedReducers = combineReducers({
   lichSuXuLyReducer: lichSuXuLyReducer,
   luongVanBanReducer: luongVanBanReducer,
   chuyenXuLyReducer: chuyenXuLyReducer
+  notificationReducer: notificationReducer,
 });
 
 const initialState = new Immutable.Map({
@@ -98,6 +101,9 @@ const initialState = new Immutable.Map({
 
   }),
   
+  notificationReducer: Immutable.Map({
+
+  }),
 });
 
 export default function configureStore() {
@@ -127,6 +133,7 @@ export default function configureStore() {
       sagaMiddleware.run(documentSaga.detailDocumentFlow),
       sagaMiddleware.run(documentSaga.logCommentDocumentFlow),
       sagaMiddleware.run(documentSaga.checkFinishDocumentFlow),
+      sagaMiddleware.run(documentSaga.checkFinishDocumentTypeFlow),
       sagaMiddleware.run(documentSaga.checkSignedDocumentFlow),
 
       sagaMiddleware.run(fileSaga.attackFileFlow),
@@ -135,6 +142,7 @@ export default function configureStore() {
 
       sagaMiddleware.run(infoExchangeSaga.infoExchangeFlow),
       sagaMiddleware.run(infoExchangeSaga.guiYKienTraoDoiFlow),
+      sagaMiddleware.run(notificationSaga.listNotificationFlow)
       sagaMiddleware.run(lichSuXuLySaga.lichSuXuLyFlow),
       sagaMiddleware.run(luongVanBanSaga.luongVanBanFlow),
 

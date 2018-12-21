@@ -101,7 +101,7 @@ const apiUrl = {
     GET_PERSON_IN_GROUP_CHIDAO_URL : "api/information/getuserbygroup/",
     GET_PERSON_REPLY_CHIDAO_URL : "api/information/getlistuser/",
     GET_PERSON_RECEIVED_CHIDAO_URL : "api/information/getuserreceiver/",
-    FINISH_DOC_URL : "api/document/finish/{id}/",
+    FINISH_DOC_URL : "api/document/finish/",
     CHECK_FINISH_DOC_URL : "api/document/checkfinish/",
     GET_LIEN_THONG_XL_URL : "api/unit/getlistinternaltranfer/",
     GET_LIEN_THONG_BH_URL : "api/unit/getlistinternal/{id}/",

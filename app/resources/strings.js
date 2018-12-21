@@ -46,6 +46,7 @@ module.exports = new LocalizedStrings({
     congViecBanDaBanHanh: 'Công việc đã ban hành',
     tatCa: 'Tất cả',
     daDoc: 'Đã đọc',
+    daXem: 'Đã xem',
     test: 'test 1',
     heThongVanBanDieuHanh: 'Hệ thống văn bản điều hành',
 
@@ -108,6 +109,7 @@ module.exports = new LocalizedStrings({
     huyDanhDau: "Hủy Đánh dấu",
     danhDauThanhCong: "Văn bản đã được đánh dấu!",
     huyDanhDauThanhCong: "Văn bản đã được bỏ đánh dấu!",
+    ketThucVanBanThanhCong: "Kết thúc văn bản thành công!",
     // view file
     noiDungFile: "Nội dung File",
 
