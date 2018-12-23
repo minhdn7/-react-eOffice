@@ -28,6 +28,7 @@ import DocumentDetail from "../QLVanBan/DocumentDetail";
 import ChuyenXuLy from "../QLVanBan/ChuyenXuLy";
 import ViewFile from "../QLVanBan/ViewFile";
 import LuongVanBan from "../QLVanBan/LuongVanBan";
+import DocumentMove from "../QLVanBan/DocumentMove";
 
 const store = configureStore();
 const Routes = {
@@ -54,6 +55,7 @@ const Routes = {
   ChuyenXuLy: {screen: ChuyenXuLy},
   ViewFile: {screen: ViewFile},
   LuongVanBan: {screen: LuongVanBan},
+  DocumentMove: {screen: DocumentMove},
 };
 const Navigator = StackNavigator(Routes, {
   headerMode: 'none',

@@ -12,11 +12,12 @@ const { height, width } = Dimensions.get('window');
 export class DocHistory extends Component {
     constructor(props) {
         super(props);
+        this.listActivityLogServer = [];
         this.state = {
             flagLoad: true,
             docId: "",
             listActivityLog: [],
-            listActivityLogServer: [],
+            //listActivityLogServer: [],
         };
     }
 
@@ -27,6 +28,7 @@ export class DocHistory extends Component {
             docId: idDocument,
         });
         this.props.dispatch(lichSuXuLyAction.getListActivityLogAction(idDocument));
+        this.listActivityLogServer = this.props.lichSuXuLyReducer.get('listActivityLog');
     }
 
     componentWillReceiveProps() {
@@ -34,16 +36,16 @@ export class DocHistory extends Component {
         if(lstActivityLog != null && lstActivityLog.lenght != 0){
             this.setState({
                 listActivityLog: lstActivityLog,
-                listActivityLogServer: lstActivityLog,
+                //listActivityLogServer: lstActivityLog,
             });
         }
     }
 
     search = (value) => {
-        var data = this.state.listActivityLogServer;
+        var data = this.listActivityLogServer;
         console.log("1.value: ", value);
         console.log("2.Ban dau var data = this.state.listActivityLog: ", data);
-        console.log("3.Ban dau var this.state.listActivityLogServer: ", this.state.listActivityLogServer);
+        console.log("3.Ban dau var this.state.listActivityLogServer: ", this.listActivityLogServer);
         console.log("4.Ban dau var this.state.listActivityLog: ", this.state.listActivityLog);
         
         if (data != null && data.length != 0) {
@@ -105,7 +107,6 @@ export class DocHistory extends Component {
 class ItemView extends Component {
     render() {
         let dataView;
-        alert("tesst : " + this.props.item.parameter.length);
         if (this.props.item.parameter != null && this.props.item.parameter.length != 0) {
             dataView = <FlatList
                 data={this.props.item.parameter}

@@ -47,7 +47,7 @@ export class Home extends Component {
           }
 
           this.props.navigation.navigate('DocManagement');
-          //this.props.navigation.navigate('LuongVanBan');
+          //this.props.navigation.navigate('DocumentMove');
           break;
         case 2:
           this.props.navigation.navigate('LichCongTac');
