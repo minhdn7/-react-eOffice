@@ -88,6 +88,11 @@ export class DocManagement extends Component {
             && this.props.documentReducer.get('documentError') != ''){
                 this.props.dispatch(documentAction.setListDocumentErrorAction(''));
                 ToastAndroid.show(this.props.documentReducer.get('documentError'), ToastAndroid.SHORT);
+            }else if(this.state.pageNo == 1){
+                // this.setState({
+                //     dataDocument: [],
+                //     isLoading: false,
+                // });
             }
 
     }

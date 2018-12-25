@@ -15,6 +15,10 @@ class SideMenu extends Component {
         this.state = {
           name: "username",
           address: "unitName",
+          kho: [],
+          collapsedDocument: false,
+          collapsedSetting: false,
+          collapsedControls: false,
         };
     }
 
@@ -46,6 +50,7 @@ class SideMenu extends Component {
   }
 
   changeDocument = (type) => {
+    this.props.dispatch(documentAction.resetListDocumentAction());
     this.props.dispatch(documentAction.setTypeDocumentAction(type));
     this.props.navigation.navigate('DocManagement'); 
   }
@@ -84,7 +89,9 @@ class SideMenu extends Component {
               <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
 
               {/* Quản lý văn bản */}
-              <Collapse>
+              <Collapse 
+                isCollapsed={this.state.collapsedDocument} 
+	              onToggle={(isCollapsed)=>this.setState({collapsedDocument:isCollapsed})}> >
                 <CollapseHeader>
                   <View style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
                       <Image style={{width: 30, height: 30, margin: 4}} 
@@ -140,7 +147,9 @@ class SideMenu extends Component {
               <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
 
               {/* Thông tin điều hành */}
-              <Collapse>
+              <Collapse 
+                isCollapsed={this.state.collapsedControls} 
+	              onToggle={(isCollapsed)=>this.setState({collapsedControls:isCollapsed})}>
                 <CollapseHeader>
                   <View style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
                       <Image style={{width: 30, height: 30, margin: 4}} 
@@ -184,7 +193,9 @@ class SideMenu extends Component {
               <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
 
               {/* Cài đặt hệ thống */}
-              <Collapse>
+              <Collapse
+                isCollapsed={this.state.collapsedSetting} 
+	              onToggle={(isCollapsed)=>this.setState({collapsedSetting:isCollapsed})}>
                 <CollapseHeader>
                   <View style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
                       <Image style={{width: 30, height: 30, margin: 4}} 

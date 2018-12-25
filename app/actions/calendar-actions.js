@@ -20,6 +20,13 @@ export function setCalendarError(error) {
   }
 }
 
+export function resetCalendarDate() {
+  return {
+    type: actions.RESET_CALENDAR_DATA,
+    calendarData: []
+  }
+}
+
 export function setCalendarSuccess(data) {
   return {
     type: actions.GET_CALENDAR_SUCCESS,

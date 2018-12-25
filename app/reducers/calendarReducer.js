@@ -7,13 +7,20 @@ export default function calendarReducer(state, action = {}) {
         return state.withMutations(state => state
           .set('progress', false)
           .set('hasCalendar', false)
+          .set('calendarData', [])
           .set('calendarError', action.calendarError));
-      case actions.GET_CALENDAR_SUCCESS:
 
+      case actions.GET_CALENDAR_SUCCESS:
         return state.withMutations(state => state
           .set('progress', false)
           .set('hasCalendar', true)
           .set('calendarData', action.calendarData));
+
+      case actions.RESET_CALENDAR_DATA:
+          return state.withMutations(state => state
+            .set('progress', false)
+            .set('hasCalendar', false)
+            .set('calendarData', []));    
       default:
         return state;
   }
