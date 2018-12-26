@@ -40,6 +40,7 @@ export class Home extends Component {
       switch (id) {
         case 1:
           loginData = this.props.login.get('loginData');
+          this.props.dispatch(documentAction.resetListDocumentAction());
           if(loginData != null && loginData.kho != null && loginData.kho.length > 0){
             this.props.dispatch(documentAction.setTypeDocumentAction(loginData.kho[0]));
           }else{

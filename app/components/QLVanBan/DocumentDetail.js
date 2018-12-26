@@ -141,7 +141,11 @@ export class DocumentDetail extends Component {
         }
     }
 
+    componentDidUpdate(){
+        this.props.dispatch(rootActions.controlProgress(false));
+    }
     componentWillMount(){
+        this.props.dispatch(rootActions.controlProgress(false));
         this.props.dispatch(fileAction.setViewFileErrorAction(''));
         this.props.dispatch(documentAction.setSignedDocumentResultAction(""));
         this.props.dispatch(documentAction.setFinishDocumentSuccessAction(""));

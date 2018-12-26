@@ -2,6 +2,11 @@ import * as actions from "../actions/action-types";
 
 export default function documentReducer(state, action = {}){
     switch (action.type) {
+        case actions.RESET_LIST_DOCUMENT:
+        return state.withMutations(state => state
+            .set('hasDocument', false)
+            .set('listDocumentData', []));
+
         case actions.GET_LIST_DOCUMENT_SUCCESS:
             return state.withMutations(state => state
                 .set('progress', false)
@@ -57,20 +62,25 @@ export default function documentReducer(state, action = {}){
         
         case actions.GET_FINISH_DOCUMENT_TYPE_SUCCESS:
             return state.withMutations(state => state
+                .set('progress', false)
                 .set('finishDocumentTypeData', action.finishDocumentTypeData));
         case actions.GET_FINISH_DOCUMENT_TYPE_ERROR:
             return state.withMutations(state => state
+                .set('progress', false)
                 .set('finishDocumentTypeError', action.error));
                 
         case actions.CHECK_SIGNED_DOCUMENT_RESULT:
                 return state.withMutations(state => state
+                    .set('progress', false)
                     .set('signedDocumentResult', action.signedDocumentResult));
 
         case actions.GET_FINISH_DOCUMENT_SUCCESS:
                 return state.withMutations(state => state
+                    .set('progress', false)
                     .set('finishDocumentData', action.finishDocumentData));
         case actions.GET_FINISH_DOCUMENT_ERROR:
                 return state.withMutations(state => state
+                    .set('progress', false)
                     .set('finishDocumentError', action.error));            
         default:
             return state;

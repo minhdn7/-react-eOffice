@@ -56,7 +56,7 @@ const combinedReducers = combineReducers({
 
 const initialState = new Immutable.Map({
   root: Immutable.Map({
-    progress: undefined,
+    // progress: undefined,
   }),
   login: Immutable.Map({
 

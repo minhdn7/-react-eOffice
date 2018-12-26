@@ -7,6 +7,13 @@ export const getListDocumentAction = () => {
     }
 }
 
+export const resetListDocumentAction = () => {
+    return {
+        type: actions.RESET_LIST_DOCUMENT,
+
+    }
+}
+
 export const getListWaitingDocumentAction = (pageNo, pageRec, kho, param) => {
     return {
         type: actions.GET_LIST_WAITING_DOCUMENT,

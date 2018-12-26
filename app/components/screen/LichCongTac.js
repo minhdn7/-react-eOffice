@@ -37,18 +37,29 @@ export class LichCongTac extends Component {
             sectionListData: [],
             flagLoad: true,
             hasCalendar: false,
+            getData: true,
         }
       }
 
     componentDidMount(){
-        this.props.dispatch(rootActions.controlProgress(false));
-        this.props.dispatch(calendarAction.getCalendar(this.state.startDateOfWeek, this.state.endDateOfWeek));
+        
         
     }
 
+    componentWillMount(){
+        this.props.dispatch(rootActions.controlProgress(false));
+        this.props.dispatch(calendarAction.resetCalendarDate());
+        this.props.dispatch(calendarAction.getCalendar(this.state.startDateOfWeek, this.state.endDateOfWeek));
+    }
+
     componentWillReceiveProps(){
-        // if(this.props.calendar.get('calendarData') != null && this.props.calendar.get('calendarData') != 0){
+        if(this.state.getData){
+            this.setState({
+                getData: false,
+            });
             this.checkCalendar();
+        }
+
 
 
     }
@@ -70,9 +81,19 @@ export class LichCongTac extends Component {
         return  sectionData;   
     }
 
+    componentDidUpdate(){
+        this.props.dispatch(rootActions.controlProgress(false));
+    }
+
     checkCalendar(){
-        if(this.props.calendar.get('hasCalendar')){
-            console.log('data 2:', "message");
+        this.state.hasCalendar = this.props.calendar.get('hasCalendar');
+        if(this.props.calendar.get('calendarData') != 'undefined'
+        && this.props.calendar.get('calendarData') != null
+        && this.props.calendar.get('calendarData').length > 0){
+            // console.log('data 2:', "message");
+            this.setState({
+                hasCalendar: false,
+            });
             fetchData = this.props.calendar.get('calendarData');
             
             if(fetchData != null){
@@ -89,17 +110,20 @@ export class LichCongTac extends Component {
             }
 
         }else{
-            
-            message = this.props.calendar.get('calendarError');
-            console.log('message 2:', message);
             this.setState({
+                sectionListData : [],
                 hasCalendar: false,
             });
+            message = this.props.calendar.get('calendarError');
+            console.log('message 2:', message);
+            // this.setState({
+            //     hasCalendar: false,
+            // });
         }
     }
 
     updateWeek(date, deltaDay){
-        
+        // this.props.dispatch(calendarAction.resetCalendarDate());
         if(deltaDay > 0){
             newDate = moment(date, "DD/MM/YYYY").add(7, 'days');
         }else{
@@ -113,11 +137,13 @@ export class LichCongTac extends Component {
            year: moment(newDate).format('YYYY'),
            startDateOfWeek : moment(newDate).startOf('isoweek').format("DD/MM/YYYY"),
            endDateOfWeek: moment(newDate).endOf('isoweek').format("DD/MM/YYYY"),
+           getData: true,
         });
         // console.log('newDate', newDate);
         console.log('startDateOfWeek', this.state.startDateOfWeek);
         console.log('endDateOfWeek', this.state.endDateOfWeek);
-
+        this.props.dispatch(rootActions.controlProgress(true));
+        this.props.dispatch(calendarAction.resetCalendarDate());
         this.props.dispatch(calendarAction.getCalendar(this.state.startDateOfWeek, this.state.endDateOfWeek));
     }
 
@@ -289,8 +315,100 @@ export class LichCongTac extends Component {
   // section list
 
 class SectionListItem extends Component {
+    constructor() {
+        super();
+
+        this.state = {
+            dataSang: {"codeTime":"","place":"","participation":"","content":""},
+            dataChieu: {"codeTime":"","place":"","participation":"","content":""},
+        };
+    }
+
+    checkDataItem = () => {
+        if(this.props.item.parameters != 'undefined' && this.props.item.parameters.length > 0){
+            for(i = 0; i < this.props.item.parameters.length; i++){
+                if(this.props.item.parameters[i].codeTime == "SANG"){
+                    this.setState({
+                        dataSang: this.props.item.parameters[i],
+                    });
+                }
+                if(this.props.item.parameters[i].codeTime == "CHIEU"){
+                    this.setState({
+                        dataChieu: this.props.item.parameters[i],
+                    });
+                }
+            }
+        }
+
+    }
+    // componentWillMount(){
+    //     this.checkDataItem();
+    // }
+
+    componentWillReceiveProps(){
+        this.checkDataItem();
+    }
     render() {
+
+        let viewSang = <View style={{flexDirection: 'row',marginTop: 6}}>
+                            <Text style={{
+                                fontSize: 16,
+                                fontWeight: 'bold',
+                                color: 'grey',
+                                marginLeft: 10,
+                                
+                            }}>{strings.sang}
+                            </Text>
+                            <View>
+
+
+                                <View style={itemStyles.viewRowStyle1}>
+                                    <Text style={itemStyles.textStyle1}>{strings.noiDung}</Text>
+                                    <Text style={itemStyles.textStyle2}>{this.state.dataSang.content}</Text>
+                                </View>
+
+                                <View style={itemStyles.viewRowStyle1}>
+                                    <Text style={itemStyles.textStyle1}>{strings.thanhPhan}</Text>
+                                    <Text style={itemStyles.textStyle2}>{this.state.dataSang.participation}</Text>
+                                </View>
+
+                                <View style={itemStyles.viewRowStyle1}>
+                                    <Text style={itemStyles.textStyle1}>{strings.diaDiem}</Text>
+                                    <Text style={itemStyles.textStyle2}>{this.state.dataSang.place}</Text>
+                                </View>
+                            </View>
+
+                        </View>
         
+        let viewChieu = <View style={{flexDirection: 'row', marginTop: 6}}>
+                            <Text style={{
+                                fontSize: 16,
+                                fontWeight: 'bold',
+                                color: 'grey',
+                                marginLeft: 10,
+                                
+                            }}>{strings.chieu}
+                            </Text>
+
+                            <View>
+                                <View style={itemStyles.viewRowStyle1}>
+                                    <Text style={itemStyles.textStyle1}>{strings.noiDung}</Text>
+                                    <Text style={itemStyles.textStyle2}>{this.state.dataChieu.content}</Text>
+                                </View>
+
+                                <View style={itemStyles.viewRowStyle1}>
+                                    <Text style={itemStyles.textStyle1}>{strings.thanhPhan}</Text>
+                                    <Text style={itemStyles.textStyle2}>{this.state.dataChieu.participation}</Text>
+                                </View>
+
+                                <View style={itemStyles.viewRowStyle1}>
+                                    <Text style={itemStyles.textStyle1}>{strings.diaDiem}</Text>
+                                    <Text style={itemStyles.textStyle2}>{this.state.dataChieu.place}</Text>
+                                </View>
+                            </View>
+
+                    </View>
+
         return (
             
             <View style={{
@@ -318,73 +436,12 @@ class SectionListItem extends Component {
                   </Text>
                 </View>
 
-
-                 <View style={{flexDirection: 'row',marginTop: 6}}>
-                      <Text style={{
-                            fontSize: 16,
-                            fontWeight: 'bold',
-                            color: 'grey',
-                            marginLeft: 10,
-                            
-                        }}>{strings.sang}
-                      </Text>
-                      <View>
-
-
-                          <View style={itemStyles.viewRowStyle1}>
-                              <Text style={itemStyles.textStyle1}>{strings.noiDung}</Text>
-                              <Text style={itemStyles.textStyle2}>this.props.item.parameters[0].content</Text>
-                          </View>
-
-                          <View style={itemStyles.viewRowStyle1}>
-                              <Text style={itemStyles.textStyle1}>{strings.thanhPhan}</Text>
-                              <Text style={itemStyles.textStyle2}>this.props.item.parameters[0].participation</Text>
-                          </View>
-
-                          <View style={itemStyles.viewRowStyle1}>
-                              <Text style={itemStyles.textStyle1}>{strings.diaDiem}</Text>
-                              <Text style={itemStyles.textStyle2}>this.props.item.parameters[0].place</Text>
-                          </View>
-                      </View>
-
-                </View>
+                {/* Sáng   */}
+                 {viewSang}
                 <View style={{backgroundColor: 'rgb(77,120, 140)', height: 1, margin: 4, marginLeft: 10,marginRight: 10}}/>
 
-                {/* chiều  */}
-                <View style={{flexDirection: 'row', marginTop: 6}}>
-                      <Text style={{
-                            fontSize: 16,
-                            fontWeight: 'bold',
-                            color: 'grey',
-                            marginLeft: 10,
-                            
-                        }}>{strings.chieu}
-                      </Text>
-
-                      <View>
-                          <View style={itemStyles.viewRowStyle1}>
-                              <Text style={itemStyles.textStyle1}>{strings.noiDung}</Text>
-                              <Text style={itemStyles.textStyle2}>this.props.item.parameters[0].content</Text>
-                          </View>
-
-                          <View style={itemStyles.viewRowStyle1}>
-                              <Text style={itemStyles.textStyle1}>{strings.thanhPhan}</Text>
-                              <Text style={itemStyles.textStyle2}>this.props.item.parameters[0].participation</Text>
-                          </View>
-
-                          <View style={itemStyles.viewRowStyle1}>
-                              <Text style={itemStyles.textStyle1}>{strings.diaDiem}</Text>
-                              <Text style={itemStyles.textStyle2}>this.props.item.parameters[0].place</Text>
-                          </View>
-                      </View>
-                      {/* <Text style={{
-                        fontSize: 16,
-                        marginLeft: 10,
-                        marginRight: 10,
-                        color: 'red',
-                      }}>{this.props.item.lichChieu}
-                      </Text> */}
-                </View>
+                {/* Chiều  */}
+                {viewChieu}
                 <View style={{ height: 10, margin: 4, marginLeft: 10,marginRight: 10}}/>
 
             </View>
