@@ -13,6 +13,16 @@ export default function chuyenXuLyReducer(state, action = {}) {
                 .set('progress', false)
                 .set('error', action.error)
             );
+        case actions.GET_USER_CONCURRENT_SEND_SUCESS:
+            return state.withMutations(state => state
+                .set('progress', false)
+                .set('listUserConcurrentSend', action.listUserConcurrentSend)
+            );
+            case actions.GET_USER_CONCURRENT_SEND_ERROR:
+            return state.withMutations(state => state
+                .set('progress', false)
+                .set('error', action.error)
+            );
         default:
             return state
     }

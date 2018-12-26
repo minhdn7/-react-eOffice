@@ -28,11 +28,12 @@ export class DocHistory extends Component {
             docId: idDocument,
         });
         this.props.dispatch(lichSuXuLyAction.getListActivityLogAction(idDocument));
-        this.listActivityLogServer = this.props.lichSuXuLyReducer.get('listActivityLog');
+        // this.listActivityLogServer = this.props.lichSuXuLyReducer.get('listActivityLog');
     }
 
     componentWillReceiveProps() {
         var lstActivityLog =  this.props.lichSuXuLyReducer.get('listActivityLog');
+        this.listActivityLogServer = this.props.lichSuXuLyReducer.get('listActivityLog');
         if(lstActivityLog != null && lstActivityLog.lenght != 0){
             this.setState({
                 listActivityLog: lstActivityLog,
@@ -107,6 +108,7 @@ export class DocHistory extends Component {
 class ItemView extends Component {
     render() {
         let dataView;
+        //alert("tesst : " + this.props.item.parameter.length);
         if (this.props.item.parameter != null && this.props.item.parameter.length != 0) {
             dataView = <FlatList
                 data={this.props.item.parameter}

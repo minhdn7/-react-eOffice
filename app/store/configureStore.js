@@ -147,6 +147,7 @@ export default function configureStore() {
       sagaMiddleware.run(luongVanBanSaga.luongVanBanFlow),
 
       sagaMiddleware.run(chuyenXuLySaga.chuyenXuLyFlow),
+      sagaMiddleware.run(chuyenXuLySaga.userConcurrentSendFlow),
 
     ]
   };

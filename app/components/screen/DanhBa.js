@@ -72,7 +72,7 @@ export class DanhBa extends Component {
     return map["-"];
   };
 
-  componentWillMount(){
+  componentDidMount(){
     dataConvert = this.props.login.get('dataContact');
   }
 

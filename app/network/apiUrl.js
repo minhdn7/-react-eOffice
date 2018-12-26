@@ -118,5 +118,6 @@ const apiUrl = {
     GET_LIST_ACTIVITY_LOG_URL : "api/document/getactivitylog/",
     GET_LUONG_VAN_BAN_URL : "http://14.225.6.6/qlvbdh/view_img.jsp?",
     GET_LIST_UNIT_URL : "api/document/getlistunit/",
+    GET_USER_CONCURRENT_SEND_URL : "api/document/getuserconcurrentsend/",
 }
 export default apiUrl;
