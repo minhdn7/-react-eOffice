@@ -36,11 +36,14 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import Moment from "moment";
 
 import TreeView from "@zaguini/react-native-tree-view";
-
+import TreeSelect from 'react-native-tree-select';
 export class DanhBa extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isLoading : true,
+      dataContact: [],
+    };
   }
 
   convertJsonToTreeMap = array => {
@@ -73,66 +76,23 @@ export class DanhBa extends Component {
   };
 
   componentDidMount(){
-    dataConvert = this.props.login.get('dataContact');
+    this.setState({
+      dataContact: this.props.login.get('dataContact'),
+    })
   }
 
   render() {
-    // dataConvert = this.convertJsonToTreeMap(ContactData);
-    // dataConvert = this.convertJsonToTreeMap(this.props.login.get('dataContact'));
 
     return (
       <View style={{ flex: 1 }}>
         <DefaultHeader myTitle="Danh Bạ" navigator={this.props.navigation} />
 
-        <View style={{margin: 20}}>
-            <TreeView
-              ref={ref => (this.treeView = ref)}
-              
-              data= {[dataConvert]}
-              
-              // data={ContactData}
-              deleteOnLongPress
-              renderItem={(item, level) => (
-                <View style={{}}>
-                  <Text
-                    style={{
-                      marginLeft: 25 * level,
-                      fontSize: 18
-                    }}
-                  >
-                    {item.collapsed !== null ? (
-                      <Text style={{ fontSize: 18}}>
-                        {item.collapsed ? 
-                          <Octicons
-                              name='diff-added'
-                              color='#000'
-                              size={14}
-                            />
-                            : 
-                            <AntDesign
-                              name='minussquareo'
-                              color='#000'
-                              size={14}
-                            />
-                        }
-                      </Text>
-                    ) : (
-
-                      <Text>                         
-                          <AntDesign
-                              name='minussquareo'
-                              color='#000'
-                              size={14}
-                            /> 
-                      </Text>
-                    )}
-                    {" "}
-                    {item.userName}
-                  </Text>
-                </View>
-              )}
-            />
-        </View>
+        <TreeSelect
+        data={[this.state.dataContact]}
+        isOpen
+          // onClick={this._onClick}
+          // onClickLeaf={this._onClickLeaf}
+        />
         
       </View>
     );
