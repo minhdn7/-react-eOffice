@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Image, ImageBackground, StatusBar, Text, Alert} from "react-native";
+import {Image, ImageBackground, StatusBar, Text, Alert, ToastAndroid} from "react-native";
 import {Button, Container, Content, Spinner} from "native-base";
 import {Platform, StyleSheet, View} from 'react-native';
 import colors from "../../resources/colors";
@@ -89,13 +89,23 @@ componentDidUpdate() {
   //3
 async getToken() {
   let fcmToken = await AsyncStorage.getItem('fcmToken');
+
   if (!fcmToken) {
-      fcmToken = await firebase.messaging().getToken();
-      if (fcmToken) {
           // user has a device token
+          fcmToken = await firebase.messaging().getToken();
+
           await AsyncStorage.setItem('fcmToken', fcmToken);
-      }
+      // if (fcmToken) {
+      //     // user has a device token
+      //     fcmToken = await firebase.messaging().getToken();
+
+      //     await AsyncStorage.setItem('fcmToken', fcmToken);
+      // }
   }
+  // ToastAndroid.show(fcmToken, ToastAndroid.SHORT);
+  this.setState({
+    tokenFirebase: fcmToken,
+  });
 }
 
   //2
@@ -216,8 +226,11 @@ isObject(obj) {
               backgroundColor="#0d47a1"
               barStyle="light-content"
           />
-        <ImageBackground style={loginStyles.backgroundImage} source={require('../../image/ic_background_login.png')}>
+        <ImageBackground style={loginStyles.backgroundImage} source={require('../../image/background_2.png')}>
           <Content contentContainerStyle={loginStyles.contentStyle}>
+          <Image source={require('../../image/ic_app.png')}
+                style={{marginTop: 60, width: 80, height: 80}}
+          />
             <Text style={loginStyles.textStyle}>
               {strings.heThongVanBanDieuHanh}
             </Text>
@@ -288,7 +301,9 @@ isObject(obj) {
 
   onLoginPress = () => {
     this.setState({isfirstLoad : true});
-    this.props.dispatch(loginActions.loginAccount(this.email, this.password, this.tokenFirebase));
+    // let tokenFirebase = await AsyncStorage.getItem('fcmToken');
+    // ToastAndroid.show(this.state.tokenFirebase, ToastAndroid.SHORT);
+    this.props.dispatch(loginActions.loginAccount(this.email, this.password, this.state.tokenFirebase));
   }
 }
 
@@ -341,10 +356,10 @@ const loginStyles = {
     alignSelf: 'stretch',
   },
   textStyle: {
-    color: "blue",
+    color: "white",
     fontSize: 20,
     fontWeight: 'bold',
-    marginTop: 250,
+    marginTop: 20,
   },
 
   textStyle2: {
