@@ -10,7 +10,7 @@ import TreeViewChuyenXuLy from '../QLVanBan/TreeView'
 import styles from '../../styles/styleQLVanBan';
 import * as chuyenXuLyAction from "../../actions/chuyenXuLy-actions";
 import * as rootActions from "../../actions/root-actions";
-import TreeSelectCustom from "../QLVanBan/TreeSelectCustom";
+// import TreeSelectCustom from "../QLVanBan/TreeSelectCustom";
 
 
 const { height, width } = Dimensions.get('window');
@@ -179,13 +179,13 @@ export class ChuyenXuLy extends Component {
                             </TouchableOpacity>
                         </View>
 
-                        <TreeSelect
+                        {/* <TreeSelect
                             data={this.state.lstUserConcurentSend}
                             isOpen
                             //openIds={['1363-U1']}
                             onClick={this._onClick}
                             onClickLeaf={this._onClickLeaf}
-                        />
+                        /> */}
 
                         {/* </View> */}
 
