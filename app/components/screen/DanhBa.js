@@ -36,11 +36,14 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import Moment from "moment";
 
 import TreeView from "@zaguini/react-native-tree-view";
+import TreeSelectCustom from "../QLVanBan/TreeSelectCustom";
 
 export class DanhBa extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
+  constructor() {
+    super();
+    this.state = {
+      dataConvert: [],
+    }
   }
 
   convertJsonToTreeMap = array => {
@@ -52,7 +55,7 @@ export class DanhBa extends Component {
         map[obj.id].children = [];
       }
 
-      if(typeof map[obj.id].userName == 'undefined'){
+      if (typeof map[obj.id].userName == 'undefined') {
         map[obj.id].id = obj.id
         map[obj.id].userName = obj.userName
         map[obj.id].parentId = obj.parentId
@@ -63,8 +66,8 @@ export class DanhBa extends Component {
         map[parent] = obj;
 
         map[parent].children = [];
-      }else{
-              map[parent].children.push(map[obj.id]);
+      } else {
+        map[parent].children.push(map[obj.id]);
       }
 
 
@@ -72,68 +75,88 @@ export class DanhBa extends Component {
     return map["-"];
   };
 
-  componentDidMount(){
-    dataConvert = this.props.login.get('dataContact');
+  componentDidMount() {
+    this.setState({
+      dataConvert: this.props.login.get('dataContact'),
+    });
+    console.log("test data: ", this.props.login.get('dataContact'));
   }
 
   render() {
     // dataConvert = this.convertJsonToTreeMap(ContactData);
     // dataConvert = this.convertJsonToTreeMap(this.props.login.get('dataContact'));
+    let viewData;
+    if (this.state.dataConvert != null && this.state.dataConvert.length != 0) {
+      viewData = <TreeView
+        ref={ref => (this.treeView = ref)}
+
+        data={[this.state.dataConvert]}
+
+        // data={ContactData}
+        deleteOnLongPress
+        renderItem={(item, level) => (
+          <View style={{}}>
+            <Text
+              style={{
+                marginLeft: 25 * level,
+                fontSize: 18
+              }}
+            >
+              {item.collapsed !== null ? (
+                <Text style={{ fontSize: 18 }}>
+                  {item.collapsed ?
+                    <Octicons
+                      name='diff-added'
+                      color='#000'
+                      size={14}
+                    />
+                    :
+                    <AntDesign
+                      name='minussquareo'
+                      color='#000'
+                      size={14}
+                    />
+                  }
+                </Text>
+              ) : (
+
+                  <Text>
+                    <AntDesign
+                      name='minussquareo'
+                      color='#000'
+                      size={14}
+                    />
+                  </Text>
+                )}
+              {" "}
+              {item.userName}
+            </Text>
+          </View>
+        )}
+      />
+    } else {
+      viewData = null;
+    }
 
     return (
       <View style={{ flex: 1 }}>
         <DefaultHeader myTitle="Danh Bạ" navigator={this.props.navigation} />
 
-        <View style={{margin: 20}}>
-            <TreeView
-              ref={ref => (this.treeView = ref)}
-              
-              data= {[dataConvert]}
-              
-              // data={ContactData}
-              deleteOnLongPress
-              renderItem={(item, level) => (
-                <View style={{}}>
-                  <Text
-                    style={{
-                      marginLeft: 25 * level,
-                      fontSize: 18
-                    }}
-                  >
-                    {item.collapsed !== null ? (
-                      <Text style={{ fontSize: 18}}>
-                        {item.collapsed ? 
-                          <Octicons
-                              name='diff-added'
-                              color='#000'
-                              size={14}
-                            />
-                            : 
-                            <AntDesign
-                              name='minussquareo'
-                              color='#000'
-                              size={14}
-                            />
-                        }
-                      </Text>
-                    ) : (
+        {/* <View style={{ flex: 1, margin: 20 }}>
+          {viewData}
+        </View> */}
 
-                      <Text>                         
-                          <AntDesign
-                              name='minussquareo'
-                              color='#000'
-                              size={14}
-                            /> 
-                      </Text>
-                    )}
-                    {" "}
-                    {item.userName}
-                  </Text>
-                </View>
-              )}
-            />
+        <View style={{ flex: 1 }}>
+          <TreeSelectCustom
+            data={[this.state.dataConvert]}
+            isOpen
+          //openIds={['1363-U1']}
+          //onClick={this._onClick}
+          //onClickLeaf={this._onClickLeaf}
+          />
+
         </View>
-        
+
       </View>
     );
   }

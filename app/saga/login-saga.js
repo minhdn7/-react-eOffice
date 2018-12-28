@@ -118,13 +118,14 @@ convertJsonToTreeMap = array => {
     if (!(obj.id in map)) {
       map[obj.id] = obj;
       map[obj.id].children = [];
+      map[obj.id].name = obj.userName;
     }
 
-    if(typeof map[obj.id].userName == 'undefined'){
-      map[obj.id].id = obj.id
-      map[obj.id].userName = obj.userName
-      map[obj.id].parentId = obj.parentId
-    }
+    // if(typeof map[obj.id].userName == 'undefined'){
+    //   map[obj.id].id = obj.id
+    //   map[obj.id].userName = obj.userName
+    //   map[obj.id].parentId = obj.parentId
+    // }
 
     var parent = obj.parentId || "-";
     if (!(parent in map)) {
