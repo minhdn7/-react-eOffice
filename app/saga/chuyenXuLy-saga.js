@@ -37,6 +37,29 @@ function getListUnitURL() {
       });
   }
   
+  function* getListUnit() {
+    try {
+      response = yield call(getListUnitURL);
+      console.log("list unit:", response);
+      if (typeof (response) != "undefined" && typeof (response.status) != "undefined") {
+        if (response.status.code == "0" && typeof (response.data) != "undefined") {
+          yield put(chuyenXuLyActions.getListUnitSucessAction(response.data));
+          return response;
+        } else {
+          yield put(chuyenXuLyActions.getListUnitErorrAction(response.status.message));
+          return undefined;
+        }
+      } else {
+        yield put(chuyenXuLyActions.getListUnitErorrAction("Không lấy được dữ liệu!"));
+        return undefined;
+      }
+  
+    } catch (error) {
+  
+      yield put(chuyenXuLyActions.getListUnitErorrAction(String(error)));
+    }
+  }
+
   function* getUserConcurrentSend(unitId) {
     try {
       response = yield call(getUserConcurrentSendURL, unitId);

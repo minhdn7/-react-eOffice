@@ -103,7 +103,8 @@ const styles = StyleSheet.create({
     },
 
     dropdownStyle: {
-        width: width*0.4, height: height*0.25, backgroundColor: "#0033FF",
+        //width: width*0.4, height: height*0.25, 
+        backgroundColor: "#0033FF",
     },
     dropdownTextStyle:{
         color: "#ffffff", fontSize: 15, backgroundColor: "#0033FF"
