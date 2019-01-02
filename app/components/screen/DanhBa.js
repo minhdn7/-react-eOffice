@@ -76,9 +76,12 @@ export class DanhBa extends Component {
   };
 
   componentDidMount(){
-    this.setState({
-      dataContact: this.props.login.get('dataContact'),
-    })
+    if(this.props.login.get('dataContact')){
+      this.setState({
+        dataContact: this.props.login.get('dataContact'),
+      })
+    }
+
   }
 
   render() {
