@@ -2,13 +2,16 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 
 import {NavigationActions} from 'react-navigation';
-import {TouchableOpacity,TouchableWithoutFeedback, ScrollView, Text, View, StyleSheet, Image, FlatList} from 'react-native';
+import {TouchableOpacity,TouchableWithoutFeedback, ScrollView, Text, View, StyleSheet, Image, FlatList, ToastAndroid} from 'react-native';
 import {Collapse,CollapseHeader, CollapseBody, AccordionList} from 'accordion-collapse-react-native';
 import strings from "../../resources/strings";
 import {connect} from "react-redux";
 import * as documentAction from "../../actions/document-action";
-
+import { Toast } from 'native-base';
+import * as menuActions from "../../actions/menu-actions";
+import ListKhoItem from './ListKhoItem';
 class SideMenu extends Component {
+      countMenu: object;
       constructor() {
         super();
 
@@ -23,23 +26,31 @@ class SideMenu extends Component {
     }
 
     componentWillMount() {
-      
+      this.props.dispatch(menuActions.resetCountMenu());
+      this.props.dispatch(menuActions.getCountMenu());
       loginData = this.props.login.get('loginData');
       danhSachKho = [];
-      if(loginData.kho != null && loginData.kho.lenght > 0){
-        for(i = 0; i < loginData.kho.lenght; i++){
-            itemKho = {
-              key: i,
-              value: loginData.kho[i],
-            };
-            danhSachKho.push(itemKho);
-        }
+      if(loginData.kho && loginData.kho.length > 0){
+          danhSachKho = loginData.kho;
       }
+      danhSachKho.push(strings.vanBanDaXuLy);
+      danhSachKho.push(strings.vanBanXemDeBiet);
       this.setState({
         name: loginData.username,
         address: loginData.unitName,
-        kho: loginData.kho,
+        kho: danhSachKho,
       });
+    }
+
+    componentWillReceiveProps(){
+      this.countMenu = this.props.menuReducer.get('countMenuData');
+
+      // console.log("count menu response 2:", this.props.menuReducer.get('countMenuData'));
+      countMenuError = this.props.menuReducer.get('countMenuError');
+      if(countMenuError && countMenuError != ''){
+        ToastAndroid.show(countMenuError, ToastAndroid.SHORT);
+      }
+
     }
 
   navigateToScreen = (route) => () => {
@@ -281,39 +292,117 @@ const menuStyles = StyleSheet.create({
     padding: 20,
     backgroundColor: 'lightgrey'
   },
-  
+  outerCircle: {
+    borderRadius: 40,
+    width: 30,
+    height: 30,
+    backgroundColor: 'red',
+  },
+  innerCircle: {
+    borderRadius: 35,
+    width: 25,
+    height: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'red'
+  },
+  itemDocumentContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent:'space-between',
+    padding: 2
+  },
   });
 
-  class ListKhoItem extends Component {
-    render() {          
-        return (        
-            <View style={{
-                flex: 1,
-                flexDirection:'column',
-                backgroundColor: 'white',
-                paddingLeft: 10,
-                paddingRight: 10,
-                paddingTop: 2,                              
-            }}> 
-              <View
-                typeDocument = 'vanBanDaXuLy'
-                // name = {this.props.item}
-                style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
-                <Image style={{width: 30, height: 30, margin: 4}} 
-                source={require('../../image/ic_doc_processed.png')}/>
-                <Text style={{color: '#0d47a1', padding: 4}}>{this.props.item}</Text>
-              </View>
-              <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
-          </View>
-        );
-    }
-  }
+  // class ListKhoItem extends Component {
+  //   mapCountMenu(keyName: string){
+  //     switch (keyName) {
+  //       case 'văn bản đi':
+  //         return 'vanBanDi';
+
+  //       case 'văn bản đến':
+  //         return 'vanBanDen';
+
+  //       case 'văn bản đến chờ xử lý':
+  //         return 'vanBanDenChoXuLy';
+
+  //       case 'văn bản xem để biết':
+  //         return 'xemDeBiet';
+
+  //       case 'văn bản đánh dấu':
+  //         return 'danhDau';
+
+  //       case 'văn bản chờ phê duyệt':
+  //         return 'vanBanChoPheDuyet';
+
+  //       case 'văn bản chờ tgd xử lý':
+  //         return 'vanBanTGD';
+
+  //       case 'văn bản đến tgd':
+  //         return 'denTGD';
+
+  //       case 'văn bản đến xlc':
+  //         return 'denXLC';
+
+  //       case 'văn bản đến ph':
+  //         return 'denPH';
+
+  //       case 'văn bản đi xlc':
+  //         return 'diXLC';
+
+  //       case 'văn bản đi ph':
+  //         return 'diPH';
+  //       default:
+  //         return '';
+  //     }
+  //   }
+
+  //   render(){
+  //       let ViewCountMenu;
+  //       countMenu = this.props.countMenu;
+  //       console.log("countMenu:", countMenu);
+  //       if(countMenu && this.mapCountMenu(this.props.item.toLowerCase()) in countMenu){
+  //         itemValue = this.props.item;
+  //         ToastAndroid.show(this.props.item, ToastAndroid.SHORT);
+  //         ViewCountMenu = <View style={menuStyles.innerCircle}>
+  //                           <Text style={{color: 'white', fontSize: 10}}>{countMenu.itemValue}</Text>
+  //                         </View>
+  //       }else{
+  //         ViewCountMenu = <View/>
+  //       }          
+  //       return (        
+  //           <View style={{
+  //               flex: 1,
+  //               flexDirection:'column',
+  //               backgroundColor: 'white',
+  //               paddingLeft: 10,
+  //               paddingRight: 10,
+  //               paddingTop: 2,                              
+  //           }}> 
+  //             <View
+  //               typeDocument = 'vanBanDaXuLy'
+  //               style={menuStyles.itemDocumentContainer}>
+  //               <View style={menuStyles.itemDocumentContainer}>
+  //               <Image style={{width: 30, height: 30, margin: 4}} 
+  //                     source={require('../../image/ic_doc_processed.png')}/>
+  //               <Text style={{color: '#0d47a1', padding: 4}}>{this.props.item}</Text>
+  //               </View>
+  //               {ViewCountMenu}
+     
+
+  //             </View>
+  //             <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
+  //         </View>
+  //       );
+  //   }
+  // }
 
 
 
   const mapStateToProps = (state) => ({
     login: state.get('login'),
     root: state.get('root'),
+    menuReducer: state.get('menuReducer'),
   });
   
   export default connect(mapStateToProps)(SideMenu)  

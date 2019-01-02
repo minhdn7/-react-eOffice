@@ -199,17 +199,20 @@ showAlert(title, body) {
       
       this.props.navigation.navigate('DrawerMenu');
       
-    }else{
-      message = this.props.login.get('contactError');
-      Alert.alert(
-        'Thông báo',
-          message,
-        [
-          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
-        ],
-        { cancelable: false }
-      )
+    }else {
+      if(this.props.login.get('contactError') && this.props.login.get('contactError') != ''){
+        message = this.props.login.get('contactError');
+        Alert.alert(
+          'Thông báo',
+            message,
+          [
+            {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+          ],
+          { cancelable: false }
+        )
+
+      }
       this.props.navigation.navigate('DrawerMenu');
     }
   }
