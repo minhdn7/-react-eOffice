@@ -71,11 +71,16 @@ class ListKhoItem extends Component {
         countMenu = this.props.menuReducer.get('countMenuData');
         if(countMenu && this.mapCountMenu(this.props.item.toLowerCase()) in countMenu){
           itemValue = this.mapCountMenu(this.props.item.toLowerCase());
-          itemCount = countMenu.vanBanDi;
+          itemCount = countMenu[itemValue];
         //   ToastAndroid.show(itemValue, ToastAndroid.SHORT);
-          ViewCountMenu = <View style={menuStyles.innerCircle}>
-                            <Text style={{color: 'white', fontSize: 10}}>{itemCount}</Text>
-                          </View>
+          if(itemCount > 0){
+            ViewCountMenu = <View style={menuStyles.innerCircle}>
+                              <Text style={{color: 'white', fontSize: 10}}>{itemCount}</Text>
+                            </View>
+          }else{
+            ViewCountMenu = <View/>
+          }
+
         }else{
           ViewCountMenu = <View/>
         }          
