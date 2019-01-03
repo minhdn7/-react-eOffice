@@ -3,6 +3,7 @@
  */
 
 export const LOGIN_ACTION = "LOGIN";
+export const RESET_LOGIN_ACTION = "RESET_LOGIN_ACTION";
 export const LOGOUT_ACTION = "LOGOUT";
 export const LOGIN_SUCCESS = "LOGIN_SUCESS";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";

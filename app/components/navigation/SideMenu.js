@@ -1,15 +1,17 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 
-import {NavigationActions} from 'react-navigation';
-import {TouchableOpacity,TouchableWithoutFeedback, ScrollView, Text, View, StyleSheet, Image, FlatList, ToastAndroid} from 'react-native';
+import {NavigationActions, StackActions} from 'react-navigation';
+import {TouchableOpacity,TouchableWithoutFeedback, ScrollView, Text, View, StyleSheet, Image, FlatList, ToastAndroid, Alert} from 'react-native';
 import {Collapse,CollapseHeader, CollapseBody, AccordionList} from 'accordion-collapse-react-native';
 import strings from "../../resources/strings";
 import {connect} from "react-redux";
 import * as documentAction from "../../actions/document-action";
 import { Toast } from 'native-base';
 import * as menuActions from "../../actions/menu-actions";
+import * as logoutActions from "../../actions/logout-actions";
 import ListKhoItem from './ListKhoItem';
+import Login from "../screen/Login";
 class SideMenu extends Component {
       countMenu: object;
       constructor() {
@@ -42,13 +44,14 @@ class SideMenu extends Component {
       });
     }
 
-    componentWillReceiveProps(){
+    componentDidMount(){
       this.countMenu = this.props.menuReducer.get('countMenuData');
 
       // console.log("count menu response 2:", this.props.menuReducer.get('countMenuData'));
       countMenuError = this.props.menuReducer.get('countMenuError');
       if(countMenuError && countMenuError != ''){
         ToastAndroid.show(countMenuError, ToastAndroid.SHORT);
+
       }
 
     }
@@ -64,6 +67,26 @@ class SideMenu extends Component {
     this.props.dispatch(documentAction.resetListDocumentAction());
     this.props.dispatch(documentAction.setTypeDocumentAction(type));
     this.props.navigation.navigate('DocManagement'); 
+  }
+
+  logOut = () => {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'Login' })],
+    });
+    Alert.alert(
+      'Xác nhận', 'Đăng xuất tài khoản?',
+      [
+          { text: 'Đồng ý', onPress:  () => {
+              this.props.navigation.navigate('Login');
+              this.props.dispatch(logoutActions.logout());
+            }
+ 
+              },
+          { text: 'Đóng lại' },
+      ],
+      { cancelable: false },
+    );
   }
   
   render () {
@@ -84,6 +107,7 @@ class SideMenu extends Component {
 
               {/* Trang chủ */}
               <TouchableOpacity
+              onPress={ () => this.props.navigation.closeDrawer()}
               style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
                   <Image style={{width: 30, height: 30, margin: 4}} 
                   source={require('../../image/ic_home.png')}/>
@@ -251,18 +275,17 @@ class SideMenu extends Component {
             </Collapse>
 
               {/* Đăng xuất */}
-              <View style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
+              <TouchableOpacity 
+              onPress={ () => this.logOut()}
+              style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
                   <Image style={{width: 30, height: 30, margin: 4}} 
                   source={require('../../image/logout.png')}/>
                   <Text style={{color: '#0d47a1', padding: 4}}>{strings.dangXuat}</Text>
-              </View>
+              </TouchableOpacity>
               <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
             
           </View>
         </ScrollView>
-        {/* <View style={menuStyles.footerContainer}>
-          <Text>This is my fixed footer</Text>
-        </View> */}
       </View>
     );
   }
@@ -313,89 +336,6 @@ const menuStyles = StyleSheet.create({
     padding: 2
   },
   });
-
-  // class ListKhoItem extends Component {
-  //   mapCountMenu(keyName: string){
-  //     switch (keyName) {
-  //       case 'văn bản đi':
-  //         return 'vanBanDi';
-
-  //       case 'văn bản đến':
-  //         return 'vanBanDen';
-
-  //       case 'văn bản đến chờ xử lý':
-  //         return 'vanBanDenChoXuLy';
-
-  //       case 'văn bản xem để biết':
-  //         return 'xemDeBiet';
-
-  //       case 'văn bản đánh dấu':
-  //         return 'danhDau';
-
-  //       case 'văn bản chờ phê duyệt':
-  //         return 'vanBanChoPheDuyet';
-
-  //       case 'văn bản chờ tgd xử lý':
-  //         return 'vanBanTGD';
-
-  //       case 'văn bản đến tgd':
-  //         return 'denTGD';
-
-  //       case 'văn bản đến xlc':
-  //         return 'denXLC';
-
-  //       case 'văn bản đến ph':
-  //         return 'denPH';
-
-  //       case 'văn bản đi xlc':
-  //         return 'diXLC';
-
-  //       case 'văn bản đi ph':
-  //         return 'diPH';
-  //       default:
-  //         return '';
-  //     }
-  //   }
-
-  //   render(){
-  //       let ViewCountMenu;
-  //       countMenu = this.props.countMenu;
-  //       console.log("countMenu:", countMenu);
-  //       if(countMenu && this.mapCountMenu(this.props.item.toLowerCase()) in countMenu){
-  //         itemValue = this.props.item;
-  //         ToastAndroid.show(this.props.item, ToastAndroid.SHORT);
-  //         ViewCountMenu = <View style={menuStyles.innerCircle}>
-  //                           <Text style={{color: 'white', fontSize: 10}}>{countMenu.itemValue}</Text>
-  //                         </View>
-  //       }else{
-  //         ViewCountMenu = <View/>
-  //       }          
-  //       return (        
-  //           <View style={{
-  //               flex: 1,
-  //               flexDirection:'column',
-  //               backgroundColor: 'white',
-  //               paddingLeft: 10,
-  //               paddingRight: 10,
-  //               paddingTop: 2,                              
-  //           }}> 
-  //             <View
-  //               typeDocument = 'vanBanDaXuLy'
-  //               style={menuStyles.itemDocumentContainer}>
-  //               <View style={menuStyles.itemDocumentContainer}>
-  //               <Image style={{width: 30, height: 30, margin: 4}} 
-  //                     source={require('../../image/ic_doc_processed.png')}/>
-  //               <Text style={{color: '#0d47a1', padding: 4}}>{this.props.item}</Text>
-  //               </View>
-  //               {ViewCountMenu}
-     
-
-  //             </View>
-  //             <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
-  //         </View>
-  //       );
-  //   }
-  // }
 
 
 

@@ -6,26 +6,50 @@ import * as actions from "../actions/action-types";
 import * as Api from "../api";
 import * as logoutActions from "../actions/logout-actions";
 import * as rootActions from "../actions/root-actions";
+import apiUrl from "../network/apiUrl";
+import consts from "../const";
 
+function logOutURL() {
+  url = apiUrl.ROOT_URL + apiUrl.LOGOUT_URL;
 
-function* logOut(authId, username, password) {
+    return fetch(url, {
+      method: 'GET',
+      headers: consts.BASE_HEADER
+    })
+    .then((response) => {
+    return response.json();
+    })
+    .catch((error) => {
+      console.log(String(error));
+    });
+
+}
+function* logOut() {
   try {
-    const result = yield call(Api.logOut, authId, username, password);
-    if (!result) {
-      yield put(logoutActions.setLogoutSuccess());
-    } else {
-      yield put(logoutActions.setError(result)); 
+    response = yield call(logOutURL);
+    console.log('logout response:', response);
+    if(response && response.status){
+      if (response.status.code == "0") {
+        yield put(logoutActions.setLogoutSuccess());
+        return response;
+      } else {
+        yield put(logoutActions.setError(String(response.status.message)));
+        return undefined;
+      }
+    }else{
+      yield put(logoutActions.setError("Đăng xuất thất bại"));
+      return undefined;
     }
-  } catch (error) {
-    yield put(logoutActions.setError(error));
+  } catch (error) {    
+    yield put(logoutActions.setError(String(error)));
   }
 }
 
 export function* logoutFlow() {
   while (true) {
-    const {username, password, authId} = yield take(actions.LOGOUT_ACTION);
+    yield take(actions.LOGOUT_ACTION);
     yield put(rootActions.controlProgress(true));
-    yield call(logOut, authId, username, password);
+    yield call(logOut);
     yield put(rootActions.controlProgress(false));
   }
 }

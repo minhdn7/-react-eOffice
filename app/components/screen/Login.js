@@ -48,15 +48,13 @@ export class Login extends Component {
      
   }
 
- 
-  componentWillMount(){
 
-    this.props.dispatch(rootActions.controlProgress(false));
-  }
 
   componentWillUnmount(){
     this.notificationListener();
     this.notificationOpenedListener();
+    this.props.dispatch(rootActions.controlProgress(false));
+    this.props.dispatch(loginActions.resetLogin());
   }
 
   componentDidMount() {
