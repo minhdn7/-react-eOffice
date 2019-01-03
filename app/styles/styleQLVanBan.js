@@ -31,7 +31,12 @@ const styles = StyleSheet.create({
 
     // style ItemDocment
     container: {
-        flex: 1, flexDirection: 'row', padding: 3, margin: 4, marginBottom: 2, backgroundColor: '#ffffff'
+        flexDirection: 'row', 
+        padding: 3, 
+        margin: 4, 
+        marginBottom: 2,
+        justifyContent: 'space-between',
+        backgroundColor: '#ffffff'
     },
     left: {
         width: width * 0.23, justifyContent: 'center', alignContent: 'center', marginRight: 3,
@@ -40,6 +45,7 @@ const styles = StyleSheet.create({
         width: width * 0.67,
     },
     right: {
+        flexDirection: 'column',
         justifyContent: 'center'
     },
     textTitle: {
