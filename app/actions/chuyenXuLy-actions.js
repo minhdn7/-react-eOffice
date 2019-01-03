@@ -41,3 +41,38 @@ export const getUserConcurrentSendErrorAction = (error) => {
         error
     }
 }
+
+export const setListTreeDataAction = (lstTreeData) => {
+    return{
+        type: actions.SET_LIST_TREE_DATA,
+        lstTreeData
+    }
+}
+
+export const setIdCheckXlcAction = (idCheckXlc) => {
+    return{
+        type: actions.SET_ID_CHECK_XLC,
+        idCheckXlc
+    }
+}
+
+export const setListIdCheckPhAction = (lstIdCheckPh) => {
+    return{
+        type: actions.SET_LIST_ID_CHECK_PH,
+        lstIdCheckPh
+    }
+}
+
+export const setListIdCheckXemAction = (lstIdCheckXem) => {
+    return{
+        type: actions.SET_LIST_ID_CHECK_XEM,
+        lstIdCheckXem
+    }
+}
+
+export const resetTreeDataAction = () => {
+    return{
+        type: actions.RESET_TREE_DATA,
+        
+    }
+}

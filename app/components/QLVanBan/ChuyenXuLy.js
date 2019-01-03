@@ -10,8 +10,9 @@ import TreeViewChuyenXuLy from '../QLVanBan/TreeView'
 import styles from '../../styles/styleQLVanBan';
 import * as chuyenXuLyAction from "../../actions/chuyenXuLy-actions";
 import * as rootActions from "../../actions/root-actions";
-// import TreeSelectCustom from "../QLVanBan/TreeSelectCustom";
-
+import TreeSelectCustom from '../QLVanBan/TreeSelectCustom';
+import { convertJsonToTreeMap } from '../../utils/Utils';
+import ContactData from "../../data/ContactData";
 
 const { height, width } = Dimensions.get('window');
 
@@ -68,32 +69,39 @@ export class ChuyenXuLy extends Component {
         // });
     }
 
-    _onClick = ({ item, routes }) => {
-        console.log(item.userName);
-        console.log(routes);
-        
-      };
-    
-      _onClickLeaf = ({ item, routes }) => {
-        console.log(item.userName);
-        console.log(routes);
-      };
+    componentWillMount(){
+        this.props.dispatch(chuyenXuLyAction.resetTreeDataAction());
+    }
 
     componentDidMount() {
+        var lstData = convertJsonToTreeMap(ContactData);
+        //var lstData = convertJsonToTreeMap(this.props.login.get('dataContact'));
         this.props.dispatch(chuyenXuLyAction.getListUnitAction());
+        this.props.dispatch(chuyenXuLyAction.setListTreeDataAction(lstData));
         //this.lstUserConcurentSend = this.props.login.get('dataContact');
-        
+
     }
 
     componentWillReceiveProps() {
         this.setState({
             lstUnit: this.props.chuyenXuLyReducer.get('listUnit'),
-            lstUserConcurentSend: this.props.login.get('dataContact'),
+            lstUserConcurentSend: this.props.chuyenXuLyReducer.get('lstTreeData'),
         });
         console.log("lstUserConcurentSend:", this.state.lstUserConcurentSend);
 
     }
 
+    // handleRadioButtonClick(idNew) {
+    //     var idOld = this.props.chuyenXuLyReducer.get('idCheckXlc');
+    //     if(idNew == idOld) return;
+
+    //     var lst = this.props.chuyenXuLyReducer.get('lstTreeData');
+    //     findById(lst, idNew, idOld);
+    //     console.log("test lstData sau xu ly: ", lst);
+
+    // }
+
+   
     state = {}
     render() {
         let dataStr = [];
@@ -179,17 +187,13 @@ export class ChuyenXuLy extends Component {
                             </TouchableOpacity>
                         </View>
 
-                        {/* <TreeSelect
-                            data={this.state.lstUserConcurentSend}
+                        <TreeSelectCustom
+                            data={[this.props.chuyenXuLyReducer.get('lstTreeData')]}
                             isOpen
-                            //openIds={['1363-U1']}
-                            onClick={this._onClick}
-                            onClickLeaf={this._onClickLeaf}
-                        /> */}
-
-                        {/* </View> */}
-
-                        {/* <View style={{ flex: 1, margin: 5 }}> */}
+                            //handleRadioButtonClick={this.handleRadioButtonClick}
+                        // onClick={this._onClick}
+                        // onClickLeaf={this._onClickLeaf}
+                        />
 
                         <View style={[styles.tableHeader, { backgroundColor: "#32CD32" }]}>
                             <View style={styles.width50}>

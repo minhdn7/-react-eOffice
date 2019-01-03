@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, FlatList, Text, TouchableOpacity } from 'react-native';
 import { breadthFirstRecursion } from '../../utils/menutransform';
 import _styles from '../../styles/styleQLVanBan';
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
-import CheckBox from 'react-native-check-box';
+import TreeItemChuyenXuLy from "../QLVanBan/TreeItemChuyenXuLy";
 
 const styles = StyleSheet.create({
   container: {
@@ -32,10 +31,15 @@ export default class TreeSelectCustom extends Component {
     this.routes = [];
     this.state = {
       nodesStatus: this._initNodesStatus(),
-      currentNode: null
+      currentNode: null,
     };
   }
 
+  componentWillReceiveProps() {
+    this.setState({
+      treeData: this.props.data,
+    })
+  }
   _initNodesStatus = () => {
     const { isOpen = false, data, openIds = [] } = this.props;
     const nodesStatus = new Map();
@@ -108,7 +112,7 @@ export default class TreeSelectCustom extends Component {
   };
 
   _renderRow = ({ item }) => {
-    
+
     if (item && item.children && item.children.length) {
       const isOpen = this.state.nodesStatus && this.state.nodesStatus.get(item && item.id) || false;
       const collapseIcon = isOpen ? {
@@ -131,46 +135,15 @@ export default class TreeSelectCustom extends Component {
           <TouchableOpacity onPress={(e) => this._onPressCollapse({ e, item })} >
             <View style={{
               flexDirection: 'row',
-              backgroundColor: this.state.currentNode === item.id ? '#FFEDCE' : '#fff',
+              // backgroundColor: this.state.currentNode === item.id ? '#FFEDCE' : '#fff',
+              backgroundColor: '#fff',
               marginBottom: 2,
-              height: 30,
+              //height: 30,
               alignItems: 'center'
             }}
             >
               <View style={[styles.collapseIcon, collapseIcon]} />
-              <View style={[_styles.width50]}>
-                <Text style={styles.textName}>{item.name}</Text>
-              </View>
-              <View style={[_styles.width15]}>
-                <RadioForm
-                  radio_props={[{ label: '', value: 0 }]}
-                  initial={-1}
-                  buttonSize={10}
-                  selectedButtonColor={'black'}
-                  buttonColor={'black'}
-                //onPress={(value) => { this.handleRadioButtonClick({ value: value }) }}
-                />
-              </View>
-              <View style={[_styles.width15]}>
-                <CheckBox
-                  onClick={() => {
-                    this.setState({
-                      isChecked: !this.state.isChecked
-                    })
-                  }}
-                  isChecked={this.state.isChecked}
-                />
-              </View>
-              <View style={[_styles.width15]}>
-                <CheckBox
-                  onClick={() => {
-                    this.setState({
-                      isChecked: !this.state.isChecked
-                    })
-                  }}
-                  isChecked={this.state.isChecked}
-                />
-              </View>
+              <TreeItemChuyenXuLy item={item} ></TreeItemChuyenXuLy>
             </View>
           </TouchableOpacity>
           {
@@ -192,52 +165,22 @@ export default class TreeSelectCustom extends Component {
       <TouchableOpacity onPress={(e) => this._onClickLeaf({ e, item })}>
         <View style={{
           flexDirection: 'row',
-          backgroundColor: this.state.currentNode === item.id ? '#FFEDCE' : '#fff',
+          //backgroundColor: this.state.currentNode === item.id ? '#FFEDCE' : '#fff',
+          backgroundColor: '#fff',
           marginBottom: 2,
-          height: 30,
+          //height: 30,
           alignItems: 'center'
         }}
         >
           {/* <Text style={styles.textName}>{item.name}</Text> */}
-          <View style={[_styles.width50]}>
-            <Text style={styles.textName}>{item.name}</Text>
-          </View>
-          <View style={[_styles.width15]}>
-            <RadioForm
-              radio_props={[{ label: '', value: 0 }]}
-              initial={-1}
-              buttonSize={10}
-              selectedButtonColor={'black'}
-              buttonColor={'black'}
-            //onPress={(value) => { this.handleRadioButtonClick({ value: value }) }}
-            />
-          </View>
-          <View style={[_styles.width15]}>
-            <CheckBox
-              onClick={() => {
-                this.setState({
-                  isChecked: !this.state.isChecked
-                })
-              }}
-              isChecked={this.state.isChecked}
-            />
-          </View>
-          <View style={[_styles.width15]}>
-            <CheckBox
-              onClick={() => {
-                this.setState({
-                  isChecked: !this.state.isChecked
-                })
-              }}
-              isChecked={this.state.isChecked}
-            />
-          </View>
+          <TreeItemChuyenXuLy item={item} ></TreeItemChuyenXuLy>
         </View>
       </TouchableOpacity>
     );
   };
   render() {
     const { data } = this.props;
+    //const data = this.state.treeData;
     return (
       <View style={styles.container}>
         <FlatList
