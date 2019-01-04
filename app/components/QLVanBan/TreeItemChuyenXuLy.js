@@ -112,7 +112,7 @@ class TreeItemChuyenXuLy extends Component {
                         <RadioButton key={item.id}>
                             <RadioButtonInput
                                 obj={[{ label: '', value: item.id }]}
-                                initial={-1}
+                                //initial={-1}
                                 buttonSize={10}
                                 selectedButtonColor={'black'}
                                 buttonColor={'black'}

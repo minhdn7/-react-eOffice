@@ -69,7 +69,7 @@ export class ChuyenXuLy extends Component {
         // });
     }
 
-    componentWillMount(){
+    componentWillMount() {
         //this.props.dispatch(chuyenXuLyAction.resetTreeDataAction());
     }
 
@@ -100,11 +100,23 @@ export class ChuyenXuLy extends Component {
 
     // }
 
-   
+
     state = {}
     render() {
         let dataStr = [];
         let viewTree;
+        if (this.props.chuyenXuLyReducer.get('lstTreeData')) {
+            viewTree = <TreeSelectCustom
+                data={[this.props.chuyenXuLyReducer.get('lstTreeData')]}
+                isOpen
+            //handleRadioButtonClick={this.handleRadioButtonClick}
+            // onClick={this._onClick}
+            // onClickLeaf={this._onClickLeaf}
+            />
+        } else {
+            viewTree = null;
+        }
+
         if (this.state.lstUnit != null && this.state.lstUnit.length != 0) {
             dataStr = this.state.lstUnit.map((item) => { return item.name });
         }
@@ -186,13 +198,14 @@ export class ChuyenXuLy extends Component {
                             </TouchableOpacity>
                         </View>
 
-                        <TreeSelectCustom
+                        {viewTree}
+                        {/* <TreeSelectCustom
                             data={[this.props.chuyenXuLyReducer.get('lstTreeData')]}
                             isOpen
                             //handleRadioButtonClick={this.handleRadioButtonClick}
                         // onClick={this._onClick}
                         // onClickLeaf={this._onClickLeaf}
-                        />
+                        /> */}
 
                         <View style={[styles.tableHeader, { backgroundColor: "#32CD32" }]}>
                             <View style={styles.width50}>
