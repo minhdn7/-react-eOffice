@@ -35,6 +35,11 @@ export function setLoginSuccess(data) {
   }
 }
 
+export function resetLogin() {
+  return {
+    type: actions.RESET_LOGIN_ACTION,
+  }
+}
 // get contact list after login success
 export function getContact() {
   return {

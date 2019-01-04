@@ -5,8 +5,14 @@ import * as actions from "../actions/action-types";
 
 export default function loginReducer(state, action = {}) {
   switch (action.type) {
+    case actions.RESET_LOGIN_ACTION:
+      return state.withMutations(state => state
+        .set('isLoggedIn', true)
+        .set('progress', false)
+        .set('loginError', '')
+        .set('loginData', [])
+        );
     case actions.LOGIN_ERROR:
-      
       return state.withMutations(state => state
         .set('isLoggedIn', false)
         .set('progress', false)
@@ -33,7 +39,7 @@ export default function loginReducer(state, action = {}) {
       return state.withMutations(state => state
         .set('progress', false)
         .set('isLoggedIn', false)
-        .set('loginError', action.err));
+        .set('loginError', action.error));
     }
     case actions.GET_CONTACT_SUCCESS: {
       return state.withMutations(state => state

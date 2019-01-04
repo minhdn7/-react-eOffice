@@ -1,14 +1,19 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 
-import {NavigationActions} from 'react-navigation';
-import {TouchableOpacity,TouchableWithoutFeedback, ScrollView, Text, View, StyleSheet, Image, FlatList} from 'react-native';
+import {NavigationActions, StackActions} from 'react-navigation';
+import {TouchableOpacity,TouchableWithoutFeedback, ScrollView, Text, View, StyleSheet, Image, FlatList, ToastAndroid, Alert} from 'react-native';
 import {Collapse,CollapseHeader, CollapseBody, AccordionList} from 'accordion-collapse-react-native';
 import strings from "../../resources/strings";
 import {connect} from "react-redux";
 import * as documentAction from "../../actions/document-action";
-
+import { Toast } from 'native-base';
+import * as menuActions from "../../actions/menu-actions";
+import * as logoutActions from "../../actions/logout-actions";
+import ListKhoItem from './ListKhoItem';
+import Login from "../screen/Login";
 class SideMenu extends Component {
+      countMenu: object;
       constructor() {
         super();
 
@@ -23,23 +28,32 @@ class SideMenu extends Component {
     }
 
     componentWillMount() {
-      
+      this.props.dispatch(menuActions.resetCountMenu());
+      this.props.dispatch(menuActions.getCountMenu());
       loginData = this.props.login.get('loginData');
       danhSachKho = [];
-      if(loginData.kho != null && loginData.kho.lenght > 0){
-        for(i = 0; i < loginData.kho.lenght; i++){
-            itemKho = {
-              key: i,
-              value: loginData.kho[i],
-            };
-            danhSachKho.push(itemKho);
-        }
+      if(loginData.kho && loginData.kho.length > 0){
+          danhSachKho = loginData.kho;
       }
+      danhSachKho.push(strings.vanBanDaXuLy);
+      danhSachKho.push(strings.vanBanXemDeBiet);
       this.setState({
         name: loginData.username,
         address: loginData.unitName,
-        kho: loginData.kho,
+        kho: danhSachKho,
       });
+    }
+
+    componentDidMount(){
+      this.countMenu = this.props.menuReducer.get('countMenuData');
+
+      // console.log("count menu response 2:", this.props.menuReducer.get('countMenuData'));
+      countMenuError = this.props.menuReducer.get('countMenuError');
+      if(countMenuError && countMenuError != ''){
+        ToastAndroid.show(countMenuError, ToastAndroid.SHORT);
+
+      }
+
     }
 
   navigateToScreen = (route) => () => {
@@ -53,6 +67,26 @@ class SideMenu extends Component {
     this.props.dispatch(documentAction.resetListDocumentAction());
     this.props.dispatch(documentAction.setTypeDocumentAction(type));
     this.props.navigation.navigate('DocManagement'); 
+  }
+
+  logOut = () => {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'Login' })],
+    });
+    Alert.alert(
+      'Xác nhận', 'Đăng xuất tài khoản?',
+      [
+          { text: 'Đồng ý', onPress:  () => {
+              this.props.navigation.navigate('Login');
+              this.props.dispatch(logoutActions.logout());
+            }
+ 
+              },
+          { text: 'Đóng lại' },
+      ],
+      { cancelable: false },
+    );
   }
   
   render () {
@@ -73,6 +107,7 @@ class SideMenu extends Component {
 
               {/* Trang chủ */}
               <TouchableOpacity
+              onPress={ () => this.props.navigation.closeDrawer()}
               style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
                   <Image style={{width: 30, height: 30, margin: 4}} 
                   source={require('../../image/ic_home.png')}/>
@@ -240,18 +275,17 @@ class SideMenu extends Component {
             </Collapse>
 
               {/* Đăng xuất */}
-              <View style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
+              <TouchableOpacity 
+              onPress={ () => this.logOut()}
+              style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
                   <Image style={{width: 30, height: 30, margin: 4}} 
                   source={require('../../image/logout.png')}/>
                   <Text style={{color: '#0d47a1', padding: 4}}>{strings.dangXuat}</Text>
-              </View>
+              </TouchableOpacity>
               <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
             
           </View>
         </ScrollView>
-        {/* <View style={menuStyles.footerContainer}>
-          <Text>This is my fixed footer</Text>
-        </View> */}
       </View>
     );
   }
@@ -281,39 +315,34 @@ const menuStyles = StyleSheet.create({
     padding: 20,
     backgroundColor: 'lightgrey'
   },
-  
+  outerCircle: {
+    borderRadius: 40,
+    width: 30,
+    height: 30,
+    backgroundColor: 'red',
+  },
+  innerCircle: {
+    borderRadius: 35,
+    width: 25,
+    height: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'red'
+  },
+  itemDocumentContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent:'space-between',
+    padding: 2
+  },
   });
-
-  class ListKhoItem extends Component {
-    render() {          
-        return (        
-            <View style={{
-                flex: 1,
-                flexDirection:'column',
-                backgroundColor: 'white',
-                paddingLeft: 10,
-                paddingRight: 10,
-                paddingTop: 2,                              
-            }}> 
-              <View
-                typeDocument = 'vanBanDaXuLy'
-                // name = {this.props.item}
-                style={{flexDirection: 'row', alignItems: 'center', padding: 4}}>
-                <Image style={{width: 30, height: 30, margin: 4}} 
-                source={require('../../image/ic_doc_processed.png')}/>
-                <Text style={{color: '#0d47a1', padding: 4}}>{this.props.item}</Text>
-              </View>
-              <View style={{height: 1, backgroundColor: 'gainsboro'}}/>
-          </View>
-        );
-    }
-  }
 
 
 
   const mapStateToProps = (state) => ({
     login: state.get('login'),
     root: state.get('root'),
+    menuReducer: state.get('menuReducer'),
   });
   
   export default connect(mapStateToProps)(SideMenu)  

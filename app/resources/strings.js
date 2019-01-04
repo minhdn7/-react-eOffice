@@ -72,7 +72,7 @@ module.exports = new LocalizedStrings({
     quanLyVanBan: 'Quản lý văn bản',
     vanBanChoXuLy: 'Văn bản chờ xử lý',
     vanBanDaXuLy: 'Văn bản đã xử lý',
-    vanBanXemDeBiet: 'Văn bản xem để biết',
+    vanBanXemDeBiet: 'Văn bản Xem để biết',
     vanBanDanhDau: 'Văn bản đánh dấu',
     traCuuVanBan: 'Tra cứu văn bản',
     danhBa: 'Danh bạ',

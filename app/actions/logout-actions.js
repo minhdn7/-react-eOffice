@@ -1,14 +1,11 @@
 /**
- * Created by saionara1 on 7/21/17.
+ * Created by MinhDN 3/1/2018
  */
 import * as actions from "../actions/action-types";
 
-export function logout(authId, username, password) {
+export function logout() {
   return {
     type: actions.LOGOUT_ACTION,
-    authId: authId,
-    username: username,
-    password: password
   }
 }
 

@@ -3,6 +3,7 @@
  */
 
 export const LOGIN_ACTION = "LOGIN";
+export const RESET_LOGIN_ACTION = "RESET_LOGIN_ACTION";
 export const LOGOUT_ACTION = "LOGOUT";
 export const LOGIN_SUCCESS = "LOGIN_SUCESS";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
@@ -122,4 +123,9 @@ export const SET_ID_CHECK_XLC = "SET_ID_CHECK_XLC";
 export const SET_LIST_ID_CHECK_PH = "SET_LIST_ID_CHECK_PH";
 export const SET_LIST_ID_CHECK_XEM = "SET_LIST_ID_CHECK_XEM";
 export const RESET_TREE_DATA = "RESET_TREE_DATA";
+// count menu
+export const GET_COUNT_MENU = "GET_COUNT_MENU";
+export const GET_COUNT_MENU_SUCESS = "GET_COUNT_MENU_SUCESS";
+export const GET_COUNT_MENU_ERROR = "GET_COUNT_MENU_ERROR";
+export const RESET_COUNT_MENU_DATA = "RESET_COUNT_MENU_DATA";
 
