@@ -79,15 +79,12 @@ export class ChuyenXuLy extends Component {
         this.props.dispatch(chuyenXuLyAction.getListUnitAction());
         this.props.dispatch(chuyenXuLyAction.setListTreeDataAction(lstData));
         //this.lstUserConcurentSend = this.props.login.get('dataContact');
-        this.setState({
-            lstUserConcurentSend: lstData,
-        })
     }
 
     componentWillReceiveProps() {
         this.setState({
             lstUnit: this.props.chuyenXuLyReducer.get('listUnit'),
-            //lstUserConcurentSend: this.props.chuyenXuLyReducer.get('lstTreeData'),
+            lstUserConcurentSend: this.props.chuyenXuLyReducer.get('lstTreeData'),
         });
         console.log("lstUserConcurentSend:", this.state.lstUserConcurentSend);
 

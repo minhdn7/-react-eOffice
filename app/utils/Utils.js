@@ -6,9 +6,9 @@ export const convertJsonToTreeMap = array => {
             map[obj.id] = obj;
             map[obj.id].children = [];
             map[obj.id].name = obj.Name;
-            map[obj.id].isCheckPH = true;
-            map[obj.id].isCheckXem = true;
-            map[obj.id].isCheckXLC = 0;
+            map[obj.id].isCheckPH = false;
+            map[obj.id].isCheckXem = false;
+            map[obj.id].isCheckXLC = false;
         }
 
         // if (typeof map[obj.id].userName == 'undefined') {
