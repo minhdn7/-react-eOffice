@@ -32,14 +32,23 @@ export default class TreeSelectCustom extends Component {
     this.state = {
       nodesStatus: this._initNodesStatus(),
       currentNode: null,
+      treeData: this.props.data,
     };
   }
 
-  componentWillReceiveProps() {
-    this.setState({
-      treeData: this.props.data,
-    })
+  handleCheckXlcClick = (id) => {
+    // let data = this.state.treeData;
+    // console.log("Truoc xu ly: ", data);
+    // if(data){
+    //   data[0].name = "test" + id;
+    //   console.log("Sau xu ly: ", data);
+    //   this.setState({
+    //     treeData: data,
+    //   })
+    // }
+    
   }
+
   _initNodesStatus = () => {
     const { isOpen = false, data, openIds = [] } = this.props;
     const nodesStatus = new Map();
@@ -143,7 +152,7 @@ export default class TreeSelectCustom extends Component {
             }}
             >
               <View style={[styles.collapseIcon, collapseIcon]} />
-              <TreeItemChuyenXuLy item={item} ></TreeItemChuyenXuLy>
+              <TreeItemChuyenXuLy item={item} handleCheckXlcClick={this.handleCheckXlcClick} ></TreeItemChuyenXuLy>
             </View>
           </TouchableOpacity>
           {
@@ -173,7 +182,7 @@ export default class TreeSelectCustom extends Component {
         }}
         >
           {/* <Text style={styles.textName}>{item.name}</Text> */}
-          <TreeItemChuyenXuLy item={item} ></TreeItemChuyenXuLy>
+          <TreeItemChuyenXuLy item={item} handleCheckXlcClick={this.handleCheckXlcClick} ></TreeItemChuyenXuLy>
         </View>
       </TouchableOpacity>
     );

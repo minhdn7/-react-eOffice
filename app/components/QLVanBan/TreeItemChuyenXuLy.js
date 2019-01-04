@@ -32,34 +32,21 @@ class TreeItemChuyenXuLy extends Component {
         super(props);
         this.state = {
             data: this.props.item,
-            isCheckXLC: 0,
+            isCheckXLC: "",
         };
-    }
-
-    componentWillUnmount() {
-        // this.props.dispatch(chuyenXuLyAction.setListTreeDataAction([]));
-        // this.props.dispatch(chuyenXuLyAction.setIdCheckXlcAction(""));
-        // this.props.dispatch(chuyenXuLyAction.setListIdCheckPhAction([]));
-        // this.props.dispatch(chuyenXuLyAction.setListIdCheckXemAction([]));
     }
 
     handleRadioButtonClick = (idNew) => {
         var idOld = this.props.chuyenXuLyReducer.get('idCheckXlc');
-        // if (idNew == idOld) return;
-        // else this.props.dispatch(chuyenXuLyAction.setIdCheckXlcAction(idNew));
-
-        // var lst = this.props.chuyenXuLyReducer.get('lstTreeData');
-        // this.findById(lst, idNew, idOld);
-        // console.log("test lstData sau xu ly: ", lst);
-        // this.props.dispatch(chuyenXuLyAction.setListTreeDataAction(lst));
+        
         var item = this.state.data;
         if (item) {
-            item.isCheckXLC = 1;
+            //item.isCheckXLC = true;
             item.isCheckPH = false;
             item.isCheckXem = false;
             this.setState({
                 data: item,
-                isCheckXLC: 1
+                isCheckXLC: idNew
             })
         }
     }
@@ -67,7 +54,7 @@ class TreeItemChuyenXuLy extends Component {
     handleCheckBoxClick = (idNew, type) => {
 
         var item = this.state.data;
-        item.isCheckXLC = false;
+        //item.isCheckXLC = false;
         if (type == "PH") {
             item.isCheckPH = !item.isCheckPH;
             item.isCheckXem = false;
@@ -77,6 +64,7 @@ class TreeItemChuyenXuLy extends Component {
         }
         this.setState({
             data: item,
+            isCheckXLC: "",
         })
     }
 
@@ -103,7 +91,7 @@ class TreeItemChuyenXuLy extends Component {
         let viewData;
         if (item != null && item != "undefined") {
             viewData =
-                <View style={{ flex: 1, flexDirection: 'row' }}>
+                <View style={{ flex: 1, flexDirection: 'row', }}>
                     <View style={{ flex: 6 }}>
                         <Text style={styles.textName}>{item.name}</Text>
                     </View>
@@ -112,11 +100,12 @@ class TreeItemChuyenXuLy extends Component {
                         <RadioButton key={item.id}>
                             <RadioButtonInput
                                 obj={[{ label: '', value: item.id }]}
-                                //initial={-1}
+                                //initial={0}
+                                index={0}
                                 buttonSize={10}
                                 selectedButtonColor={'black'}
                                 buttonColor={'black'}
-                                isSelected={item.isCheckXLC}
+                                isSelected={this.state.isCheckXLC === item.id}
                                 onPress={() => { this.handleRadioButtonClick(item.id) }}
                             />
                         </RadioButton>
