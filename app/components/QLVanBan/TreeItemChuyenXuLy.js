@@ -32,13 +32,14 @@ class TreeItemChuyenXuLy extends Component {
         super(props);
         this.state = {
             data: this.props.item,
-            isCheckXLC: "",
+            isCheckXLC: this.props.currentNode,
         };
     }
 
     handleRadioButtonClick = (idNew) => {
         var idOld = this.props.chuyenXuLyReducer.get('idCheckXlc');
-        
+        //if(idOld == idNew) return;
+
         var item = this.state.data;
         if (item) {
             //item.isCheckXLC = true;
@@ -46,9 +47,12 @@ class TreeItemChuyenXuLy extends Component {
             item.isCheckXem = false;
             this.setState({
                 data: item,
-                isCheckXLC: idNew
+                //isCheckXLC: idNew
             })
         }
+        this.props.handleCheckXlcClick(idNew, idOld);
+
+        this.props.dispatch(chuyenXuLyAction.setIdCheckXlcAction(idNew));
     }
 
     handleCheckBoxClick = (idNew, type) => {
@@ -64,26 +68,10 @@ class TreeItemChuyenXuLy extends Component {
         }
         this.setState({
             data: item,
-            isCheckXLC: "",
+            //isCheckXLC: "",
         })
-    }
 
-    findById = (data, idNew, idOld) => {
-        //for (data of lstData) {
-        let index = 0;
-        if (data.id == idNew) {
-            data.isCheckXLC = 1;
-            data.isCheckPH = false;
-            data.isCheckXem = false;
-            index = index + 1;
-        } else if (data.id == idOld) {
-            data.isCheckXLC = 0;
-            index = index + 1;
-        }
-        if (index == 2) return;
-        if (data.children)
-            this.findById(data.children, idNew);
-        // }
+        this.props.handleCheckBoxClick(idNew);
     }
 
     render() {
@@ -92,20 +80,25 @@ class TreeItemChuyenXuLy extends Component {
         if (item != null && item != "undefined") {
             viewData =
                 <View style={{ flex: 1, flexDirection: 'row', }}>
-                    <View style={{ flex: 6 }}>
-                        <Text style={styles.textName}>{item.name}</Text>
+                
+                <TouchableOpacity style={{flex: 6}} 
+                onPress={(e) => (item && item.children && item.children.length) ? this.props._onPressCollapse({ e, item }) : null } >
+                    <View style={{ flex: 1 }}>
+                        
+                            <Text style={styles.textName}>{item.name}</Text>
+                        
                     </View>
+                    </TouchableOpacity>
                     <View style={{ flex: 1 }}>
                         {/* <RadioForm> */}
                         <RadioButton key={item.id}>
                             <RadioButtonInput
                                 obj={[{ label: '', value: item.id }]}
                                 //initial={0}
-                                index={0}
                                 buttonSize={10}
                                 selectedButtonColor={'black'}
                                 buttonColor={'black'}
-                                isSelected={this.state.isCheckXLC === item.id}
+                                isSelected={this.props.currentNode === item.id}
                                 onPress={() => { this.handleRadioButtonClick(item.id) }}
                             />
                         </RadioButton>

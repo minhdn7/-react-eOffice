@@ -5,10 +5,10 @@ export const convertJsonToTreeMap = array => {
         if (!(obj.id in map)) {
             map[obj.id] = obj;
             map[obj.id].children = [];
-            map[obj.id].name = obj.Name;
+            //map[obj.id].name = obj.Name;
             map[obj.id].isCheckPH = false;
             map[obj.id].isCheckXem = false;
-            map[obj.id].isCheckXLC = false;
+            //map[obj.id].isCheckXLC = false;
         }
 
         // if (typeof map[obj.id].userName == 'undefined') {

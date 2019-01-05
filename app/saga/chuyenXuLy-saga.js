@@ -6,6 +6,7 @@ import * as chuyenXuLyActions from "../actions/chuyenXuLy-actions";
 import * as rootActions from "../actions/root-actions";
 import apiUrl from "../network/apiUrl";
 import consts from "../const";
+import { convertJsonToTreeMap } from '../utils/Utils';
 
 function getListUnitURL() {
 
@@ -22,9 +23,44 @@ function getListUnitURL() {
       });
   }
 
-  function getUserConcurrentSendURL(unitId) {
+  function getUserConcurrentSendURL(id, jobPosition, name) {
 
-    url = apiUrl.ROOT_URL + apiUrl.GET_USER_CONCURRENT_SEND_URL + unitId + "/";
+    url = apiUrl.ROOT_URL + apiUrl.GET_USER_CONCURRENT_SEND_URL;
+    return fetch(url, {
+      method: 'POST',
+      headers: consts.BASE_HEADER,
+      body: JSON.stringify({
+        "id": id,
+        "jobPosition": jobPosition,
+        "name": name
+      }),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function getListInternalURL(idDoc) {
+
+    url = apiUrl.ROOT_URL + apiUrl.GET_LIST_INTERNAL_URL + idDoc + "/";
+    return fetch(url, {
+      method: 'GET',
+      headers: consts.BASE_HEADER,
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function getListGroupUnitlURL() {
+
+    url = apiUrl.ROOT_URL + apiUrl.GET_LIST_GROUP_UNIT_URL;
     return fetch(url, {
       method: 'GET',
       headers: consts.BASE_HEADER,
@@ -60,13 +96,14 @@ function getListUnitURL() {
     }
   }
 
-  function* getUserConcurrentSend(unitId) {
+  function* getUserConcurrentSend(id, jobPosition, name) {
     try {
-      response = yield call(getUserConcurrentSendURL, unitId);
-      //console.log("list unit:", response);
+      response = yield call(getUserConcurrentSendURL, id, jobPosition, name);
+      console.log("list user concurrent send:", response);
       if (typeof (response) != "undefined" && typeof (response.status) != "undefined") {
         if (response.status.code == "0" && typeof (response.data) != "undefined") {
-          yield put(chuyenXuLyActions.getUserConcurrentSendSucessAction(response.data));
+          let convertTreeData = convertJsonToTreeMap(response.data)
+          yield put(chuyenXuLyActions.getUserConcurrentSendSucessAction(convertTreeData));
           return response;
         } else {
           yield put(chuyenXuLyActions.getUserConcurrentSendErrorAction(response.status.message));
@@ -82,7 +119,54 @@ function getListUnitURL() {
       yield put(chuyenXuLyActions.getUserConcurrentSendErrorAction(String(error)));
     }
   }
+
+  function* getListInternal(idDoc) {
+    try {
+      response = yield call(getListInternalURL, idDoc);
+      console.log("list internal:", response);
+      if (typeof (response) != "undefined" && typeof (response.status) != "undefined") {
+        if (response.status.code == "0" && typeof (response.data) != "undefined") {
+          let convertTreeData = convertJsonToTreeMap(response.data)
+          yield put(chuyenXuLyActions.getListInternalSucessAction(convertTreeData));
+          return response;
+        } else {
+          yield put(chuyenXuLyActions.getListInternalErrorAction(response.status.message));
+          return undefined;
+        }
+      } else {
+        yield put(chuyenXuLyActions.getListInternalErrorAction("Không lấy được dữ liệu!"));
+        return undefined;
+      }
   
+    } catch (error) {
+  
+      yield put(chuyenXuLyActions.getListInternalErrorAction(String(error)));
+    }
+  }
+  
+  function* getListGroupUnit() {
+    try {
+      response = yield call(getListGroupUnitlURL);
+      console.log("list group unit:", response);
+      if (typeof (response) != "undefined" && typeof (response.status) != "undefined") {
+        if (response.status.code == "0" && typeof (response.data) != "undefined") {
+          yield put(chuyenXuLyActions.getListGroupUnitSucessAction(response.data));
+          return response;
+        } else {
+          yield put(chuyenXuLyActions.getListGroupUnitErrorAction(response.status.message));
+          return undefined;
+        }
+      } else {
+        yield put(chuyenXuLyActions.getListGroupUnitErrorAction("Không lấy được dữ liệu!"));
+        return undefined;
+      }
+  
+    } catch (error) {
+  
+      yield put(chuyenXuLyActions.getListGroupUnitErrorAction(String(error)));
+    }
+  }
+
   export function* chuyenXuLyFlow() {
     while (true) {
   
@@ -97,9 +181,31 @@ function getListUnitURL() {
   export function* userConcurrentSendFlow() {
     while (true) {
   
-      const {unitId} = yield take(actions.GET_USER_CONCURRENT_SEND);
+      const {id, jobPosition, name} = yield take(actions.GET_USER_CONCURRENT_SEND);
       yield put(rootActions.controlProgress(true));
-      yield call(getUserConcurrentSend, unitId);
+      yield call(getUserConcurrentSend, id, jobPosition, name);
+      yield put(rootActions.controlProgress(false));
+  
+    }
+  }
+
+  export function* getListInternalFlow() {
+    while (true) {
+  
+      const {idDoc} = yield take(actions.GET_LIST_INTERNAL);
+      yield put(rootActions.controlProgress(true));
+      yield call(getListInternal, idDoc);
+      yield put(rootActions.controlProgress(false));
+  
+    }
+  }
+
+  export function* getListGroupUnitFlow() {
+    while (true) {
+  
+      yield take(actions.GET_LIST_GROUP_UNIT);
+      yield put(rootActions.controlProgress(true));
+      yield call(getListGroupUnit);
       yield put(rootActions.controlProgress(false));
   
     }

@@ -120,5 +120,7 @@ const apiUrl = {
     GET_LIST_UNIT_URL : "api/document/getlistunit/",
     GET_USER_CONCURRENT_SEND_URL : "api/document/getuserconcurrentsend/",
     GET_COUNT_MENU_URL: "api/document/countmenu/",
+    GET_LIST_INTERNAL_URL: "api/unit/getlistinternal/",
+    GET_LIST_GROUP_UNIT_URL: "api/group/getlistgroupunit/",
 }
 export default apiUrl;

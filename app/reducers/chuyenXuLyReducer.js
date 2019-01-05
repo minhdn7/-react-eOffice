@@ -41,7 +41,27 @@ export default function chuyenXuLyReducer(state, action = {}) {
                 .set('idCheckXlc', "")
                 .set('lstIdCheckPh', [])
                 .set('lstIdCheckXem', [])
-                );
+            );
+        case actions.GET_LIST_INTERNAL_SUCESS:
+            return state.withMutations(state => state
+                .set('progress', false)
+                .set('listInternal', action.listInternal)
+            );
+        case actions.GET_LIST_INTERNAL_ERROR:
+            return state.withMutations(state => state
+                .set('progress', false)
+                .set('error', action.error)
+            );
+        case actions.GET_LIST_GROUP_UNIT_SUCESS:
+            return state.withMutations(state => state
+                .set('progress', false)
+                .set('listGroupUnit', action.listGroupUnit)
+            );
+        case actions.GET_LIST_GROUP_UNIT_ERROR:
+            return state.withMutations(state => state
+                .set('progress', false)
+                .set('error', action.error)
+            );
         default:
             return state
     }

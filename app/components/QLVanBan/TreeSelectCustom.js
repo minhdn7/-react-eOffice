@@ -25,6 +25,8 @@ const styles = StyleSheet.create({
   }
 });
 
+let index = 0;
+
 export default class TreeSelectCustom extends Component {
   constructor(props) {
     super(props);
@@ -33,20 +35,64 @@ export default class TreeSelectCustom extends Component {
       nodesStatus: this._initNodesStatus(),
       currentNode: null,
       treeData: this.props.data,
+      isCheckXLC: null,
     };
   }
 
   handleCheckXlcClick = (id) => {
-    // let data = this.state.treeData;
-    // console.log("Truoc xu ly: ", data);
-    // if(data){
-    //   data[0].name = "test" + id;
-    //   console.log("Sau xu ly: ", data);
-    //   this.setState({
-    //     treeData: data,
-    //   })
-    // }
+    this.setState((state) => {
+      return {
+        isCheckXLC: id,
+        //nodesStatus
+      };
+    });
+  }
+
+  handleCheckBoxClick = (id) => {
+    if(this.state.isCheckXLC && this.state.isCheckXLC == id){
+      this.setState((state) => {
+        return {
+          isCheckXLC: null,
+          //nodesStatus
+        };
+      });
+    }
     
+  }
+
+  // handleCheckXlcClick = (idNew, idOld) => {
+  //   let data = this.state.treeData;
+  //   console.log("Truoc xu ly: ", data);
+
+  //   this.findById(data, idNew, idOld)
+  //   if (data) {
+  //     //console.log("Sau xu ly: ", data);
+  //     this.setState({
+  //       treeData: data,
+  //     })
+  //   }
+
+  // }
+
+
+  findById = (data, idNew, idOld) => {
+    for (var i = 0; i < data.length; i++) {
+      if (data[i].id == idNew) {
+        data[i].isCheckXLC = true;
+        data[i].isCheckPH = false;
+        data[i].isCheckXem = false;
+        index = index + 1;
+      } else if (data[i].id == idOld) {
+        data[i].isCheckXLC = false;
+        index = index + 1;
+      }
+      if (index == 2) {
+        index = 0;
+        return;
+      }
+      if (data[i].children)
+        this.findById(data[i].children, idNew, idOld);
+    }
   }
 
   _initNodesStatus = () => {
@@ -141,7 +187,7 @@ export default class TreeSelectCustom extends Component {
         };
       return (
         <View>
-          <TouchableOpacity onPress={(e) => this._onPressCollapse({ e, item })} >
+          {/* <TouchableOpacity onPress={(e) => this._onPressCollapse({ e, item })} > */}
             <View style={{
               flexDirection: 'row',
               // backgroundColor: this.state.currentNode === item.id ? '#FFEDCE' : '#fff',
@@ -152,9 +198,16 @@ export default class TreeSelectCustom extends Component {
             }}
             >
               <View style={[styles.collapseIcon, collapseIcon]} />
-              <TreeItemChuyenXuLy item={item} handleCheckXlcClick={this.handleCheckXlcClick} ></TreeItemChuyenXuLy>
+              <TreeItemChuyenXuLy
+                item={item}
+                currentNode={this.state.isCheckXLC}
+                handleCheckBoxClick={this.handleCheckBoxClick}
+                handleCheckXlcClick={this.handleCheckXlcClick} 
+                _onPressCollapse={this._onPressCollapse}
+                >
+              </TreeItemChuyenXuLy>
             </View>
-          </TouchableOpacity>
+          {/* </TouchableOpacity> */}
           {
             !isOpen ? null :
               <FlatList
@@ -182,7 +235,12 @@ export default class TreeSelectCustom extends Component {
         }}
         >
           {/* <Text style={styles.textName}>{item.name}</Text> */}
-          <TreeItemChuyenXuLy item={item} handleCheckXlcClick={this.handleCheckXlcClick} ></TreeItemChuyenXuLy>
+          <TreeItemChuyenXuLy
+            item={item}
+            currentNode={this.state.isCheckXLC}
+            handleCheckBoxClick={this.handleCheckBoxClick}
+            handleCheckXlcClick={this.handleCheckXlcClick} >
+          </TreeItemChuyenXuLy>
         </View>
       </TouchableOpacity>
     );

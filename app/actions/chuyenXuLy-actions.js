@@ -21,10 +21,12 @@ export const getListUnitErorrAction = (error) => {
     }
 }
 
-export const getUserConcurrentSendAction = (unitId) => {
+export const getUserConcurrentSendAction = (id, jobPosition, name) => {
     return{
         type: actions.GET_USER_CONCURRENT_SEND,
-        unitId: unitId
+        id,
+        jobPosition,
+        name
     }
 }
 
@@ -74,5 +76,46 @@ export const resetTreeDataAction = () => {
     return{
         type: actions.RESET_TREE_DATA,
         
+    }
+}
+
+export const getListInternalAction = (idDoc) => {
+    return{
+        type: actions.GET_LIST_INTERNAL,
+        idDoc
+    }
+}
+
+export const getListInternalSucessAction = (response) => {
+    return{
+        type: actions.GET_LIST_INTERNAL_SUCESS,
+        listInternal: response,
+    }
+}
+
+export const getListInternalErrorAction = (error) => {
+    return{
+        type: actions.GET_LIST_INTERNAL_ERROR,
+        error
+    }
+}
+
+export const getListGroupUnitAction = () => {
+    return{
+        type: actions.GET_LIST_GROUP_UNIT,
+    }
+}
+
+export const getListGroupUnitSucessAction = (response) => {
+    return{
+        type: actions.GET_LIST_GROUP_UNIT_SUCESS,
+        listGruopUnit: response,
+    }
+}
+
+export const getListGroupUnitErrorAction = (error) => {
+    return{
+        type: actions.GET_LIST_GROUP_UNIT_ERROR,
+        error
     }
 }

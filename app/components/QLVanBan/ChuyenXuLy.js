@@ -26,6 +26,7 @@ export class ChuyenXuLy extends Component {
             lstUnit: [],
             txtUnit: "--Chọn đơn vị--",
             lstUserConcurentSend: [],
+            lstInternal: [],
         }
     }
 
@@ -74,18 +75,31 @@ export class ChuyenXuLy extends Component {
     }
 
     componentDidMount() {
-        var lstData = convertJsonToTreeMap(ContactData);
+        //var lstData = convertJsonToTreeMap(ContactData);
         //var lstData = convertJsonToTreeMap(this.props.login.get('dataContact'));
+        var idDocument = this.props.navigation.getParam('idDocument', 'NO-ID');
+
         this.props.dispatch(chuyenXuLyAction.getListUnitAction());
-        this.props.dispatch(chuyenXuLyAction.setListTreeDataAction(lstData));
+        this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction("", "", ""));
+        this.props.dispatch(chuyenXuLyAction.getListInternalAction(idDocument));
+        //this.props.dispatch(chuyenXuLyAction.setListTreeDataAction(lstData));
         //this.lstUserConcurentSend = this.props.login.get('dataContact');
     }
 
     componentWillReceiveProps() {
+        //var lstTreeData = this.props.chuyenXuLyReducer.get('listUserConcurrentSend');
+        if (this.props.chuyenXuLyReducer.get('listUnit')) {
+            this.setState({
+                lstUnit: this.props.chuyenXuLyReducer.get('listUnit'),
+            });
+        }
+        //if (lstTreeData) {
         this.setState({
-            lstUnit: this.props.chuyenXuLyReducer.get('listUnit'),
-            lstUserConcurentSend: this.props.chuyenXuLyReducer.get('lstTreeData'),
+            lstUserConcurentSend: this.props.chuyenXuLyReducer.get('listUserConcurrentSend'),
+            lstInternal: this.props.chuyenXuLyReducer.get('listInternal'),
         });
+        // }
+
         console.log("lstUserConcurentSend:", this.state.lstUserConcurentSend);
 
     }
@@ -105,9 +119,15 @@ export class ChuyenXuLy extends Component {
     render() {
         let dataStr = [];
         let viewTree;
-        if (this.props.chuyenXuLyReducer.get('lstTreeData')) {
+        let viewDonVi;
+
+        if (this.state.lstUnit != null && this.state.lstUnit.length != 0) {
+            dataStr = this.state.lstUnit.map((item) => { return item.name });
+        }
+
+        if (this.state.lstUserConcurentSend != null) {
             viewTree = <TreeSelectCustom
-                data={[this.props.chuyenXuLyReducer.get('lstTreeData')]}
+                data={[this.state.lstUserConcurentSend]}
                 isOpen
             //handleRadioButtonClick={this.handleRadioButtonClick}
             // onClick={this._onClick}
@@ -117,13 +137,18 @@ export class ChuyenXuLy extends Component {
             viewTree = null;
         }
 
-        if (this.state.lstUnit != null && this.state.lstUnit.length != 0) {
-            dataStr = this.state.lstUnit.map((item) => { return item.name });
+        if (this.state.lstUserConcurentSend != null) {
+            viewDonVi = <TreeSelectCustom
+                data={[this.state.lstInternal]}
+                isOpen
+            //handleRadioButtonClick={this.handleRadioButtonClick}
+            // onClick={this._onClick}
+            // onClickLeaf={this._onClickLeaf}
+            />
+        } else {
+            viewDonVi = null;
         }
 
-        if (this.lstUserConcurentSend != null && this.lstUserConcurentSend.length != 0) {
-
-        }
 
         return (
             <View style={{ flex: 1 }}>
@@ -230,7 +255,8 @@ export class ChuyenXuLy extends Component {
                                 <Text>{this.state.textThugon}</Text>
                             </TouchableOpacity>
                         </View>
-
+                        
+                        {viewDonVi}
                         {/* <TreeViewChuyenXuLy data={this.listDataById} /> */}
 
                         {/* </View> */}
