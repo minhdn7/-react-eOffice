@@ -13,6 +13,7 @@ import * as rootActions from "../../actions/root-actions";
 import TreeSelectCustom from '../QLVanBan/TreeSelectCustom';
 import { convertJsonToTreeMap } from '../../utils/Utils';
 import ContactData from "../../data/ContactData";
+import strings from "../../resources/strings";
 
 const { height, width } = Dimensions.get('window');
 
@@ -71,7 +72,7 @@ export class ChuyenXuLy extends Component {
     }
 
     componentWillMount() {
-        //this.props.dispatch(chuyenXuLyAction.resetTreeDataAction());
+        this.props.dispatch(chuyenXuLyAction.resetTreeDataAction());
     }
 
     componentDidMount() {
@@ -87,7 +88,17 @@ export class ChuyenXuLy extends Component {
     }
 
     componentWillReceiveProps() {
-        //var lstTreeData = this.props.chuyenXuLyReducer.get('listUserConcurrentSend');
+        // var lstTreeData = this.props.chuyenXuLyReducer.get('lstTreeData');
+        // var lstTreeDonVi = this.props.chuyenXuLyReducer.get('lstTreeDonVi');
+        // if(!lstTreeData || !lstTreeData.length){
+        //     lstTreeData = this.props.chuyenXuLyReducer.get('listUserConcurrentSend');
+        //     this.props.dispatch(chuyenXuLyAction.setListTreeDataAction(lstTreeData));
+        // }
+        // if(!lstTreeDonVi || !lstTreeDonVi.length){
+        //     lstTreeDonVi = this.props.chuyenXuLyReducer.get('listInternal');
+        //     this.props.dispatch(chuyenXuLyAction.setListTreeDonViAction(lstTreeDonVi));
+        // }
+
         if (this.props.chuyenXuLyReducer.get('listUnit')) {
             this.setState({
                 lstUnit: this.props.chuyenXuLyReducer.get('listUnit'),
@@ -104,15 +115,16 @@ export class ChuyenXuLy extends Component {
 
     }
 
-    // handleRadioButtonClick(idNew) {
-    //     var idOld = this.props.chuyenXuLyReducer.get('idCheckXlc');
-    //     if(idNew == idOld) return;
-
-    //     var lst = this.props.chuyenXuLyReducer.get('lstTreeData');
-    //     findById(lst, idNew, idOld);
-    //     console.log("test lstData sau xu ly: ", lst);
-
-    // }
+    save = (check) => {
+        if(check == 1){
+            var lstDataSelect = this.props.chuyenXuLyReducer.get('lstDataSelect');
+            if(lstDataSelect && lstDataSelect.length){
+                this.props.navigation.navigate('DocumentMove');
+            }else{
+                alert(strings.thongBaoChuaChonNguoiNhanVanBan);
+            }
+        }
+    }
 
 
     state = {}
@@ -125,7 +137,7 @@ export class ChuyenXuLy extends Component {
             dataStr = this.state.lstUnit.map((item) => { return item.name });
         }
 
-        if (this.state.lstUserConcurentSend != null) {
+        if (this.state.lstUserConcurentSend) {
             viewTree = <TreeSelectCustom
                 data={[this.state.lstUserConcurentSend]}
                 isOpen
@@ -134,10 +146,10 @@ export class ChuyenXuLy extends Component {
             // onClickLeaf={this._onClickLeaf}
             />
         } else {
-            viewTree = null;
+            viewTree = <Text>{strings.khongCoDuLieu}</Text>
         }
 
-        if (this.state.lstUserConcurentSend != null) {
+        if (this.state.lstInternal) {
             viewDonVi = <TreeSelectCustom
                 data={[this.state.lstInternal]}
                 isOpen
@@ -146,13 +158,13 @@ export class ChuyenXuLy extends Component {
             // onClickLeaf={this._onClickLeaf}
             />
         } else {
-            viewDonVi = null;
+            viewDonVi = <Text>{strings.khongCoDuLieu}</Text>;
         }
 
 
         return (
             <View style={{ flex: 1 }}>
-                <HeaderChuyenXuLy myTitle='Chọn người nhận văn bản' navigator={this.props.navigation} />
+                <HeaderChuyenXuLy myTitle='Chọn người nhận văn bản' navigator={this.props.navigation} save={this.save} />
 
                 <View style={{ flex: 1, flexDirection: 'column', backgroundColor: '#D7D7D7' }}>
                     <View style={{ flex: 1, flexDirection: 'row', marginTop: 5, marginLeft: 5, marginRight: 5 }}>

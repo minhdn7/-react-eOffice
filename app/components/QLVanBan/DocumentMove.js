@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Dimensions, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import HeaderChuyenXuLy from '../QLVanBan/HeaderChuyenXuLy';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import styles from '../../styles/styleQLVanBan';
 import moment from 'moment';
-import CheckBox from 'react-native-check-box'
+import CheckBox from 'react-native-check-box';
+import { connect } from "react-redux";
+import * as chuyenXuLyAction from "../../actions/chuyenXuLy-actions";
+import strings from "../../resources/strings";
 
 const { height, width } = Dimensions.get('window');
 
-export default class DocumentMove extends Component {
+export class DocumentMove extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -17,7 +20,27 @@ export default class DocumentMove extends Component {
             isDateTimePickerVisible: false,
             txtDateTimePicker: "",
             isCheckedTuDongGiaoViec: false,
-            isCheckedGuiSms: false
+            isCheckedGuiSms: false,
+            lstData: [],
+            lstXuLyChinh: [],
+            lstPhoiHop: [],
+            lstXem: [],
+        }
+    }
+
+    componentDidMount() {
+        if (this.props.chuyenXuLyReducer.get('lstDataSelect')) {
+            let lstData = this.props.chuyenXuLyReducer.get('lstDataSelect')
+            let lstXuLyChinh = lstData.filter((item) => { return item.isCheckXLC });
+            let lstPhoiHop = lstData.filter((item) => { return item.isCheckPH });
+            let lstXem = lstData.filter((item) => { return item.isCheckXem });
+            this.setState({
+                lstData: lstData,
+                lstXuLyChinh: lstXuLyChinh,
+                lstPhoiHop: lstPhoiHop,
+                lstXem: lstXem,
+            })
+            console.log("list data select: ", this.state.lstData);
         }
     }
 
@@ -31,7 +54,97 @@ export default class DocumentMove extends Component {
         this._hideDateTimePicker();
     };
 
+    _removeItemHandle = (id, type) => {
+        if (id != null && id != "" && id != "undefined") {
+            switch (type) {
+                case 1:// xử lý chính
+                    var lstXuLyChinh = this.state.lstXuLyChinh;
+                    if (lstXuLyChinh && lstXuLyChinh.length) {
+                        this.setState({
+                            lstXuLyChinh: lstXuLyChinh.filter((item) => {
+                                return item.id !== id
+                            })
+                        });
+                    }
+                    break;
+                case 2:// phối hợp
+                    var lstPhoiHop = this.state.lstPhoiHop;
+                    if (lstPhoiHop && lstPhoiHop.length) {
+                        this.setState({
+                            lstPhoiHop: lstPhoiHop.filter((item) => {
+                                return item.id !== id
+                            })
+                        });
+                    }
+                    break;
+                case 3://xem để biết
+                    var lstXem = this.state.lstXem;
+                    if (lstXem && lstXem.length) {
+                        this.setState({
+                            lstXem: lstXem.filter((item) => {
+                                return item.id !== id
+                            })
+                        });
+                    }
+                    break;
+                default: break;
+            }
+        }
+    }
+
+    _view = (data, type) => {
+        
+        return data.map((item) => {
+            return (
+                <View style={{ height: height * 0.07, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', borderBottomWidth: 1 }} key={item.id}>
+                    <Text style={{ flex: 9, color: 'black' }}>{item.name}</Text>
+                    <TouchableOpacity
+                        style={{ flex: 1, }}
+                        onPress={() => this._removeItemHandle(item.id, type)}
+                    >
+                        <EvilIcons style={{ flex: 1, fontWeight: 'bold', paddingTop: 10, paddingBottom: 10 }} name="close" size={30} color="black" />
+                    </TouchableOpacity>
+                </View>
+            )
+        })
+    }
+
     render() {
+        let viewXuLyChinh;
+        let viewPhoiHop;
+        let viewXem;
+        if (this.state.lstXuLyChinh && this.state.lstXuLyChinh.length) {
+            viewXuLyChinh = <View style={{ marginBottom: 5 }}>
+                <View style={[styles.tableHeader, { backgroundColor: "#205AA7", justifyContent: 'flex-start', paddingLeft: 5 }]}>
+                    <Text style={styles.titleStyle}>{strings.xuLyChinh}</Text>
+                </View>
+                {this._view(this.state.lstXuLyChinh, 1)}
+            </View>
+        } else {
+            viewXuLyChinh = null;
+        }
+
+        if (this.state.lstPhoiHop && this.state.lstPhoiHop.length) {
+            viewPhoiHop = <View style={{ marginBottom: 5 }}>
+                <View style={[styles.tableHeader, { backgroundColor: "#205AA7", justifyContent: 'flex-start', paddingLeft: 5 }]}>
+                    <Text style={styles.titleStyle}>{strings.phoiHop}</Text>
+                </View>
+                {this._view(this.state.lstPhoiHop, 2)}
+            </View>
+        } else {
+            viewPhoiHop = null;
+        }
+
+        if (this.state.lstXem && this.state.lstXem.length) {
+            viewXem = <View style={{ marginBottom: 5 }}>
+                <View style={[styles.tableHeader, { backgroundColor: "#205AA7", justifyContent: 'flex-start', paddingLeft: 5 }]}>
+                    <Text style={styles.titleStyle}>{strings.xemDeBiet}</Text>
+                </View>
+                {this._view(this.state.lstXem, 3)}
+            </View>
+        } else {
+            viewXem = null;
+        }
         return (
             <View style={{ flex: 1 }}>
                 <HeaderChuyenXuLy myTitle='Chuyển văn bản' navigator={this.props.navigation} type="2" />
@@ -89,21 +202,14 @@ export default class DocumentMove extends Component {
                             leftTextStyle={{ color: 'black', marginLeft: '40%' }}
                         />
                     </View>
-
                     <View style={{ flex: 8, margin: 5 }}>
-                        <View style={{ flex: 1, flexDirection: 'column', marginBottom: 5 }}>
-                            <View style={[styles.tableHeader, { backgroundColor: "#205AA7", justifyContent: 'flex-start', paddingLeft: 5 }]}>
-                                <Text style={styles.titleStyle}>Xử lý chính</Text>
+                        <ScrollView style={{ flex: 1 }}>
+                            <View style={{ flex: 1, flexDirection: 'column', marginBottom: 5 }}>
+                                {viewXuLyChinh}
+                                {viewPhoiHop}
+                                {viewXem}
                             </View>
-                            <View style={{ height: height * 0.07, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', borderBottomWidth: 1 }}>
-                                <Text style={{ flex: 9, color: 'black' }}>Tập đoàn bưu chính Viễn thông</Text>
-                                <TouchableOpacity style={{ flex: 1, }}>
-                                    <EvilIcons style={{ flex: 1, fontWeight: 'bold', paddingTop: 10, paddingBottom: 10 }} name="close" size={30} color="black" />
-                                </TouchableOpacity>
-                            </View>
-
-                        </View>
-
+                        </ScrollView>
                     </View>
                 </View>
             </View>
@@ -112,3 +218,9 @@ export default class DocumentMove extends Component {
 
     }
 }
+
+const mapStateToProps = (state) => ({
+    chuyenXuLyReducer: state.get('chuyenXuLyReducer'),
+});
+
+export default connect(mapStateToProps)(DocumentMove)  

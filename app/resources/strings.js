@@ -119,5 +119,13 @@ module.exports = new LocalizedStrings({
     daXuLy: "Đã xử lý",
     chuyenXuLy: "Chuyển xử lý",
     traoDoiThongTin: "Trao đổi thông tin",
+
+    khongCoDuLieu: "Không có dữ liệu",
+    thongBaoChuaChonNguoiNhanVanBan: "Chưa chọn đơn vị/cá nhân nhận văn bản",
+
+    // chuyển văn bản
+    xuLyChinh: "Xử lý chính",
+    phoiHop: "Phối hợp",
+    xemDeBiet: "Xem để biết",
   }
 });

@@ -17,8 +17,8 @@ export default class HeaderChuyenXuLy extends Component {
         return true;
       }
 
-    save =() =>{
-        alert("Save");
+    save = () =>{
+        this.props.save(1);
     }
 
     render() {

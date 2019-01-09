@@ -37,12 +37,11 @@ class TreeItemChuyenXuLy extends Component {
     }
 
     handleRadioButtonClick = (idNew) => {
-        var idOld = this.props.chuyenXuLyReducer.get('idCheckXlc');
         //if(idOld == idNew) return;
 
         var item = this.state.data;
         if (item) {
-            //item.isCheckXLC = true;
+            item.isCheckXLC = true;
             item.isCheckPH = false;
             item.isCheckXem = false;
             this.setState({
@@ -50,15 +49,15 @@ class TreeItemChuyenXuLy extends Component {
                 //isCheckXLC: idNew
             })
         }
-        this.props.handleCheckXlcClick(idNew, idOld);
+        this.addItemToListDataSelect(item);
+        this.props.handleCheckXlcClick(idNew);
 
-        this.props.dispatch(chuyenXuLyAction.setIdCheckXlcAction(idNew));
     }
 
     handleCheckBoxClick = (idNew, type) => {
 
         var item = this.state.data;
-        //item.isCheckXLC = false;
+        item.isCheckXLC = false;
         if (type == "PH") {
             item.isCheckPH = !item.isCheckPH;
             item.isCheckXem = false;
@@ -70,8 +69,27 @@ class TreeItemChuyenXuLy extends Component {
             data: item,
             //isCheckXLC: "",
         })
-
+        this.addItemToListDataSelect(item);
         this.props.handleCheckBoxClick(idNew);
+    }
+
+    addItemToListDataSelect = (item) => {
+        var lstDataSelect = this.props.chuyenXuLyReducer.get('lstDataSelect');
+        let check = true;
+        if (lstDataSelect && lstDataSelect.length) {
+            for (let i = 0; i < lstDataSelect.length; i++) {
+                if (lstDataSelect[i].id == item.id) {
+                    lstDataSelect[i] = item;
+                    lstDataSelect[i].children = [];
+                    check = false;
+                    break;
+                }
+            }
+        }
+        if (check == true) {
+            lstDataSelect.push(item);
+        }
+        this.props.dispatch(chuyenXuLyAction.setListDataSelectAction(lstDataSelect));
     }
 
     render() {
@@ -80,14 +98,14 @@ class TreeItemChuyenXuLy extends Component {
         if (item != null && item != "undefined") {
             viewData =
                 <View style={{ flex: 1, flexDirection: 'row', }}>
-                
-                <TouchableOpacity style={{flex: 6}} 
-                onPress={(e) => (item && item.children && item.children.length) ? this.props._onPressCollapse({ e, item }) : null } >
-                    <View style={{ flex: 1 }}>
-                        
+
+                    <TouchableOpacity style={{ flex: 6 }}
+                        onPress={(e) => (item && item.children && item.children.length) ? this.props._onPressCollapse({ e, item }) : null} >
+                        <View style={{ flex: 1 }}>
+
                             <Text style={styles.textName}>{item.name}</Text>
-                        
-                    </View>
+
+                        </View>
                     </TouchableOpacity>
                     <View style={{ flex: 1 }}>
                         {/* <RadioForm> */}

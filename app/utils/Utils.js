@@ -8,7 +8,7 @@ export const convertJsonToTreeMap = array => {
             //map[obj.id].name = obj.Name;
             map[obj.id].isCheckPH = false;
             map[obj.id].isCheckXem = false;
-            //map[obj.id].isCheckXLC = false;
+            map[obj.id].isCheckXLC = false;
         }
 
         // if (typeof map[obj.id].userName == 'undefined') {

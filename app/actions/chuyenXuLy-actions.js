@@ -51,26 +51,40 @@ export const setListTreeDataAction = (lstTreeData) => {
     }
 }
 
-export const setIdCheckXlcAction = (idCheckXlc) => {
+export const setListTreeDonViAction = (lstTreeData) => {
     return{
-        type: actions.SET_ID_CHECK_XLC,
-        idCheckXlc
+        type: actions.SET_LIST_TREE_DON_VI,
+        lstTreeDonVi: lstTreeData
     }
 }
 
-export const setListIdCheckPhAction = (lstIdCheckPh) => {
+export const setListDataSelectAction = (lstDataSelect) => {
     return{
-        type: actions.SET_LIST_ID_CHECK_PH,
-        lstIdCheckPh
+        type: actions.SET_LIST_DATA_SELECT,
+        lstDataSelect
     }
 }
 
-export const setListIdCheckXemAction = (lstIdCheckXem) => {
-    return{
-        type: actions.SET_LIST_ID_CHECK_XEM,
-        lstIdCheckXem
-    }
-}
+// export const setListIdCheckXlcAction = (lstIdCheckXlc) => {
+//     return{
+//         type: actions.SET_LIST_ID_CHECK_XLC,
+//         lstIdCheckXlc
+//     }
+// }
+
+// export const setListIdCheckPhAction = (lstIdCheckPh) => {
+//     return{
+//         type: actions.SET_LIST_ID_CHECK_PH,
+//         lstIdCheckPh
+//     }
+// }
+
+// export const setListIdCheckXemAction = (lstIdCheckXem) => {
+//     return{
+//         type: actions.SET_LIST_ID_CHECK_XEM,
+//         lstIdCheckXem
+//     }
+// }
 
 export const resetTreeDataAction = () => {
     return{

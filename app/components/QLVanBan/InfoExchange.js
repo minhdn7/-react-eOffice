@@ -18,11 +18,10 @@ export class InfoExchange extends Component {
             docId: "",
             listComment: [],
             text: "",
-            //result: "",
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.dispatch(rootActions.controlProgress(false));
         var idDocument = this.props.navigation.getParam('idDocument', 'NO-ID');
         this.setState({
@@ -36,24 +35,25 @@ export class InfoExchange extends Component {
             listComment: this.props.infoExchangeReducer.get('listComment'),
             //result: this.props.infoExchangeReducer.get('result'),
         });
-        var result = "";
-        result = this.props.infoExchangeReducer.get('result')
-        console.log("test result: " + result);
-        if(result == "TRUE" && result != "undefined"){
-            this.props.dispatch(infoExchangeAction.getListCommentAction(this.state.pageNo, this.state.pageRec, this.state.docId));
-            result = "";
-        }
+        // var result = "";
+        // result = this.props.infoExchangeReducer.get('result')
+        // console.log("test result: " + result);
+        // if(result == "TRUE" && result != "undefined"){
+        //     this.props.dispatch(infoExchangeAction.getListCommentAction(this.state.pageNo, this.state.pageRec, this.state.docId));
+        //     result = "";
+        // }
     }
 
-    searchSubmit() {
+    searchSubmit = async() => {
         //this.props.dispatch(infoExchangeAction.guiYKienTraoDoiAction(this.state.docId, event));
-        if(this.state.text != "" && this.state.text != null && this.state.text != "undefined"){
-            this.props.dispatch(infoExchangeAction.guiYKienTraoDoiAction(this.state.docId, this.state.text));
+        if (this.state.text != "" && this.state.text != null && this.state.text != "undefined") {
+            await  this.props.dispatch(infoExchangeAction.guiYKienTraoDoiAction(this.state.docId, this.state.text));
             this.setState({
                 text: "",
             });
+
+            await this.props.dispatch(infoExchangeAction.getListCommentAction(this.state.pageNo, this.state.pageRec, this.state.docId));
         }
-        
     }
 
     render() {
@@ -108,7 +108,7 @@ export class InfoExchange extends Component {
                                         borderRadius: 100,
                                         backgroundColor: '#205AA7',
                                     }}
-                                    onPress={ () => this.searchSubmit()} 
+                                    onPress={() => this.searchSubmit()}
                                 >
                                     <Entypo name="direction" size={30} color="white" />
                                 </TouchableOpacity>
