@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>649750976016-vn92amc8gh20jkg9ockg214n6k0hrv1v.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.649750976016-vn92amc8gh20jkg9ockg214n6k0hrv1v</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDm2l7HzMdPCvN8b5yJs7e1OvjR6p2dtR0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>649750976016</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.vnptit.eGov.eOffice4</string>
+	<key>PROJECT_ID</key>
+	<string>tapdoan-vnptoffice</string>
+	<key>STORAGE_BUCKET</key>
+	<string>tapdoan-vnptoffice.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true></true>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false></false>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:649750976016:ios:278d8e3281ef3eef</string>
+	<key>DATABASE_URL</key>
+	<string>https://tapdoan-vnptoffice.firebaseio.com</string>
+</dict>
+</plist>
