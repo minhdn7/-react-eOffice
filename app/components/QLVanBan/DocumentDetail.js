@@ -15,7 +15,7 @@ import { documentProcessedFlow } from '../../saga/document-saga';
 import ModalDropdown from 'react-native-modal-dropdown';
 import { Navigation } from 'react-native-navigation';
 // test 2
-
+let viewTrichYeu, viewSoIOffice, viewCQBH, viewSoKyHieu, viewNgayDen, viewNgayVB, viewHinhThucVB, viewDoKhan;
 export class DocumentDetail extends Component {
     constructor(props) {
         super(props);
@@ -289,9 +289,86 @@ export class DocumentDetail extends Component {
         )
     }
 
+    checkDetailHeader(){
+        // vierw header detail
+
+        if(this.state.dataDocument.trichYeu){
+            viewTrichYeu =  <View style={styles.rowCotent}>
+                                <Text style={[styles.textColor, styles.styleFontSize, {marginRight: 4}]}>{strings.trichYeu}</Text>
+                                <Text style={[styles.textColorBlack, styles.styleFontSize, { fontWeight: 'bold', marginRight: 100}]}>{this.state.dataDocument.trichYeu}</Text>
+                            </View>
+        }else{
+            viewTrichYeu = <View/>
+        }
+
+        if(this.state.dataDocument.ioffice){
+            viewSoIOffice =  <View style={styles.rowCotent}>
+                                <Text style={[styles.textColor, styles.styleFontSize, {marginRight: 4}]}>{strings.soIOffice}</Text>
+                                <Text style={styles.textColorBlack}>{this.state.dataDocument.ioffice}</Text>
+                            </View>
+        }else{
+            viewSoIOffice = <View/>
+        }
+
+        if(this.state.dataDocument.donViBanHanh){
+            viewCQBH =  <View style={styles.rowCotent}>
+                            <Text style={[styles.textColor, styles.styleFontSize, {marginRight: 4}]}>{strings.CQBH}</Text>
+                            <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.donViBanHanh}</Text>
+                        </View>
+        }else{
+            viewCQBH = <View/>
+        }
+
+        if(this.state.dataDocument.soKiHieu){
+            viewSoKyHieu =  <View style={styles.rowCotent}>
+                                <Text style={[styles.textColor, styles.styleFontSize, {marginRight: 4}]}>{strings.soKyHieu}</Text>
+                                <Text style={[styles.textColorBlack, styles.styleFontSize, { color: 'red' }]}>{this.state.dataDocument.soKiHieu}</Text>
+                            </View>
+        }else{
+            viewSoKyHieu = <View/>
+        }
+
+        if(this.state.dataDocument.ngayDenDi){
+            viewNgayDen =   <View style={styles.rowCotent}>
+                                <Text style={[styles.textColor, styles.styleFontSize, {marginRight: 4}]}>{strings.ngayDen}</Text>
+                                <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.ngayDenDi}</Text>
+                            </View>
+        }else{
+            viewNgayDen = <View/>
+        }
+
+        if(this.state.dataDocument.ngayVanBan){
+            viewNgayVB =    <View style={styles.rowCotent}>
+                                <Text style={[styles.textColor, styles.styleFontSize, {marginRight: 4}]}>{strings.ngayVB}</Text>
+                                <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.ngayVanBan}</Text>
+                            </View>
+        }else{
+            viewNgayVB = <View/>
+        }
+
+        if(this.state.dataDocument.hinhThucGui){
+            viewHinhThucVB =    <View style={styles.rowCotent}>
+                                    <Text style={[styles.textColor, styles.styleFontSize, {marginRight: 4}]}>{strings.hinhThucVB}</Text>
+                                    <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.hinhThucGui}</Text>
+                                </View>
+        }else{
+            viewHinhThucVB = <View/>
+        }
+
+        if(this.state.dataDocument.doMat){
+            viewDoKhan =    <View style={styles.rowCotent}>
+                                <Text style={[styles.textColor, {marginRight: 4}]}>{strings.doKhan}</Text>
+                                <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.doMat}</Text>
+                            </View>
+        }else{
+            viewDoKhan = <View/>
+        }
+    }
+
     render() {
         let dataStr = [strings.chuyenXuLy, strings.traoDoiThongTin];
 
+        this.checkDetailHeader();
         let viewAttackFile = <View >
             <Text style={[styles.textColor, styles.styleFontSize]}>Tệp tin đính kèm:</Text>
             {/* <MaterialIcons name="insert-link" size={23} color="black" /> */}
@@ -346,7 +423,7 @@ export class DocumentDetail extends Component {
 
 
         return (
-            <View>
+            <View style={{flex: 1, paddingBottom: 10}}>
                 <DefaultHeader myTitle={strings.chiTietVanBan} navigator={this.props.navigation} />
 
                 {/* <View style={[styles.container, {padding:0}]}> */}
@@ -354,38 +431,14 @@ export class DocumentDetail extends Component {
                 <ScrollView>
                     <View style={styles.styleCenter}>
                         <View style={styles.content}>
-                            <View style={styles.rowCotent}>
-                                <Text style={[styles.textColor, styles.styleFontSize]}>Trích yếu: </Text>
-                                <Text style={[styles.textColorBlack, styles.styleFontSize, { fontWeight: 'bold' }]}>{this.state.dataDocument.trichYeu}</Text>
-                            </View>
-                            <View style={styles.rowCotent}>
-                                <Text style={[styles.textColor, styles.styleFontSize]}>Số ioffice: </Text>
-                                <Text style={styles.textColorBlack}>{this.state.dataDocument.ioffice}</Text>
-                            </View>
-                            <View style={styles.rowCotent}>
-                                <Text style={[styles.textColor, styles.styleFontSize]}>CQBH: </Text>
-                                <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.donViBanHanh}</Text>
-                            </View>
-                            <View style={styles.rowCotent}>
-                                <Text style={[styles.textColor, styles.styleFontSize]}>Số ký hiệu: </Text>
-                                <Text style={[styles.textColorBlack, styles.styleFontSize, { color: 'red' }]}>{this.state.dataDocument.soKiHieu}</Text>
-                            </View>
-                            <View style={styles.rowCotent}>
-                                <Text style={[styles.textColor, styles.styleFontSize]}>Ngày đến:</Text>
-                                <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.ngayDenDi}</Text>
-                            </View>
-                            <View style={styles.rowCotent}>
-                                <Text style={[styles.textColor, styles.styleFontSize]}>Ngày VB:</Text>
-                                <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.ngayVanBan}</Text>
-                            </View>
-                            <View style={styles.rowCotent}>
-                                <Text style={[styles.textColor, styles.styleFontSize]}>Hình thức VB:</Text>
-                                <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.hinhThucGui}</Text>
-                            </View>
-                            <View style={styles.rowCotent}>
-                                <Text style={styles.textColor}>Độ khẩn:</Text>
-                                <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.doMat}</Text>
-                            </View>
+                            {viewTrichYeu}
+                            {viewSoIOffice}
+                            {viewCQBH}
+                            {viewSoKyHieu}
+                            {viewNgayDen}
+                            {viewNgayVB}
+                            {viewHinhThucVB}
+                            {viewDoKhan}
 
                             {/* tập tin đính kèm */}
                             {
@@ -414,14 +467,14 @@ export class DocumentDetail extends Component {
                             {/* FlatList commnent */}
                             <FlatList
                                 data={this.state.dataLogDocument[0].parameter}
-                                style={{ flex: 1 }}
+                                style={{ flex: 1}}
                                 renderItem={({ item, index }) => {
                                     return (
-                                        <TouchableOpacity >
+                                        <View >
                                             <LogCommentItem item={item} index={index}>
 
                                             </LogCommentItem>
-                                        </TouchableOpacity>);
+                                        </View>);
 
                                 }}
                                 keyExtractor={(item, index) => index.toString()}

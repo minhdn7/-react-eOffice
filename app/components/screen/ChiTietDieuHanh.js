@@ -89,18 +89,18 @@ export default class ChiTietDieuHanh extends Component {
                       </TouchableOpacity>
                       
                     </View>
-                <View style={{height: 1, backgroundColor: 'gray'}}/>
+                <View style={{height: 1, backgroundColor: 'gray', marginBottom: 10}}/>
 
                             <View style={{flex: 1, flexDirection:'row'}}>
                     <FlatList 
                     data={flatListData}
                     renderItem={({item, index})=>{
                         return (
-                          <TouchableOpacity>
+                          <View>
                             <FlatListItem item={item} index={index} >
 
                             </FlatListItem>
-                          </TouchableOpacity>);
+                          </View>);
           
                     }}
                     >

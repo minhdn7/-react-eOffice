@@ -6,6 +6,9 @@
  */
 
 #import "AppDelegate.h"
+#import <Firebase.h>
+#import "RNFirebaseNotifications.h"
+#import "RNFirebaseMessaging.h"
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -15,6 +18,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
+
+  //Add these 3 lines
+  [FIRApp configure];
+  [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];
+  [RNFirebaseNotifications configure];
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 
@@ -30,6 +38,21 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   return YES;
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(nonnull NSDictionary *)userInfo
+fetchCompletionHandler:(nonnull void (^)(UIBackgroundFetchResult))completionHandler{
+  [[RNFirebaseNotifications instance] didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
+}
+
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
+  [[RNFirebaseMessaging instance] didRegisterUserNotificationSettings:notificationSettings];
+}
+
+-(void) userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
+ 
+  [[RNFirebaseMessaging instance] didReceiveRemoteNotification:response.notification.request.content.userInfo];
+  completionHandler();
 }
 
 @end

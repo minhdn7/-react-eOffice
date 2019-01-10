@@ -9,7 +9,6 @@
   "dependencies": {
     "@babel/runtime": "^7.1.2",
     "@remobile/react-native-toast": "^1.0.7",
-    "@zaguini/react-native-tree-view": "^1.0.3",
     "accordion-collapse-react-native": "^0.1.6",
     "immutable": "^3.8.2",
     "moment": "^2.22.2",
