@@ -67,8 +67,11 @@ const styles = StyleSheet.create({
 
     // style DocumentDetail
     content: {
+        flex: 1,
         margin: 3,
+
         padding: 5,
+        justifyContent:'center',
         backgroundColor: '#ffffff'
     },
     btn: {
@@ -80,12 +83,15 @@ const styles = StyleSheet.create({
     btnText: {
         color: '#ffffff',
         textAlign: 'center',
+
     },
-    styleCenter: { flex: 1, backgroundColor: '#D7D7D7', marginTop: 5 },
+    styleCenter: { flex: 1, backgroundColor: '#D7D7D7', marginTop: 5},
     rowFooter: { flex: 1, flexDirection: 'row', paddingLeft: 5, marginTop: 10 },
     rowCotent: {
         flexDirection: 'row',
         marginBottom: 5,
+        justifyContent: 'flex-start',
+
     },
     styleFontSize: {
         fontSize: 16,

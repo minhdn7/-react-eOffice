@@ -67,7 +67,8 @@ componentDidUpdate() {
   if(this.state.isfirstLoad){
     this.setState({isfirstLoad: false});
     if(this.checkLogin()){
-      this.checkContact();
+      this.props.navigation.navigate('DrawerMenu');
+      // this.checkContact();
 
     }
   }
@@ -179,15 +180,18 @@ showAlert(title, body) {
         
       }else{
         message = this.props.login.get('loginError');
-        Alert.alert(
-          'Thông báo',
-            message,
-          [
-            {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-            {text: 'OK', onPress: () => console.log('OK Pressed')},
-          ],
-          { cancelable: false }
-        )
+        if(message && message != ''){
+          Alert.alert(
+            'Thông báo',
+              message,
+            [
+              {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+              {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ],
+            { cancelable: false }
+          )
+        }
+
         return false;
       }
   }

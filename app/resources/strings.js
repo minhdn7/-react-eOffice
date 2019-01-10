@@ -110,6 +110,14 @@ module.exports = new LocalizedStrings({
     danhDauThanhCong: "Văn bản đã được đánh dấu!",
     huyDanhDauThanhCong: "Văn bản đã được bỏ đánh dấu!",
     ketThucVanBanThanhCong: "Kết thúc văn bản thành công!",
+    trichYeu: 'Trích yếu:',
+    soIOffice: 'Số ioffice:',
+    CQBH: 'CQBH:',
+    soKyHieu: 'Số ký hiệu:',
+    ngayDen: 'Ngày đến:',
+    ngayVB: 'Ngày VB:',
+    hinhThucVB: 'Hình thức VB:',
+    doKhan: 'Độ khẩn:',
     // view file
     noiDungFile: "Nội dung File",
 
