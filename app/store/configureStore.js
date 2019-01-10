@@ -154,6 +154,7 @@ export default function configureStore() {
       sagaMiddleware.run(chuyenXuLySaga.chuyenXuLyFlow),
       sagaMiddleware.run(chuyenXuLySaga.userConcurrentSendFlow),
       sagaMiddleware.run(chuyenXuLySaga.getListInternalFlow),
+      sagaMiddleware.run(chuyenXuLySaga.getListGroupUnitFlow),
       sagaMiddleware.run(menuSaga.countMenuFlow),
 
     ]

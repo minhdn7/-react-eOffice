@@ -30,6 +30,7 @@ class SideMenu extends Component {
     componentWillMount() {
       this.props.dispatch(menuActions.resetCountMenu());
       this.props.dispatch(menuActions.getCountMenu());
+      this.props.dispatch(menuActions.setNavigator(this.props.navigation));
       loginData = this.props.login.get('loginData');
       danhSachKho = [];
       if(loginData.kho && loginData.kho.length > 0){

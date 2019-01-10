@@ -127,5 +127,13 @@ module.exports = new LocalizedStrings({
     xuLyChinh: "Xử lý chính",
     phoiHop: "Phối hợp",
     xemDeBiet: "Xem để biết",
+    chonNguoiNhanVanBan: "Chọn người nhận văn bản",
+    chonTheoNhomDonViNhan: "Chọn theo nhóm đơn vị nhận",
+    chonTheoNhomCaNhanNhan: "Chọn theo nhóm cá nhân nhận",
+    hoTen: "Họ tên",
+    xlc: "XLC",
+    ph: "PH",
+    xem: "Xem",
+    donVi: "Đơn vị",
   }
 });

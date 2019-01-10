@@ -32,21 +32,9 @@ export default function chuyenXuLyReducer(state, action = {}) {
         case actions.SET_LIST_DATA_SELECT:
             return state.withMutations(state => state
                 .set('lstDataSelect', action.lstDataSelect));
-        // case actions.SET_LIST_ID_CHECK_XLC:
-        //     return state.withMutations(state => state
-        //         .set('lstIdCheckXlc', action.lstIdCheckXlc));
-        // case actions.SET_LIST_ID_CHECK_PH:
-        //     return state.withMutations(state => state
-        //         .set('lstIdCheckPh', action.lstIdCheckPh));
-        // case actions.SET_LIST_ID_CHECK_XEM:
-        //     return state.withMutations(state => state
-        //         .set('lstIdCheckXem', action.lstIdCheckXem));
         case actions.RESET_TREE_DATA:
             return state.withMutations(state => state
                 .set('lstTreeData', [])
-                // .set('lstIdCheckXlc', [])
-                // .set('lstIdCheckPh', [])
-                // .set('lstIdCheckXem', [])
                 .set('lstTreeDonVi', [])
                 .set('lstDataSelect', [])
             );

@@ -31,13 +31,13 @@ export class ChuyenXuLy extends Component {
         }
     }
 
-    handleChonTheoNhomDonVi = () => {
-        alert("Chọn theo nhóm đơn vị");
+    selectGroupByUnitAndUser = (type) => {
+        this.props.navigation.navigate('SelectGroupUnitAndUser',{
+            actionType: type,
+        });
     }
 
-    handleChonTheoNhomCaNhan = () => {
-        alert("Chọn theo nhóm cá nhân");
-    }
+    
 
     handleShowHide = () => {
         if (this.state.flagThugon) {
@@ -55,15 +55,6 @@ export class ChuyenXuLy extends Component {
         }
 
     }
-
-    // listDataById = (id) => {
-    //     if (this.lstUserConcurentSend == null && this.lstUserConcurentSend.length == 0)
-    //         return [];
-    //     if (id != null && id != "" && id != "undefined") {
-    //         return this.lstUserConcurentSend.filter((item) => { return item.parentId == id });
-    //     }
-    //     return this.lstUserConcurentSend.filter((item) => { return item.parentId == null });
-    // }
 
     gotoScreen(value) {
         // this.setState({
@@ -88,28 +79,17 @@ export class ChuyenXuLy extends Component {
     }
 
     componentWillReceiveProps() {
-        // var lstTreeData = this.props.chuyenXuLyReducer.get('lstTreeData');
-        // var lstTreeDonVi = this.props.chuyenXuLyReducer.get('lstTreeDonVi');
-        // if(!lstTreeData || !lstTreeData.length){
-        //     lstTreeData = this.props.chuyenXuLyReducer.get('listUserConcurrentSend');
-        //     this.props.dispatch(chuyenXuLyAction.setListTreeDataAction(lstTreeData));
-        // }
-        // if(!lstTreeDonVi || !lstTreeDonVi.length){
-        //     lstTreeDonVi = this.props.chuyenXuLyReducer.get('listInternal');
-        //     this.props.dispatch(chuyenXuLyAction.setListTreeDonViAction(lstTreeDonVi));
-        // }
-
+        
         if (this.props.chuyenXuLyReducer.get('listUnit')) {
             this.setState({
                 lstUnit: this.props.chuyenXuLyReducer.get('listUnit'),
             });
         }
-        //if (lstTreeData) {
+
         this.setState({
             lstUserConcurentSend: this.props.chuyenXuLyReducer.get('listUserConcurrentSend'),
             lstInternal: this.props.chuyenXuLyReducer.get('listInternal'),
         });
-        // }
 
         console.log("lstUserConcurentSend:", this.state.lstUserConcurentSend);
 
@@ -164,7 +144,7 @@ export class ChuyenXuLy extends Component {
 
         return (
             <View style={{ flex: 1 }}>
-                <HeaderChuyenXuLy myTitle='Chọn người nhận văn bản' navigator={this.props.navigation} save={this.save} />
+                <HeaderChuyenXuLy myTitle={strings.chonNguoiNhanVanBan} save={this.save} />
 
                 <View style={{ flex: 1, flexDirection: 'column', backgroundColor: '#D7D7D7' }}>
                     <View style={{ flex: 1, flexDirection: 'row', marginTop: 5, marginLeft: 5, marginRight: 5 }}>
@@ -191,7 +171,7 @@ export class ChuyenXuLy extends Component {
                         <View style={{ width: width * 0.5 }}>
                             <TouchableOpacity
                                 style={[styles.btn, { backgroundColor: '#205AA7', }]}
-                                onPress={() => this.handleChonTheoNhomDonVi()}
+                                onPress={() => this.selectGroupByUnitAndUser(1)}
                             >
                                 <Text style={styles.btnText}>Chọn theo nhóm đơn vị</Text>
                             </TouchableOpacity>
@@ -200,7 +180,7 @@ export class ChuyenXuLy extends Component {
                         <View style={{ width: width * 0.5 }}>
                             <TouchableOpacity
                                 style={[styles.btn, { backgroundColor: '#205AA7', marginLeft: 2, marginRight: 10 }]}
-                                onPress={() => this.handleChonTheoNhomCaNhan()}
+                                onPress={() => this.selectGroupByUnitAndUser(2)}
                             >
                                 <Text style={styles.btnText}>Chọn theo nhóm cá nhân</Text>
                             </TouchableOpacity>
@@ -213,16 +193,16 @@ export class ChuyenXuLy extends Component {
 
                         <View style={[styles.tableHeader, { backgroundColor: '#205AA7' }]}>
                             <View style={styles.width50}>
-                                <Text style={styles.btnText}>Họ tên</Text>
+                                <Text style={styles.btnText}>{strings.hoTen}</Text>
                             </View>
                             <View style={styles.width15}>
-                                <Text style={styles.btnText}>XLC</Text>
+                                <Text style={styles.btnText}>{strings.xlc}</Text>
                             </View>
                             <View style={styles.width15}>
-                                <Text style={styles.btnText}>PH</Text>
+                                <Text style={styles.btnText}>{strings.ph}</Text>
                             </View>
                             <View style={styles.width15}>
-                                <Text style={styles.btnText}>Xem</Text>
+                                <Text style={styles.btnText}>{strings.xem}</Text>
                             </View>
                         </View>
                         <View style={{ height: height * 0.05, backgroundColor: '#D7D7D7', }}>
@@ -246,16 +226,16 @@ export class ChuyenXuLy extends Component {
 
                         <View style={[styles.tableHeader, { backgroundColor: "#32CD32" }]}>
                             <View style={styles.width50}>
-                                <Text style={styles.btnText}>Đơn vị</Text>
+                                <Text style={styles.btnText}>{strings.donVi}</Text>
                             </View>
                             <View style={styles.width15}>
-                                <Text style={styles.btnText}>XLC</Text>
+                                <Text style={styles.btnText}>{strings.xlc}</Text>
                             </View>
                             <View style={styles.width15}>
-                                <Text style={styles.btnText}>PH</Text>
+                                <Text style={styles.btnText}>{strings.ph}</Text>
                             </View>
                             <View style={styles.width15}>
-                                <Text style={styles.btnText}>Xem</Text>
+                                <Text style={styles.btnText}>{strings.xem}</Text>
                             </View>
                         </View>
                         <View style={{ height: height * 0.05, backgroundColor: '#D7D7D7', }}>

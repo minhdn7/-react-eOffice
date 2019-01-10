@@ -123,7 +123,7 @@ export const getListGroupUnitAction = () => {
 export const getListGroupUnitSucessAction = (response) => {
     return{
         type: actions.GET_LIST_GROUP_UNIT_SUCESS,
-        listGruopUnit: response,
+        listGroupUnit: response,
     }
 }
 

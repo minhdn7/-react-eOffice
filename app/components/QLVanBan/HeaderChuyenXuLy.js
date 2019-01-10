@@ -5,15 +5,17 @@ import icMenu from '../../image/ic_menu.png';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 const { height } = Dimensions.get('window');
 import Color from 'react-native-material-color';
+import { connect } from "react-redux";
 
-export default class HeaderChuyenXuLy extends Component {
+export class HeaderChuyenXuLy extends Component {
     constructor(props){
         super(props);
                 
     }
 
     handleBackPress = () => {
-        this.props.navigator.goBack(null);
+        let navigator = this.props.menuReducer.get('navigator');
+        navigator.goBack(null);
         return true;
       }
 
@@ -52,3 +54,9 @@ const styles = StyleSheet.create({
     iconStyle: { width: 30, height: 30, marginRight: 16},
     titleStyle: { color:'#FFF', fontSize:20 }
 });
+
+const mapStateToProps = (state) => ({
+    menuReducer: state.get('menuReducer'),
+});
+
+export default connect(mapStateToProps)(HeaderChuyenXuLy)  

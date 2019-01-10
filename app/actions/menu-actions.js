@@ -32,3 +32,10 @@ export function resetCountMenu() {
       countMenuData: {},
     }
   }
+
+  export function setNavigator(navigator){
+    return{
+      type: actions.SET_NAVIGATOR,
+      navigator
+    }
+  }
