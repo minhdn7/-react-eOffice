@@ -34,9 +34,7 @@ import flatListData from "../../data/flatListData";
 import ContactData from "../../data/ContactData";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import Moment from "moment";
-
-import TreeView from "@zaguini/react-native-tree-view";
-import TreeSelect from 'react-native-tree-select';
+import TreeSelect from '../screen/TreeSelectDanhBa';
 export class DanhBa extends Component {
   constructor(props) {
     super(props);

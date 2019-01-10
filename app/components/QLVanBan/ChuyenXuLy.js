@@ -6,7 +6,7 @@ import AntDesign from "react-native-vector-icons/AntDesign"
 import Octicons from "react-native-vector-icons/Octicons";
 import Icon from 'react-native-vector-icons/Entypo';
 import HeaderChuyenXuLy from '../QLVanBan/HeaderChuyenXuLy';
-import TreeViewChuyenXuLy from '../QLVanBan/TreeView'
+
 import styles from '../../styles/styleQLVanBan';
 import * as chuyenXuLyAction from "../../actions/chuyenXuLy-actions";
 import * as rootActions from "../../actions/root-actions";
@@ -269,9 +269,7 @@ export class ChuyenXuLy extends Component {
                         </View>
                         
                         {viewDonVi}
-                        {/* <TreeViewChuyenXuLy data={this.listDataById} /> */}
 
-                        {/* </View> */}
                     </ScrollView>
                 </View>
             </View>
