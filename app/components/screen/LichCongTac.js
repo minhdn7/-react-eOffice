@@ -52,17 +52,6 @@ export class LichCongTac extends Component {
         this.props.dispatch(calendarAction.getCalendar(this.state.startDateOfWeek, this.state.endDateOfWeek));
     }
 
-    componentWillReceiveProps(){
-        if(this.state.getData){
-            this.setState({
-                getData: false,
-            });
-            this.checkCalendar();
-        }
-
-
-
-    }
 
 
     convertDataSectionList(fetchData){
@@ -81,19 +70,16 @@ export class LichCongTac extends Component {
         return  sectionData;   
     }
 
-    componentDidUpdate(){
-        this.props.dispatch(rootActions.controlProgress(false));
-    }
+
 
     checkCalendar(){
-        this.state.hasCalendar = this.props.calendar.get('hasCalendar');
-        if(this.props.calendar.get('calendarData') != 'undefined'
-        && this.props.calendar.get('calendarData') != null
+        // this.state.hasCalendar = this.props.calendar.get('hasCalendar');
+        if(this.props.calendar.get('calendarData')
         && this.props.calendar.get('calendarData').length > 0){
             // console.log('data 2:', "message");
-            this.setState({
-                hasCalendar: false,
-            });
+            // this.setState({
+            //     hasCalendar: false,
+            // });
             fetchData = this.props.calendar.get('calendarData');
             
             if(fetchData != null){
@@ -116,14 +102,11 @@ export class LichCongTac extends Component {
             });
             message = this.props.calendar.get('calendarError');
             console.log('message 2:', message);
-            // this.setState({
-            //     hasCalendar: false,
-            // });
         }
     }
 
     updateWeek(date, deltaDay){
-        // this.props.dispatch(calendarAction.resetCalendarDate());
+
         if(deltaDay > 0){
             newDate = moment(date, "DD/MM/YYYY").add(7, 'days');
         }else{
@@ -140,11 +123,11 @@ export class LichCongTac extends Component {
            getData: true,
         });
         // console.log('newDate', newDate);
-        console.log('startDateOfWeek', this.state.startDateOfWeek);
-        console.log('endDateOfWeek', this.state.endDateOfWeek);
+        console.log('startDateOfWeek', moment(newDate).startOf('isoweek').format("DD/MM/YYYY"));
+        console.log('endDateOfWeek', moment(newDate).endOf('isoweek').format("DD/MM/YYYY"));
         this.props.dispatch(rootActions.controlProgress(true));
         this.props.dispatch(calendarAction.resetCalendarDate());
-        this.props.dispatch(calendarAction.getCalendar(this.state.startDateOfWeek, this.state.endDateOfWeek));
+        this.props.dispatch(calendarAction.getCalendar(moment(newDate).startOf('isoweek').format("DD/MM/YYYY"), moment(newDate).endOf('isoweek').format("DD/MM/YYYY")));
     }
 
     getWeekNumber(date) {
@@ -199,7 +182,9 @@ export class LichCongTac extends Component {
             </View>
             
             <View style={{ flex: 1, marginTop: Platform.OS === 'ios' ? 34 : 0 }}>
-                {this.state.hasCalendar? 
+                {this.props.calendar.get('hasCalendar') 
+                    && this.props.calendar.get('calendarData')
+                    && this.props.calendar.get('calendarData').length > 0? 
                     <SectionList
                     renderItem={({ item, index, section }) => {
                         return (<SectionListItem item={item} index={index} >
@@ -210,7 +195,7 @@ export class LichCongTac extends Component {
                         return (<SectionHeader section={section} />);
                     }}
                     
-                    sections={this.state.sectionListData}
+                    sections={this.convertDataSectionList(this.props.calendar.get('calendarData'))}
                     // sections={sectionListData}
                     keyExtractor={(item, index) => item + index}
                     >
@@ -325,7 +310,7 @@ class SectionListItem extends Component {
     }
 
     checkDataItem = () => {
-        if(this.props.item.parameters != 'undefined' && this.props.item.parameters.length > 0){
+        if(this.props.item.parameters && this.props.item.parameters.length > 0){
             for(i = 0; i < this.props.item.parameters.length; i++){
                 if(this.props.item.parameters[i].codeTime == "SANG"){
                     this.setState({
@@ -341,13 +326,10 @@ class SectionListItem extends Component {
         }
 
     }
-    // componentWillMount(){
-    //     this.checkDataItem();
-    // }
-
-    componentWillReceiveProps(){
+    componentWillMount(){
         this.checkDataItem();
     }
+
     render() {
 
         let viewSang = <View style={{flexDirection: 'row',marginTop: 6}}>
@@ -359,26 +341,39 @@ class SectionListItem extends Component {
                                 
                             }}>{strings.sang}
                             </Text>
-                            <View>
+                            {
+                                this.state.dataSang.content || this.state.dataSang.participation || this.state.dataSang.place?
+                                <View>
+                                    {
+                                        this.state.dataSang.content ?
+                                            <View style={itemStyles.viewRowStyle1}>
+                                                <Text style={itemStyles.textStyle1}>{strings.noiDung}</Text>
+                                                <Text style={itemStyles.textStyle2}>{this.state.dataSang.content}</Text>
+                                            </View>: <View/>
+                                    }
+                                    {
+                                        this.state.dataSang.participation ?
+                                        <View style={itemStyles.viewRowStyle1}>
+                                            <Text style={itemStyles.textStyle1}>{strings.thanhPhan}</Text>
+                                            <Text style={itemStyles.textStyle2}>{this.state.dataSang.participation}</Text>
+                                        </View>: <View/>
+                                    }
+                                    {
+                                        this.state.dataSang.place ?
+                                        <View style={itemStyles.viewRowStyle1}>
+                                            <Text style={itemStyles.textStyle1}>{strings.diaDiem}</Text>
+                                            <Text style={itemStyles.textStyle2}>{this.state.dataSang.place}</Text>
+                                        </View>: <View/>
+                                    }
+                                </View>:                    
+                                    <View>
+                                        <Text style={itemStyles.textStyleRed}>
+                                            {strings.khongCoLichCongTac}
+                                        </Text>
+                                    </View>
+                            }
+                            </View>     
 
-
-                                <View style={itemStyles.viewRowStyle1}>
-                                    <Text style={itemStyles.textStyle1}>{strings.noiDung}</Text>
-                                    <Text style={itemStyles.textStyle2}>{this.state.dataSang.content}</Text>
-                                </View>
-
-                                <View style={itemStyles.viewRowStyle1}>
-                                    <Text style={itemStyles.textStyle1}>{strings.thanhPhan}</Text>
-                                    <Text style={itemStyles.textStyle2}>{this.state.dataSang.participation}</Text>
-                                </View>
-
-                                <View style={itemStyles.viewRowStyle1}>
-                                    <Text style={itemStyles.textStyle1}>{strings.diaDiem}</Text>
-                                    <Text style={itemStyles.textStyle2}>{this.state.dataSang.place}</Text>
-                                </View>
-                            </View>
-
-                        </View>
         
         let viewChieu = <View style={{flexDirection: 'row', marginTop: 6}}>
                             <Text style={{
@@ -390,24 +385,38 @@ class SectionListItem extends Component {
                             }}>{strings.chieu}
                             </Text>
 
-                            <View>
-                                <View style={itemStyles.viewRowStyle1}>
-                                    <Text style={itemStyles.textStyle1}>{strings.noiDung}</Text>
-                                    <Text style={itemStyles.textStyle2}>{this.state.dataChieu.content}</Text>
-                                </View>
-
-                                <View style={itemStyles.viewRowStyle1}>
-                                    <Text style={itemStyles.textStyle1}>{strings.thanhPhan}</Text>
-                                    <Text style={itemStyles.textStyle2}>{this.state.dataChieu.participation}</Text>
-                                </View>
-
-                                <View style={itemStyles.viewRowStyle1}>
-                                    <Text style={itemStyles.textStyle1}>{strings.diaDiem}</Text>
-                                    <Text style={itemStyles.textStyle2}>{this.state.dataChieu.place}</Text>
-                                </View>
+                            {
+                                this.state.dataChieu.content || this.state.dataChieu.participation || this.state.dataChieu.place?
+                                <View>
+                                    {
+                                        this.state.dataChieu.content?
+                                            <View style={itemStyles.viewRowStyle1}>
+                                                <Text style={itemStyles.textStyle1}>{strings.noiDung}</Text>
+                                                <Text style={itemStyles.textStyle2}>{this.state.dataChieu.content}</Text>
+                                            </View>: <View/>
+                                    }
+                                    {
+                                        this.state.dataChieu.participation ?
+                                        <View style={itemStyles.viewRowStyle1}>
+                                            <Text style={itemStyles.textStyle1}>{strings.thanhPhan}</Text>
+                                            <Text style={itemStyles.textStyle2}>{this.state.dataChieu.participation}</Text>
+                                        </View>: <View/>
+                                    }
+                                    {
+                                        this.state.dataChieu.place ?
+                                        <View style={itemStyles.viewRowStyle1}>
+                                            <Text style={itemStyles.textStyle1}>{strings.diaDiem}</Text>
+                                            <Text style={itemStyles.textStyle2}>{this.state.dataChieu.place}</Text>
+                                        </View>: <View/>
+                                    }
+                                </View>:                    
+                                    <View>
+                                        <Text style={itemStyles.textStyleRed}>
+                                            {strings.khongCoLichCongTac}
+                                        </Text>
+                                    </View>
+                            }
                             </View>
-
-                    </View>
 
         return (
             
