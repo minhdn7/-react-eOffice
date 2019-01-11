@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Text } from 'react-native';
 import styles from '../../styles/styleQLVanBan';
-import TreeSelectCustom from './TreeSelectCustom';
+import TreeSelectGroupByUnitAndUser from './TreeSelectGroupByUnitAndUser';
 import HeaderChuyenXuLy from './HeaderChuyenXuLy';
 import { connect } from "react-redux";
 import strings from "../../resources/strings";
@@ -35,7 +35,6 @@ export class SelectGroupUnitAndUser extends Component {
 
     componentDidMount() {
         if (this.state.actionType == 1) {
-            console.log("co vao day");
            this.props.dispatch(chuyenXuLyAction.getListGroupUnitAction());
         } else {
 
@@ -64,8 +63,8 @@ export class SelectGroupUnitAndUser extends Component {
     render() {
         let viewTree;
         if (this.state.lstData) {
-            viewTree = <TreeSelectCustom
-                data={[this.state.lstData]}
+            viewTree = <TreeSelectGroupByUnitAndUser
+                data={this.state.lstData}
                 isOpen
             //handleRadioButtonClick={this.handleRadioButtonClick}
             // onClick={this._onClick}

@@ -6,7 +6,7 @@ import * as chuyenXuLyActions from "../actions/chuyenXuLy-actions";
 import * as rootActions from "../actions/root-actions";
 import apiUrl from "../network/apiUrl";
 import consts from "../const";
-import { convertJsonToTreeMap } from '../utils/Utils';
+import { convertJsonToTreeMap, convertJsonToTreeMapCustom } from '../utils/Utils';
 
 function getListUnitURL() {
 
@@ -150,7 +150,7 @@ function* getListGroupUnit() {
     console.log("list group unit:", response);
     if (typeof (response) != "undefined" && typeof (response.status) != "undefined") {
       if (response.status.code == "0" && typeof (response.data) != "undefined") {
-        let convertTreeData = convertJsonToTreeMap(response.data)
+        let convertTreeData = convertJsonToTreeMapCustom(response.data)
         yield put(chuyenXuLyActions.getListGroupUnitSucessAction(convertTreeData));
         return response;
       } else {
