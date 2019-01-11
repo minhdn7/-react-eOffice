@@ -98,7 +98,7 @@ module.exports = new LocalizedStrings({
     thanhPhan: 'Thành phần:',
     diaDiem: 'Địa điểm:',
     sang: 'Sáng:',
-    chieu: 'Chiều',
+    chieu: 'Chiều:',
     khongCoLichCongTac: 'Không có lịch công tác',
 
     // chi tiết văn bản

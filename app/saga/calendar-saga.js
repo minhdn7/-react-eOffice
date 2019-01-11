@@ -41,12 +41,11 @@ function* getCalendar(startDate, endDate) {
     console.log("endDate: ", endDate);
     const response = yield call(calendarRequestURL, startDate, endDate);
     console.log("data calendar: ", response);
-    if(typeof(response) != "undefined"  && typeof(response.status) != "undefined"){
-      if (response.status.code == "0") {
+    if(response  && response.status){
+      if (response.status.code && response.status.code == "0") {
         yield put(calendarActions.setCalendarSuccess(response.data));
         return response;
       } else {
-        // console.log("error calendar: ", response.status.message);
         yield put(calendarActions.setCalendarError(response.status.message));
         return undefined;
       }
