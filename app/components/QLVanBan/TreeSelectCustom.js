@@ -34,29 +34,29 @@ export default class TreeSelectCustom extends Component {
     this.state = {
       nodesStatus: this._initNodesStatus(),
       currentNode: null,
-      treeData: this.props.data,
       isCheckXLC: null,
     };
   }
 
-  handleCheckXlcClick = (id) => {
+  handleCheckXlcClick = async (id) => {
+    await this.findById(this.props.data, id);
     this.setState((state) => {
       return {
         isCheckXLC: id,
-        //nodesStatus
+        //currentNode: id,
       };
     });
   }
 
-  handleCheckBoxClick = (id) => {
-    if(this.state.isCheckXLC && this.state.isCheckXLC == id){
+  handleCheckBoxClick = (id, changeStatus) => {
+    //if(this.state.isCheckXLC && this.state.isCheckXLC == id){
       this.setState((state) => {
         return {
-          isCheckXLC: null,
-          //nodesStatus
+          isCheckXLC: id + changeStatus.toString(), // mục đích để render lại view
+          //currentNode: null,
         };
       });
-    }
+    //}
     
   }
 
@@ -75,14 +75,14 @@ export default class TreeSelectCustom extends Component {
   // }
 
 
-  findById = (data, idNew, idOld) => {
+  findById = (data, idNew) => {
     for (var i = 0; i < data.length; i++) {
       if (data[i].id == idNew) {
         data[i].isCheckXLC = true;
         data[i].isCheckPH = false;
         data[i].isCheckXem = false;
         index = index + 1;
-      } else if (data[i].id == idOld) {
+      } else if (data[i].isCheckXLC == true) {
         data[i].isCheckXLC = false;
         index = index + 1;
       }
@@ -91,7 +91,7 @@ export default class TreeSelectCustom extends Component {
         return;
       }
       if (data[i].children)
-        this.findById(data[i].children, idNew, idOld);
+        this.findById(data[i].children, idNew);
     }
   }
 
@@ -190,7 +190,7 @@ export default class TreeSelectCustom extends Component {
           {/* <TouchableOpacity onPress={(e) => this._onPressCollapse({ e, item })} > */}
             <View style={{
               flexDirection: 'row',
-              // backgroundColor: this.state.currentNode === item.id ? '#FFEDCE' : '#fff',
+              //backgroundColor: this.state.currentNode === item.id ? '#FFEDCE' : '#fff',
               backgroundColor: '#fff',
               marginBottom: 2,
               //height: 30,

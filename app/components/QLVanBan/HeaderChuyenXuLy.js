@@ -8,19 +8,19 @@ import Color from 'react-native-material-color';
 import { connect } from "react-redux";
 
 export class HeaderChuyenXuLy extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-                
+
     }
 
     handleBackPress = () => {
         let navigator = this.props.menuReducer.get('navigator');
         navigator.goBack(null);
         return true;
-      }
+    }
 
-    save = () =>{
-        this.props.save(1);
+    saveHandle = () => {
+        this.props.saveHandle();
     }
 
     render() {
@@ -33,7 +33,7 @@ export class HeaderChuyenXuLy extends Component {
                     </TouchableOpacity>
                     <Text style={titleStyle}>{this.props.myTitle}</Text>
 
-                    <TouchableOpacity onPress={() => this.save()}>
+                    <TouchableOpacity onPress={() => this.saveHandle()}>
                         <AntDesign name="check" size={30} color="#ffffff" />
                     </TouchableOpacity>
 
@@ -46,13 +46,13 @@ export class HeaderChuyenXuLy extends Component {
 
 const styles = StyleSheet.create({
     wrapper: { height: 60, backgroundColor: Color.BLUE[900], padding: 10, justifyContent: 'space-around' },
-    row1: { 
+    row1: {
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
     textInput: { height: height / 22, backgroundColor: '#FFF', paddingLeft: 10 },
-    iconStyle: { width: 30, height: 30, marginRight: 16},
-    titleStyle: { color:'#FFF', fontSize:20 }
+    iconStyle: { width: 30, height: 30, marginRight: 16 },
+    titleStyle: { color: '#FFF', fontSize: 20 }
 });
 
 const mapStateToProps = (state) => ({

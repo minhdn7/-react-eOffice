@@ -49,7 +49,7 @@ class TreeItemChuyenXuLy extends Component {
                 //isCheckXLC: idNew
             })
         }
-        this.addItemToListDataSelect(item);
+        //this.addItemToListDataSelect(item);
         this.props.handleCheckXlcClick(idNew);
 
     }
@@ -57,44 +57,47 @@ class TreeItemChuyenXuLy extends Component {
     handleCheckBoxClick = (idNew, type) => {
 
         var item = this.state.data;
-        console.log("test item: ", item);
         item.isCheckXLC = false;
+        let value;
         if (type == "PH") {
             item.isCheckPH = !item.isCheckPH;
             item.isCheckXem = false;
+            value = item.isCheckPH;
         } else {
             item.isCheckXem = !item.isCheckXem;
             item.isCheckPH = false;
+            value = item.isCheckXem;
         }
 
-        if(!item.parentId){
-            this.changeStatus(item, type);
+        if (!item.parentId) {
+            this.changeStatus(item, type, value);
         }
 
         this.setState(() => {
-            return{
+            return {
                 data: item,
                 //isCheckXLC: "",
             }
         });
-        this.addItemToListDataSelect(item);
-        this.props.handleCheckBoxClick(idNew);
+        //this.addItemToListDataSelect(item);
+        this.props.handleCheckBoxClick(idNew, value + type);
     }
 
-    changeStatus = (data, type) => {
-        console.log("co vao day 1");
-        if(data.children){
-            console.log("co vao day 2");
-            for(let i=0;i<data.children.length;i++){
-                if(type == "PH"){
-                    data.children[i].isCheckPH = true;
-                    data.children[i].isCheckXem = false;
-                    data.children[i].isCheckXLC = false;
-                    console.log("co vao day 3", data.children[i].isCheckPH);
-                }else{
-                    data.children[i].isCheckPH = false;
-                    data.children[i].isCheckXem = true;
-                    data.children[i].isCheckXLC = false;
+    changeStatus = (data, type, value) => {
+        if (data.children) {
+            for (let i = 0; i < data.children.length; i++) {
+                if (type == "PH") {
+                    if (value == true) {
+                        data.children[i].isCheckXem = false;
+                        data.children[i].isCheckXLC = false;
+                    }
+                    data.children[i].isCheckPH = value;
+                } else {
+                    if (value == true) {
+                        data.children[i].isCheckPH = false;
+                        data.children[i].isCheckXLC = false;
+                    }
+                    data.children[i].isCheckXem = value;
                 }
             }
         }
@@ -142,12 +145,13 @@ class TreeItemChuyenXuLy extends Component {
                                 buttonSize={10}
                                 selectedButtonColor={'black'}
                                 buttonColor={'black'}
-                                isSelected={this.props.currentNode === item.id}
+                                // isSelected={this.props.currentNode === item.id}
+                                isSelected={item.isCheckXLC}
                                 onPress={() => { this.handleRadioButtonClick(item.id) }}
                             />
                         </RadioButton>
                     </View> : null}
-                    
+
                     <View style={{ flex: 1 }}>
                         <CheckBox
                             onClick={() => { this.handleCheckBoxClick(item.id, "PH") }}

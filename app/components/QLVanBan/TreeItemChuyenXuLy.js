@@ -32,13 +32,13 @@ class TreeItemChuyenXuLy extends Component {
         super(props);
         this.state = {
             data: this.props.item,
-            isCheckXLC: this.props.currentNode,
+            //isCheckXLC: this.props.currentNode,
         };
     }
 
     handleRadioButtonClick = (idNew) => {
         //if(idOld == idNew) return;
-
+        console.log("handleRadioButtonClick");
         var item = this.state.data;
         if (item) {
             item.isCheckXLC = true;
@@ -49,47 +49,53 @@ class TreeItemChuyenXuLy extends Component {
                 //isCheckXLC: idNew
             })
         }
-        this.addItemToListDataSelect(item);
+        //this.addItemToListDataSelect();
         this.props.handleCheckXlcClick(idNew);
-
     }
 
     handleCheckBoxClick = (idNew, type) => {
-
+        console.log("handleCheckBoxClick");
         var item = this.state.data;
         item.isCheckXLC = false;
+        let value;
         if (type == "PH") {
             item.isCheckPH = !item.isCheckPH;
             item.isCheckXem = false;
+            value = item.isCheckPH;
         } else {
             item.isCheckXem = !item.isCheckXem;
             item.isCheckPH = false;
+            value = item.isCheckXem;
         }
         this.setState({
             data: item,
             //isCheckXLC: "",
         })
-        this.addItemToListDataSelect(item);
-        this.props.handleCheckBoxClick(idNew);
+        //this.addItemToListDataSelect();
+        this.props.handleCheckBoxClick(idNew, value + type);
     }
 
-    addItemToListDataSelect = (item) => {
+    addItemToListDataSelect = () => {
+        console.log("co vao day");
+        var item = this.state.data;
         var lstDataSelect = this.props.chuyenXuLyReducer.get('lstDataSelect');
-        let check = true;
+        //let check = true;
         if (lstDataSelect && lstDataSelect.length) {
             for (let i = 0; i < lstDataSelect.length; i++) {
                 if (lstDataSelect[i].id == item.id) {
                     lstDataSelect[i] = item;
                     lstDataSelect[i].children = [];
-                    check = false;
-                    break;
+                    //check = false;
+                    this.props.dispatch(chuyenXuLyAction.setListDataSelectAction(lstDataSelect));
+                    return;
                 }
             }
         }
-        if (check == true) {
-            lstDataSelect.push(item);
-        }
+        //if (check == true) {
+        lstDataSelect.push(item);
+        //}
         this.props.dispatch(chuyenXuLyAction.setListDataSelectAction(lstDataSelect));
+        console.log("test lstDataSelect: ", lstDataSelect);
     }
 
     render() {
@@ -116,7 +122,8 @@ class TreeItemChuyenXuLy extends Component {
                                 buttonSize={10}
                                 selectedButtonColor={'black'}
                                 buttonColor={'black'}
-                                isSelected={this.props.currentNode === item.id}
+                                isSelected={item.isCheckXLC}
+                                //isSelected={this.props.currentNode === item.id}
                                 onPress={() => { this.handleRadioButtonClick(item.id) }}
                             />
                         </RadioButton>

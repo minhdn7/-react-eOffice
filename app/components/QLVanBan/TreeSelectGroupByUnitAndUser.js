@@ -39,7 +39,8 @@ export default class TreeSelectByUnitAndUser extends Component {
     };
   }
 
-  handleCheckXlcClick = (id) => {
+  handleCheckXlcClick = async (id) => {
+    await this.findById(this.props.data, id);
     this.setState((state) => {
       return {
         isCheckXLC: id,
@@ -48,26 +49,27 @@ export default class TreeSelectByUnitAndUser extends Component {
     });
   }
 
-  handleCheckBoxClick = (id) => {
-    if(this.state.isCheckXLC && this.state.isCheckXLC == id){
+  handleCheckBoxClick = (id, changeStatus) => {
+    //console.log("check isCheckXLC: ", ())
+    //if(this.state.isCheckXLC && this.state.isCheckXLC == id){
       this.setState((state) => {
         return {
-          isCheckXLC: null,
+          isCheckXLC: id + changeStatus.toString(), // mục đích để render lại view
           //nodesStatus
         };
       });
-    }   
+    //}   
   }
 
 
-  findById = (data, idNew, idOld) => {
+  findById = (data, idNew) => {
     for (var i = 0; i < data.length; i++) {
       if (data[i].id == idNew) {
         data[i].isCheckXLC = true;
         data[i].isCheckPH = false;
         data[i].isCheckXem = false;
         index = index + 1;
-      } else if (data[i].id == idOld) {
+      } else if (data[i].isCheckXLC == true) {
         data[i].isCheckXLC = false;
         index = index + 1;
       }
@@ -76,7 +78,7 @@ export default class TreeSelectByUnitAndUser extends Component {
         return;
       }
       if (data[i].children)
-        this.findById(data[i].children, idNew, idOld);
+        this.findById(data[i].children, idNew);
     }
   }
 

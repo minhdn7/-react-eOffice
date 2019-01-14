@@ -6,8 +6,8 @@ import HeaderChuyenXuLy from './HeaderChuyenXuLy';
 import { connect } from "react-redux";
 import strings from "../../resources/strings";
 import * as chuyenXuLyAction from "../../actions/chuyenXuLy-actions";
-
-
+import ContactData from "../../data/ContactData";
+import { convertJsonToTreeMapCustom } from '../../utils/Utils';
 export class SelectGroupUnitAndUser extends Component {
     constructor() {
         super();
@@ -39,25 +39,32 @@ export class SelectGroupUnitAndUser extends Component {
         } else {
 
         }
+        this.setState({
+            //lstData: data,
+            lstData: convertJsonToTreeMapCustom(ContactData),
+        })
     }
 
-    componentWillReceiveProps() {
-        let data;
-        if (this.state.actionType == 1) {
-            data = this.props.chuyenXuLyReducer.get('listGroupUnit');
-            if (data) {
-                this.setState({
-                    lstData: data,
-                })
-            }
-        } else {
-            if (this.props.chuyenXuLyReducer.get('listGruopUnit')) {
-                this.setState({
-                    lstData: this.props.chuyenXuLyReducer.get('listGruopUnit'),
-                })
-            }
-        }
-        console.log("list group unit: ", this.state.lstData);
+    // componentWillReceiveProps() {
+    //     let data;
+    //     if (this.state.actionType == 1) {
+    //         data = this.props.chuyenXuLyReducer.get('listGroupUnit');
+    //         if (data) {
+    //             this.setState({
+    //                 lstData: data,
+    //             })
+    //         }
+    //     } else {
+    //         if (this.props.chuyenXuLyReducer.get('listGruopUnit')) {
+    //             this.setState({
+    //                 lstData: this.props.chuyenXuLyReducer.get('listGruopUnit'),
+    //             })
+    //         }
+    //     }
+    // }
+
+    saveHandle = () => {
+        console.log("saveHandle: ", this.state.lstData);
     }
 
     render() {
@@ -75,7 +82,10 @@ export class SelectGroupUnitAndUser extends Component {
         }
         return (
             <View style={{ flex: 1 }}>
-                <HeaderChuyenXuLy myTitle={this.state.title} />
+                <HeaderChuyenXuLy 
+                    myTitle={this.state.title} 
+                    saveHandle={this.saveHandle}
+                />
                 <View style={{ flex: 1, margin: 2, marginTop: 5 }}>
                     <ScrollView style={{ flex: 1 }}>
                         <View style={[styles.tableHeader, { backgroundColor: '#205AA7' }]}>

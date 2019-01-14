@@ -90,20 +90,17 @@ export class ChuyenXuLy extends Component {
             lstUserConcurentSend: this.props.chuyenXuLyReducer.get('listUserConcurrentSend'),
             lstInternal: this.props.chuyenXuLyReducer.get('listInternal'),
         });
-
-        console.log("lstUserConcurentSend:", this.state.lstUserConcurentSend);
-
     }
 
-    save = (check) => {
-        if(check == 1){
+    saveHandle = (check) => {
+        //if(check == 1){
             var lstDataSelect = this.props.chuyenXuLyReducer.get('lstDataSelect');
             if(lstDataSelect && lstDataSelect.length){
                 this.props.navigation.navigate('DocumentMove');
             }else{
                 alert(strings.thongBaoChuaChonNguoiNhanVanBan);
             }
-        }
+        //}
     }
 
 
@@ -144,7 +141,7 @@ export class ChuyenXuLy extends Component {
 
         return (
             <View style={{ flex: 1 }}>
-                <HeaderChuyenXuLy myTitle={strings.chonNguoiNhanVanBan} save={this.save} />
+                <HeaderChuyenXuLy myTitle={strings.chonNguoiNhanVanBan} saveHandle={this.saveHandle} />
 
                 <View style={{ flex: 1, flexDirection: 'column', backgroundColor: '#D7D7D7' }}>
                     <View style={{ flex: 1, flexDirection: 'row', marginTop: 5, marginLeft: 5, marginRight: 5 }}>
