@@ -32,12 +32,13 @@ export class ChuyenXuLy extends Component {
     }
 
     selectGroupByUnitAndUser = (type) => {
-        this.props.navigation.navigate('SelectGroupUnitAndUser',{
+        this.props.navigation.navigate('SelectGroupUnitAndUser', {
             actionType: type,
+            onGoBack: this.refresh,
         });
     }
 
-    
+
 
     handleShowHide = () => {
         if (this.state.flagThugon) {
@@ -79,7 +80,7 @@ export class ChuyenXuLy extends Component {
     }
 
     componentWillReceiveProps() {
-        
+
         if (this.props.chuyenXuLyReducer.get('listUnit')) {
             this.setState({
                 lstUnit: this.props.chuyenXuLyReducer.get('listUnit'),
@@ -94,15 +95,51 @@ export class ChuyenXuLy extends Component {
 
     saveHandle = (check) => {
         //if(check == 1){
-            var lstDataSelect = this.props.chuyenXuLyReducer.get('lstDataSelect');
-            if(lstDataSelect && lstDataSelect.length){
-                this.props.navigation.navigate('DocumentMove');
-            }else{
-                alert(strings.thongBaoChuaChonNguoiNhanVanBan);
-            }
+        var lstDataSelect = this.props.chuyenXuLyReducer.get('lstDataSelect');
+        if (lstDataSelect && lstDataSelect.length) {
+            this.props.navigation.navigate('DocumentMove');
+        } else {
+            alert(strings.thongBaoChuaChonNguoiNhanVanBan);
+        }
         //}
     }
 
+    refresh = async (data, type) => {
+        console.log("co vao ham refresh");
+        let lstData = this.state.lstUserConcurentSend;
+        if (data && data.length) {
+            console.log("co vao ham refresh 2");
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].children && data[i].children.length) {
+                    console.log("co vao ham refresh 3");
+                    for (let j = 0; j < data[i].children.length; j++) {
+                        await this.findByIdAndSwap(lstData, data[i].children[j]);
+                    }
+                } else {
+                    await this.findByIdAndSwap(lstData, data[i]);
+                }
+            }
+        }
+        this.setState({
+            lstUserConcurentSend: lstData,
+        });
+        console.log("end");
+    }
+
+    findByIdAndSwap = (data, item) => {
+        console.log("findByIdAndSwap");
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].id == item.id) {
+                data[i].isCheckXLC = item.isCheckXLC;
+                data[i].isCheckPH = item.isCheckPH;
+                data[i].isCheckXem = item.isCheckXem;
+                console.log("test " + i);
+                return;
+            } else if (data[i].children && data[i].children.length) {
+                this.findByIdAndSwap(data[i].children, item);
+            }
+        }
+    }
 
     state = {}
     render() {
@@ -114,10 +151,10 @@ export class ChuyenXuLy extends Component {
             dataStr = this.state.lstUnit.map((item) => { return item.name });
         }
 
-        if (this.state.lstUserConcurentSend) {
+        if (this.state.lstUserConcurentSend && this.state.lstUserConcurentSend.length) {
             viewTree = <TreeSelectCustom
-                data={[this.state.lstUserConcurentSend]}
-                isOpen
+                data={this.state.lstUserConcurentSend}
+                isOpen={false}
             //handleRadioButtonClick={this.handleRadioButtonClick}
             // onClick={this._onClick}
             // onClickLeaf={this._onClickLeaf}
@@ -126,9 +163,9 @@ export class ChuyenXuLy extends Component {
             viewTree = <Text>{strings.khongCoDuLieu}</Text>
         }
 
-        if (this.state.lstInternal) {
+        if (this.state.lstInternal && this.state.lstInternal.length) {
             viewDonVi = <TreeSelectCustom
-                data={[this.state.lstInternal]}
+                data={this.state.lstInternal}
                 isOpen
             //handleRadioButtonClick={this.handleRadioButtonClick}
             // onClick={this._onClick}
@@ -244,7 +281,7 @@ export class ChuyenXuLy extends Component {
                                 <Text>{this.state.textThugon}</Text>
                             </TouchableOpacity>
                         </View>
-                        
+
                         {viewDonVi}
 
                     </ScrollView>

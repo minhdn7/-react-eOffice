@@ -102,7 +102,7 @@ function* getUserConcurrentSend(id, jobPosition, name) {
     console.log("list user concurrent send:", response);
     if (typeof (response) != "undefined" && typeof (response.status) != "undefined") {
       if (response.status.code == "0" && typeof (response.data) != "undefined") {
-        let convertTreeData = convertJsonToTreeMap(response.data)
+        let convertTreeData = convertJsonToTreeMapCustom(response.data)
         yield put(chuyenXuLyActions.getUserConcurrentSendSucessAction(convertTreeData));
         return response;
       } else {
@@ -126,7 +126,7 @@ function* getListInternal(idDoc) {
     console.log("list internal:", response);
     if (typeof (response) != "undefined" && typeof (response.status) != "undefined") {
       if (response.status.code == "0" && typeof (response.data) != "undefined") {
-        let convertTreeData = convertJsonToTreeMap(response.data)
+        let convertTreeData = convertJsonToTreeMapCustom(response.data)
         yield put(chuyenXuLyActions.getListInternalSucessAction(convertTreeData));
         return response;
       } else {

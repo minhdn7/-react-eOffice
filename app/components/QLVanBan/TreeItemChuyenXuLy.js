@@ -36,9 +36,9 @@ class TreeItemChuyenXuLy extends Component {
         };
     }
 
-    handleRadioButtonClick = (idNew) => {
+    handleRadioButtonClick = (id) => {
+        //alert("id: " + id);
         //if(idOld == idNew) return;
-        console.log("handleRadioButtonClick");
         var item = this.state.data;
         if (item) {
             item.isCheckXLC = true;
@@ -49,12 +49,11 @@ class TreeItemChuyenXuLy extends Component {
                 //isCheckXLC: idNew
             })
         }
-        //this.addItemToListDataSelect();
-        this.props.handleCheckXlcClick(idNew);
+         this.addItemToListDataSelect();
+        this.props.handleCheckXlcClick(id);
     }
 
-    handleCheckBoxClick = (idNew, type) => {
-        console.log("handleCheckBoxClick");
+    handleCheckBoxClick = (id, type) => {
         var item = this.state.data;
         item.isCheckXLC = false;
         let value;
@@ -71,31 +70,25 @@ class TreeItemChuyenXuLy extends Component {
             data: item,
             //isCheckXLC: "",
         })
-        //this.addItemToListDataSelect();
-        this.props.handleCheckBoxClick(idNew, value + type);
+        this.addItemToListDataSelect();
+        this.props.handleCheckBoxClick(id, value + type);
     }
 
     addItemToListDataSelect = () => {
-        console.log("co vao day");
         var item = this.state.data;
         var lstDataSelect = this.props.chuyenXuLyReducer.get('lstDataSelect');
-        //let check = true;
         if (lstDataSelect && lstDataSelect.length) {
             for (let i = 0; i < lstDataSelect.length; i++) {
                 if (lstDataSelect[i].id == item.id) {
                     lstDataSelect[i] = item;
-                    lstDataSelect[i].children = [];
-                    //check = false;
+                    //lstDataSelect[i].children = [];
                     this.props.dispatch(chuyenXuLyAction.setListDataSelectAction(lstDataSelect));
                     return;
                 }
             }
         }
-        //if (check == true) {
         lstDataSelect.push(item);
-        //}
         this.props.dispatch(chuyenXuLyAction.setListDataSelectAction(lstDataSelect));
-        console.log("test lstDataSelect: ", lstDataSelect);
     }
 
     render() {

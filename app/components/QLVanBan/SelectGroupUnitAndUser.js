@@ -35,7 +35,7 @@ export class SelectGroupUnitAndUser extends Component {
 
     componentDidMount() {
         if (this.state.actionType == 1) {
-           this.props.dispatch(chuyenXuLyAction.getListGroupUnitAction());
+            this.props.dispatch(chuyenXuLyAction.getListGroupUnitAction());
         } else {
 
         }
@@ -65,6 +65,9 @@ export class SelectGroupUnitAndUser extends Component {
 
     saveHandle = () => {
         console.log("saveHandle: ", this.state.lstData);
+        // this.props.navigation.state.params.onGoBack(this.state.lstData);
+        this.props.navigation.goBack();
+        this.props.navigation.state.params.onGoBack(this.state.lstData, this,state.actionType);
     }
 
     render() {
@@ -82,8 +85,8 @@ export class SelectGroupUnitAndUser extends Component {
         }
         return (
             <View style={{ flex: 1 }}>
-                <HeaderChuyenXuLy 
-                    myTitle={this.state.title} 
+                <HeaderChuyenXuLy
+                    myTitle={this.state.title}
                     saveHandle={this.saveHandle}
                 />
                 <View style={{ flex: 1, margin: 2, marginTop: 5 }}>
