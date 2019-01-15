@@ -74,3 +74,18 @@ export const convertJsonToTreeMapCustom = array => {
     }
     return treeData;
 };
+
+export const getIdByUnitAndUser = (id, type) => {
+    let idNew;
+    if (id) {
+        switch (type) {
+            case 1:
+                idNew = "U" + id.split("|")[1];
+                break;
+            case 2:
+                idNew = id.split("@")[0];
+                break;
+        }
+    }
+    return idNew;
+}

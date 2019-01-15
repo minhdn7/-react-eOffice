@@ -14,6 +14,7 @@ import TreeSelectCustom from '../QLVanBan/TreeSelectCustom';
 import { convertJsonToTreeMap } from '../../utils/Utils';
 import ContactData from "../../data/ContactData";
 import strings from "../../resources/strings";
+import { getIdByUnitAndUser } from '../../utils/Utils';
 
 const { height, width } = Dimensions.get('window');
 
@@ -28,10 +29,15 @@ export class ChuyenXuLy extends Component {
             txtUnit: "--Chọn đơn vị--",
             lstUserConcurentSend: [],
             lstInternal: [],
+            actionType: "",
         }
     }
 
-    selectGroupByUnitAndUser = (type) => {
+    selectGroupByUnitAndUser = async (type) => {
+        await this.setState({
+            actionType: type,
+        });
+
         this.props.navigation.navigate('SelectGroupUnitAndUser', {
             actionType: type,
             onGoBack: this.refresh,
@@ -104,14 +110,11 @@ export class ChuyenXuLy extends Component {
         //}
     }
 
-    refresh = async (data, type) => {
-        console.log("co vao ham refresh");
+    refresh = async (data) => {
         let lstData = this.state.lstUserConcurentSend;
         if (data && data.length) {
-            console.log("co vao ham refresh 2");
             for (let i = 0; i < data.length; i++) {
                 if (data[i].children && data[i].children.length) {
-                    console.log("co vao ham refresh 3");
                     for (let j = 0; j < data[i].children.length; j++) {
                         await this.findByIdAndSwap(lstData, data[i].children[j]);
                     }
@@ -120,26 +123,25 @@ export class ChuyenXuLy extends Component {
                 }
             }
         }
-        this.setState({
-            lstUserConcurentSend: lstData,
-        });
-        console.log("end");
+        this.forceUpdate();
+        //this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction(lstData));
     }
 
     findByIdAndSwap = (data, item) => {
         console.log("findByIdAndSwap");
         for (let i = 0; i < data.length; i++) {
-            if (data[i].id == item.id) {
+            if (data[i].id == getIdByUnitAndUser(item.id, this.state.actionType)) {
                 data[i].isCheckXLC = item.isCheckXLC;
                 data[i].isCheckPH = item.isCheckPH;
                 data[i].isCheckXem = item.isCheckXem;
-                console.log("test " + i);
                 return;
             } else if (data[i].children && data[i].children.length) {
                 this.findByIdAndSwap(data[i].children, item);
             }
         }
     }
+
+    
 
     state = {}
     render() {

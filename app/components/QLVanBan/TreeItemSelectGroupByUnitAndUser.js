@@ -49,7 +49,7 @@ class TreeItemChuyenXuLy extends Component {
                 //isCheckXLC: idNew
             })
         }
-        //this.addItemToListDataSelect(item);
+        //this.addItemToListDataSelect();
         this.props.handleCheckXlcClick(idNew);
 
     }
@@ -79,7 +79,7 @@ class TreeItemChuyenXuLy extends Component {
                 //isCheckXLC: "",
             }
         });
-        //this.addItemToListDataSelect(item);
+        //this.addItemToListDataSelect();
         this.props.handleCheckBoxClick(idNew, value + type);
     }
 
@@ -103,22 +103,20 @@ class TreeItemChuyenXuLy extends Component {
         }
     }
 
-    addItemToListDataSelect = (item) => {
+    addItemToListDataSelect = () => {
+        var item = this.state.data;
         var lstDataSelect = this.props.chuyenXuLyReducer.get('lstDataSelect');
-        let check = true;
         if (lstDataSelect && lstDataSelect.length) {
             for (let i = 0; i < lstDataSelect.length; i++) {
                 if (lstDataSelect[i].id == item.id) {
                     lstDataSelect[i] = item;
-                    lstDataSelect[i].children = [];
-                    check = false;
-                    break;
+                    //lstDataSelect[i].children = [];
+                    this.props.dispatch(chuyenXuLyAction.setListDataSelectAction(lstDataSelect));
+                    return;
                 }
             }
         }
-        if (check == true) {
-            lstDataSelect.push(item);
-        }
+        lstDataSelect.push(item);
         this.props.dispatch(chuyenXuLyAction.setListDataSelectAction(lstDataSelect));
     }
 
