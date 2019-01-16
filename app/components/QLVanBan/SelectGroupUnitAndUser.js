@@ -65,7 +65,7 @@ export class SelectGroupUnitAndUser extends Component {
 
     saveHandle = () => {
         this.props.navigation.goBack();
-        this.props.navigation.state.params.onGoBack(this.state.lstData);
+        this.props.navigation.state.params.onGoBack();
     }
 
     render() {

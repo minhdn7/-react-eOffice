@@ -65,6 +65,13 @@ export const setListDataSelectAction = (lstDataSelect) => {
     }
 }
 
+export const setListDataSelectByUnitOrUserAction = (lstDataSelect) => {
+    return{
+        type: actions.SET_LIST_DATA_SELECT_UNIT_OR_USER,
+        lstDataSelect
+    }
+}
+
 // export const setListIdCheckXlcAction = (lstIdCheckXlc) => {
 //     return{
 //         type: actions.SET_LIST_ID_CHECK_XLC,

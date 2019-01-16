@@ -143,5 +143,6 @@ module.exports = new LocalizedStrings({
     ph: "PH",
     xem: "Xem",
     donVi: "Đơn vị",
+    chonDonVi: "--Chọn đơn vị--",
   }
 });

@@ -89,3 +89,16 @@ export const getIdByUnitAndUser = (id, type) => {
     }
     return idNew;
 }
+
+export const shortText = (text, length) => {
+    const words = text.split(' ');
+    if (words.length > length) {
+        let newText = "";
+        for (let i = 0; i < length; i++) {
+            newText += words[i] + " ";
+        }
+        return newText + "...";
+    }
+
+    return text;
+}

@@ -11,7 +11,7 @@ import styles from '../../styles/styleQLVanBan';
 import * as chuyenXuLyAction from "../../actions/chuyenXuLy-actions";
 import * as rootActions from "../../actions/root-actions";
 import TreeSelectCustom from '../QLVanBan/TreeSelectCustom';
-import { convertJsonToTreeMap } from '../../utils/Utils';
+import { convertJsonToTreeMap, shortText } from '../../utils/Utils';
 import ContactData from "../../data/ContactData";
 import strings from "../../resources/strings";
 import { getIdByUnitAndUser } from '../../utils/Utils';
@@ -26,15 +26,17 @@ export class ChuyenXuLy extends Component {
             textThugon: "Thu gọn",
             iconThugon: "arrowup",
             lstUnit: [],
-            txtUnit: "--Chọn đơn vị--",
+            txtUnit: "",
+            txtInputName: "",
             lstUserConcurentSend: [],
             lstInternal: [],
             actionType: "",
+            txtNameUnitSelect: strings.chonDonVi,
         }
     }
 
-    selectGroupByUnitAndUser = async (type) => {
-        await this.setState({
+    selectGroupByUnitAndUser = (type) => {
+        this.setState({
             actionType: type,
         });
 
@@ -63,14 +65,42 @@ export class ChuyenXuLy extends Component {
 
     }
 
-    gotoScreen(value) {
-        // this.setState({
-        //     txtUnit: value,
-        // });
+    selectUnitHandle = (index) => {
+        let item = this.state.lstUnit[index - 1];
+        if (item) {
+            let id = item.id;
+            if (id.indexOf('U') !== -1) {
+                id = id.substring(1, id.length);
+            }
+            this.setState({
+                txtNameUnitSelect: shortText(item.name, 5),
+                txtUnit: id,
+            });
+            this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction(id, "", this.state.txtInputName));
+        } else {
+            this.setState({
+                txtNameUnitSelect: strings.chonDonVi,
+            });
+        }
+    }
+
+    _onChangeTextHandle = (event) => {
+        const {name, type, value} = event.nativeEvent;
+        console.log("test event.nativeEvent: ", value);
+        this.setState({
+            txtInputName: value,
+        });
+        setTimeout(
+            () => {
+                alert("test " + value);
+                this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction(this.state.txtUnit, "", value ? value.trim() : ""));
+            },
+            3000
+        )
     }
 
     componentWillMount() {
-        this.props.dispatch(chuyenXuLyAction.resetTreeDataAction());
+        //this.props.dispatch(chuyenXuLyAction.resetTreeDataAction());
     }
 
     componentDidMount() {
@@ -92,48 +122,48 @@ export class ChuyenXuLy extends Component {
                 lstUnit: this.props.chuyenXuLyReducer.get('listUnit'),
             });
         }
-
+        // let lstData = this.props.chuyenXuLyReducer.get('lstTreeData');
+        // if(!lstData || ! lstData.length){
+        //     lstData = this.props.chuyenXuLyReducer.get('listUserConcurrentSend');
+        // }
         this.setState({
             lstUserConcurentSend: this.props.chuyenXuLyReducer.get('listUserConcurrentSend'),
             lstInternal: this.props.chuyenXuLyReducer.get('listInternal'),
         });
     }
 
+    componentWillUnmount() {
+        this.props.dispatch(chuyenXuLyAction.resetTreeDataAction());
+    }
+
     saveHandle = (check) => {
-        //if(check == 1){
         var lstDataSelect = this.props.chuyenXuLyReducer.get('lstDataSelect');
         if (lstDataSelect && lstDataSelect.length) {
             this.props.navigation.navigate('DocumentMove');
         } else {
             alert(strings.thongBaoChuaChonNguoiNhanVanBan);
         }
-        //}
     }
 
-    refresh = async (data) => {
-        let lstData = this.state.lstUserConcurentSend;
+    refresh = async () => {
+        let dataSelectByUnitOrUser = this.props.chuyenXuLyReducer.get('lstDataSelectByUnitOrUser');
+        let data = dataSelectByUnitOrUser.filter(item => item.isCheckXLC || item.isCheckPH || item.isCheckXem);
+        let lstData = this.props.chuyenXuLyReducer.get("listUserConcurrentSend");
         if (data && data.length) {
             for (let i = 0; i < data.length; i++) {
-                if (data[i].children && data[i].children.length) {
-                    for (let j = 0; j < data[i].children.length; j++) {
-                        await this.findByIdAndSwap(lstData, data[i].children[j]);
-                    }
-                } else {
-                    await this.findByIdAndSwap(lstData, data[i]);
-                }
+                await this.findByIdAndSwap(lstData, data[i]);
             }
         }
-        this.forceUpdate();
-        //this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction(lstData));
+        this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction(lstData));
     }
 
     findByIdAndSwap = (data, item) => {
-        console.log("findByIdAndSwap");
         for (let i = 0; i < data.length; i++) {
             if (data[i].id == getIdByUnitAndUser(item.id, this.state.actionType)) {
                 data[i].isCheckXLC = item.isCheckXLC;
                 data[i].isCheckPH = item.isCheckPH;
                 data[i].isCheckXem = item.isCheckXem;
+                this.addItemToListDataSelect(data[i]);
                 return;
             } else if (data[i].children && data[i].children.length) {
                 this.findByIdAndSwap(data[i].children, item);
@@ -141,7 +171,22 @@ export class ChuyenXuLy extends Component {
         }
     }
 
-    
+    addItemToListDataSelect = (item) => {
+        let lstDataSelect = [];
+        lstDataSelect = this.props.chuyenXuLyReducer.get('lstDataSelect');
+        if (lstDataSelect && lstDataSelect.length) {
+            for (let i = 0; i < lstDataSelect.length; i++) {
+                if (lstDataSelect[i].id == item.id) {
+                    lstDataSelect[i] = item;
+                    //lstDataSelect[i].children = [];
+                    this.props.dispatch(chuyenXuLyAction.setListDataSelectAction(lstDataSelect));
+                    return;
+                }
+            }
+        }
+        lstDataSelect.push(item);
+        this.props.dispatch(chuyenXuLyAction.setListDataSelectAction(lstDataSelect));
+    }
 
     state = {}
     render() {
@@ -151,6 +196,7 @@ export class ChuyenXuLy extends Component {
 
         if (this.state.lstUnit != null && this.state.lstUnit.length != 0) {
             dataStr = this.state.lstUnit.map((item) => { return item.name });
+            dataStr.splice(0, 0, strings.chonDonVi);
         }
 
         if (this.state.lstUserConcurentSend && this.state.lstUserConcurentSend.length) {
@@ -187,6 +233,9 @@ export class ChuyenXuLy extends Component {
                         <TextInput
                             style={{ flex: 1, backgroundColor: '#ffffff', height: 40, marginRight: 5 }}
                             placeholder="Họ tên"
+                            value={this.state.txtInputName}
+                            //onChangeText={text => this.setState({ txtInputName: text })}
+                            onChange={() => this._onChangeTextHandle}
                         />
                         <View style={{ flex: 1, backgroundColor: '#ffffff', height: 40, }}>
                             <ModalDropdown
@@ -194,10 +243,10 @@ export class ChuyenXuLy extends Component {
                                 style={{ flex: 1 }}
                                 dropdownStyle={{ backgroundColor: "#ffffff", color: 'black', fontSize: 16, }}
                                 dropdownTextStyle={{ flex: 1, color: "black", fontSize: 16, backgroundColor: "#ffffff", width: width * 0.9 }}
-                                onSelect={(idx, value) => this.gotoScreen(idx)}
+                                onSelect={(idx, value) => this.selectUnitHandle(idx, value)}
                             >
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 7 }}>
-                                    <Text style={{ color: 'black', fontSize: 14 }}>{this.state.txtUnit}</Text>
+                                    <Text style={{ color: 'black', fontSize: 14 }}>{this.state.txtNameUnitSelect}</Text>
                                     <Icon name="chevron-small-down" size={23} color='black' />
                                 </View>
                             </ModalDropdown>

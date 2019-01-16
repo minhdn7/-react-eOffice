@@ -49,7 +49,7 @@ class TreeItemChuyenXuLy extends Component {
                 //isCheckXLC: idNew
             })
         }
-        //this.addItemToListDataSelect();
+        this.addItemToListDataSelect(item);
         this.props.handleCheckXlcClick(idNew);
 
     }
@@ -71,6 +71,8 @@ class TreeItemChuyenXuLy extends Component {
 
         if (!item.parentId) {
             this.changeStatus(item, type, value);
+        }else{
+            this.addItemToListDataSelect(item);
         }
 
         this.setState(() => {
@@ -79,12 +81,11 @@ class TreeItemChuyenXuLy extends Component {
                 //isCheckXLC: "",
             }
         });
-        //this.addItemToListDataSelect();
         this.props.handleCheckBoxClick(idNew, value + type);
     }
 
     changeStatus = (data, type, value) => {
-        if (data.children) {
+        if (data.children && data.children.length) {
             for (let i = 0; i < data.children.length; i++) {
                 if (type == "PH") {
                     if (value == true) {
@@ -99,25 +100,26 @@ class TreeItemChuyenXuLy extends Component {
                     }
                     data.children[i].isCheckXem = value;
                 }
+                this.addItemToListDataSelect(data.children[i]);
             }
         }
     }
 
-    addItemToListDataSelect = () => {
-        var item = this.state.data;
-        var lstDataSelect = this.props.chuyenXuLyReducer.get('lstDataSelect');
+    addItemToListDataSelect = (item) => {
+        let lstDataSelect = [];
+        lstDataSelect = this.props.chuyenXuLyReducer.get('lstDataSelectByUnitOrUser');
         if (lstDataSelect && lstDataSelect.length) {
             for (let i = 0; i < lstDataSelect.length; i++) {
                 if (lstDataSelect[i].id == item.id) {
                     lstDataSelect[i] = item;
                     //lstDataSelect[i].children = [];
-                    this.props.dispatch(chuyenXuLyAction.setListDataSelectAction(lstDataSelect));
+                    this.props.dispatch(chuyenXuLyAction.setListDataSelectByUnitOrUserAction(lstDataSelect));
                     return;
                 }
             }
         }
         lstDataSelect.push(item);
-        this.props.dispatch(chuyenXuLyAction.setListDataSelectAction(lstDataSelect));
+        this.props.dispatch(chuyenXuLyAction.setListDataSelectByUnitOrUserAction(lstDataSelect));
     }
 
     render() {
