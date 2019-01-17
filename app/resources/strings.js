@@ -144,5 +144,10 @@ module.exports = new LocalizedStrings({
     xem: "Xem",
     donVi: "Đơn vị",
     chonDonVi: "--Chọn đơn vị--",
+    thuGon: "Thu gọn",
+    nhanVaoDeChonNguoiNhan: "Nhấn vào để chọn người nhận",
+    chonTheoNhomDonVi: "Chọn theo nhóm đơn vị",
+    chonTheoNhomCaNhan: "Chọn theo nhóm cá nhân",
+
   }
 });

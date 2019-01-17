@@ -14,17 +14,21 @@ import TreeSelectCustom from '../QLVanBan/TreeSelectCustom';
 import { convertJsonToTreeMap, shortText } from '../../utils/Utils';
 import ContactData from "../../data/ContactData";
 import strings from "../../resources/strings";
-import { getIdByUnitAndUser } from '../../utils/Utils';
+import { getIdByUnitAndUser, convertJsonToTreeMapCustom } from '../../utils/Utils';
 
 const { height, width } = Dimensions.get('window');
 
 export class ChuyenXuLy extends Component {
     constructor() {
         super();
+        this.delayTimer = null;
         this.state = {
             flagThugon: true,
-            textThugon: "Thu gọn",
+            textThugon: strings.thuGon,
             iconThugon: "arrowup",
+            flagThugonCaNhan: true,
+            textThugonCaNhan: strings.thuGon,
+            iconThugonCaNhan: "arrowup",
             lstUnit: [],
             txtUnit: "",
             txtInputName: "",
@@ -34,6 +38,45 @@ export class ChuyenXuLy extends Component {
             txtNameUnitSelect: strings.chonDonVi,
         }
     }
+
+    componentWillMount() {
+        //this.props.dispatch(chuyenXuLyAction.resetTreeDataAction());
+    }
+
+    async componentDidMount() {
+        //var lstData = convertJsonToTreeMap(ContactData);
+        //var lstData = convertJsonToTreeMap(this.props.login.get('dataContact'));
+        var idDocument = this.props.navigation.getParam('idDocument', 'NO-ID');
+
+        await this.props.dispatch(chuyenXuLyAction.getListUnitAction());
+        await this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction("", "", ""));
+        await this.props.dispatch(chuyenXuLyAction.getListInternalAction(idDocument));
+
+        this.setState({
+            lstUnit: this.props.chuyenXuLyReducer.get('listUnit'),
+            lstUserConcurentSend: this.props.chuyenXuLyReducer.get('listUserConcurrentSend'),
+            lstInternal: this.props.chuyenXuLyReducer.get('listInternal'),
+        })
+    }
+
+    // componentWillReceiveProps() {
+
+    //     if (this.props.chuyenXuLyReducer.get('listUnit')) {
+    //         this.setState({
+    //             lstUnit: this.props.chuyenXuLyReducer.get('listUnit'),
+    //         });
+    //     }
+    //     // let lstData = this.props.chuyenXuLyReducer.get('lstTreeData');
+    //     // if(!lstData || ! lstData.length){
+    //     //     lstData = this.props.chuyenXuLyReducer.get('listUserConcurrentSend');
+    //     // }
+    //     this.setState(() => {
+    //         return{
+    //             lstUserConcurentSend: this.props.chuyenXuLyReducer.get('listUserConcurrentSend'),
+    //             lstInternal: this.props.chuyenXuLyReducer.get('listInternal'),
+    //         }
+    //     });
+    // }
 
     selectGroupByUnitAndUser = (type) => {
         this.setState({
@@ -48,25 +91,46 @@ export class ChuyenXuLy extends Component {
 
 
 
-    handleShowHide = () => {
-        if (this.state.flagThugon) {
-            this.setState({
-                flagThugon: false,
-                textThugon: "Nhấn vào để chọn người nhận",
-                iconThugon: "arrowdown"
-            });
-        } else {
-            this.setState({
-                flagThugon: true,
-                textThugon: "Thu gọn",
-                iconThugon: "arrowup"
-            });
+    handleShowHide = (type) => {
+        switch (type) {
+            case "DonVi":
+                if (this.state.flagThugon) {
+                    this.setState({
+                        flagThugon: false,
+                        textThugon: strings.nhanVaoDeChonNguoiNhan,
+                        iconThugon: "arrowdown"
+                    });
+                } else {
+                    this.setState({
+                        flagThugon: true,
+                        textThugon: strings.thuGon,
+                        iconThugon: "arrowup"
+                    });
+                }
+                break;
+            case "CaNhan":
+                if (this.state.flagThugonCaNhan) {
+                    this.setState({
+                        flagThugonCaNhan: false,
+                        textThugonCaNhan: strings.nhanVaoDeChonNguoiNhan,
+                        iconThugonCaNhan: "arrowdown"
+                    });
+                } else {
+                    this.setState({
+                        flagThugonCaNhan: true,
+                        textThugonCaNhan: strings.thuGon,
+                        iconThugonCaNhan: "arrowup"
+                    });
+                }
+                break;
         }
+
 
     }
 
     selectUnitHandle = (index) => {
         let item = this.state.lstUnit[index - 1];
+        
         if (item) {
             let id = item.id;
             if (id.indexOf('U') !== -1) {
@@ -81,59 +145,21 @@ export class ChuyenXuLy extends Component {
             this.setState({
                 txtNameUnitSelect: strings.chonDonVi,
             });
+            this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction("", "", this.state.txtInputName));
         }
     }
+    _onChangeTextHandle = (textInput) => {
+        clearTimeout(this.delayTimer);
 
-    _onChangeTextHandle = (event) => {
-        const {name, type, value} = event.nativeEvent;
-        console.log("test event.nativeEvent: ", value);
         this.setState({
-            txtInputName: value,
+            txtInputName: textInput,
         });
-        setTimeout(
+        this.delayTimer = setTimeout(
             () => {
-                alert("test " + value);
-                this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction(this.state.txtUnit, "", value ? value.trim() : ""));
+                this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction(this.state.txtUnit, "", textInput ? textInput.trim() : ""));
             },
-            3000
+            1500
         )
-    }
-
-    componentWillMount() {
-        //this.props.dispatch(chuyenXuLyAction.resetTreeDataAction());
-    }
-
-    componentDidMount() {
-        //var lstData = convertJsonToTreeMap(ContactData);
-        //var lstData = convertJsonToTreeMap(this.props.login.get('dataContact'));
-        var idDocument = this.props.navigation.getParam('idDocument', 'NO-ID');
-
-        this.props.dispatch(chuyenXuLyAction.getListUnitAction());
-        this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction("", "", ""));
-        this.props.dispatch(chuyenXuLyAction.getListInternalAction(idDocument));
-        //this.props.dispatch(chuyenXuLyAction.setListTreeDataAction(lstData));
-        //this.lstUserConcurentSend = this.props.login.get('dataContact');
-    }
-
-    componentWillReceiveProps() {
-
-        if (this.props.chuyenXuLyReducer.get('listUnit')) {
-            this.setState({
-                lstUnit: this.props.chuyenXuLyReducer.get('listUnit'),
-            });
-        }
-        // let lstData = this.props.chuyenXuLyReducer.get('lstTreeData');
-        // if(!lstData || ! lstData.length){
-        //     lstData = this.props.chuyenXuLyReducer.get('listUserConcurrentSend');
-        // }
-        this.setState({
-            lstUserConcurentSend: this.props.chuyenXuLyReducer.get('listUserConcurrentSend'),
-            lstInternal: this.props.chuyenXuLyReducer.get('listInternal'),
-        });
-    }
-
-    componentWillUnmount() {
-        this.props.dispatch(chuyenXuLyAction.resetTreeDataAction());
     }
 
     saveHandle = (check) => {
@@ -148,13 +174,13 @@ export class ChuyenXuLy extends Component {
     refresh = async () => {
         let dataSelectByUnitOrUser = this.props.chuyenXuLyReducer.get('lstDataSelectByUnitOrUser');
         let data = dataSelectByUnitOrUser.filter(item => item.isCheckXLC || item.isCheckPH || item.isCheckXem);
-        let lstData = this.props.chuyenXuLyReducer.get("listUserConcurrentSend");
+        let lstData = this.state.lstUserConcurentSend;
         if (data && data.length) {
             for (let i = 0; i < data.length; i++) {
                 await this.findByIdAndSwap(lstData, data[i]);
             }
         }
-        this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction(lstData));
+        //this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction(lstData));
     }
 
     findByIdAndSwap = (data, item) => {
@@ -234,8 +260,7 @@ export class ChuyenXuLy extends Component {
                             style={{ flex: 1, backgroundColor: '#ffffff', height: 40, marginRight: 5 }}
                             placeholder="Họ tên"
                             value={this.state.txtInputName}
-                            //onChangeText={text => this.setState({ txtInputName: text })}
-                            onChange={() => this._onChangeTextHandle}
+                            onChangeText={(text) => this._onChangeTextHandle(text)}
                         />
                         <View style={{ flex: 1, backgroundColor: '#ffffff', height: 40, }}>
                             <ModalDropdown
@@ -258,7 +283,7 @@ export class ChuyenXuLy extends Component {
                                 style={[styles.btn, { backgroundColor: '#205AA7', }]}
                                 onPress={() => this.selectGroupByUnitAndUser(1)}
                             >
-                                <Text style={styles.btnText}>Chọn theo nhóm đơn vị</Text>
+                                <Text style={styles.btnText}>{strings.chonTheoNhomDonVi}</Text>
                             </TouchableOpacity>
                         </View>
 
@@ -267,7 +292,7 @@ export class ChuyenXuLy extends Component {
                                 style={[styles.btn, { backgroundColor: '#205AA7', marginLeft: 2, marginRight: 10 }]}
                                 onPress={() => this.selectGroupByUnitAndUser(2)}
                             >
-                                <Text style={styles.btnText}>Chọn theo nhóm cá nhân</Text>
+                                <Text style={styles.btnText}>{strings.chonTheoNhomCaNhan}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -293,21 +318,14 @@ export class ChuyenXuLy extends Component {
                         <View style={{ height: height * 0.05, backgroundColor: '#D7D7D7', }}>
                             <TouchableOpacity
                                 style={styles.styleCenterContent}
-                                onPress={() => this.handleShowHide()}
+                                onPress={() => this.handleShowHide("DonVi")}
                             >
                                 <AntDesign name={this.state.iconThugon} size={30} color="black" />
                                 <Text>{this.state.textThugon}</Text>
                             </TouchableOpacity>
                         </View>
 
-                        {viewTree}
-                        {/* <TreeSelectCustom
-                            data={[this.props.chuyenXuLyReducer.get('lstTreeData')]}
-                            isOpen
-                            //handleRadioButtonClick={this.handleRadioButtonClick}
-                        // onClick={this._onClick}
-                        // onClickLeaf={this._onClickLeaf}
-                        /> */}
+                        {this.state.flagThugon ? viewTree : null}
 
                         <View style={[styles.tableHeader, { backgroundColor: "#32CD32" }]}>
                             <View style={styles.width50}>
@@ -326,14 +344,14 @@ export class ChuyenXuLy extends Component {
                         <View style={{ height: height * 0.05, backgroundColor: '#D7D7D7', }}>
                             <TouchableOpacity
                                 style={styles.styleCenterContent}
-                                onPress={() => this.handleShowHide()}
+                                onPress={() => this.handleShowHide("CaNhan")}
                             >
-                                <AntDesign name={this.state.iconThugon} size={30} color="black" />
-                                <Text>{this.state.textThugon}</Text>
+                                <AntDesign name={this.state.iconThugonCaNhan} size={30} color="black" />
+                                <Text>{this.state.textThugonCaNhan}</Text>
                             </TouchableOpacity>
                         </View>
 
-                        {viewDonVi}
+                        {this.state.flagThugonCaNhan ? viewDonVi : null}
 
                     </ScrollView>
                 </View>
