@@ -72,12 +72,12 @@ export const setListDataSelectByUnitOrUserAction = (lstDataSelect) => {
     }
 }
 
-// export const setListIdCheckXlcAction = (lstIdCheckXlc) => {
-//     return{
-//         type: actions.SET_LIST_ID_CHECK_XLC,
-//         lstIdCheckXlc
-//     }
-// }
+export const setListIdCheckXlcAction = (lstIdCheckXlc) => {
+    return{
+        type: actions.SET_LIST_ID_CHECK_XLC,
+        lstIdCheckXlc
+    }
+}
 
 // export const setListIdCheckPhAction = (lstIdCheckPh) => {
 //     return{
@@ -137,6 +137,26 @@ export const getListGroupUnitSucessAction = (response) => {
 export const getListGroupUnitErrorAction = (error) => {
     return{
         type: actions.GET_LIST_GROUP_UNIT_ERROR,
+        error
+    }
+}
+
+export const getListGroupUserAction = () => {
+    return{
+        type: actions.GET_LIST_GROUP_USER,
+    }
+}
+
+export const getListGroupUserSucessAction = (response) => {
+    return{
+        type: actions.GET_LIST_GROUP_USER_SUCESS,
+        listGroupUser: response,
+    }
+}
+
+export const getListGroupUserErrorAction = (error) => {
+    return{
+        type: actions.GET_LIST_GROUP_USER_ERROR,
         error
     }
 }

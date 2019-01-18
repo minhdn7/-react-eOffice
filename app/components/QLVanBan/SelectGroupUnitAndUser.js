@@ -11,9 +11,6 @@ import { convertJsonToTreeMapCustom } from '../../utils/Utils';
 export class SelectGroupUnitAndUser extends Component {
     constructor() {
         super();
-        // this.navigator = this.props.menuReducer.get('navigator');
-        // this.title = this.navigator.getParam('title', 'NO-ID');
-        // this.actionType = this.navigator.getParam('typeAction', 'NO-ID');
         this.state = {
             lstData: [],
             title: '',
@@ -37,7 +34,7 @@ export class SelectGroupUnitAndUser extends Component {
         if (this.state.actionType == 1) {
             this.props.dispatch(chuyenXuLyAction.getListGroupUnitAction());
         } else {
-
+            this.props.dispatch(chuyenXuLyAction.getListGroupUserAction());
         }
         this.setState({
             //lstData: data,
@@ -68,19 +65,31 @@ export class SelectGroupUnitAndUser extends Component {
         this.props.navigation.state.params.onGoBack();
     }
 
-    render() {
-        let viewTree;
-        if (this.state.lstData) {
-            viewTree = <TreeSelectGroupByUnitAndUser
-                data={this.state.lstData}
-                isOpen
-            //handleRadioButtonClick={this.handleRadioButtonClick}
-            // onClick={this._onClick}
-            // onClickLeaf={this._onClickLeaf}
-            />
-        } else {
-            viewTree = <Text>{strings.khongCoDuLieu}</Text>
+    renderTree = () => {
+        let actionType = this.props.navigation.getParam('actionType', 'NO-ID');
+        let lstData = [];
+        if (actionType === 1) {
+            lstData = this.props.chuyenXuLyReducer.get('listGroupUnit');
+        } else // cây đơn vị
+        {
+            lstData = this.props.chuyenXuLyReducer.get('listGroupUser');
         }
+        if (lstData && lstData.length) {
+            return (
+                <TreeSelectGroupByUnitAndUser
+                    data={lstData}
+                    isOpen={false}
+                //handleRadioButtonClick={this.handleRadioButtonClick}
+                // onClick={this._onClick}
+                // onClickLeaf={this._onClickLeaf}
+                />
+            );
+        } else {
+            return (<Text>{strings.khongCoDuLieu}</Text>);
+        }
+    }
+
+    render() {
         return (
             <View style={{ flex: 1 }}>
                 <HeaderChuyenXuLy
@@ -104,7 +113,7 @@ export class SelectGroupUnitAndUser extends Component {
                             </View>
                         </View>
 
-                        {viewTree}
+                        {this.renderTree()}
 
                     </ScrollView>
                 </View>

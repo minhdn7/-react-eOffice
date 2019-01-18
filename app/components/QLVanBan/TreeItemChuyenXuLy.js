@@ -36,25 +36,26 @@ class TreeItemChuyenXuLy extends Component {
         };
     }
 
-    handleRadioButtonClick = (id) => {
-        //alert("id: " + id);
-        //if(idOld == idNew) return;
-        var item = this.state.data;
+    handleRadioButtonClick = (item) => {
+        //var item = this.props.item;
         if (item) {
             item.isCheckXLC = true;
             item.isCheckPH = false;
             item.isCheckXem = false;
+
+            this.props.handleCheckXlcClick(item.id, item.parentId);
+
             this.setState({
                 data: item,
                 //isCheckXLC: idNew
             })
         }
-         this.addItemToListDataSelect();
-        this.props.handleCheckXlcClick(id);
+        
+        this.addItemToListDataSelect();
     }
 
     handleCheckBoxClick = (id, type) => {
-        var item = this.state.data;
+        var item = this.props.item;
         item.isCheckXLC = false;
         let value;
         if (type == "PH") {
@@ -66,16 +67,17 @@ class TreeItemChuyenXuLy extends Component {
             item.isCheckPH = false;
             value = item.isCheckXem;
         }
-        this.setState({
-            data: item,
-            //isCheckXLC: "",
-        })
+        // this.setState({
+        //     data: item,
+        //     //isCheckXLC: "",
+        // })
+
         this.addItemToListDataSelect();
         this.props.handleCheckBoxClick(id, value + type);
     }
 
     addItemToListDataSelect = () => {
-        var item = this.state.data;
+        var item = this.props.item;
         var lstDataSelect = this.props.chuyenXuLyReducer.get('lstDataSelect');
         if (lstDataSelect && lstDataSelect.length) {
             for (let i = 0; i < lstDataSelect.length; i++) {
@@ -92,11 +94,12 @@ class TreeItemChuyenXuLy extends Component {
     }
 
     render() {
-        const item = this.state.data;
+        const item = this.props.item;
+        //const itemIsCheckXlc = this.props.chuyenXuLyReducer.get('itemIsCheckXlc');
         let viewData;
         if (item != null && item != "undefined") {
             viewData =
-                <View style={{ flex: 1, flexDirection: 'row', }}>
+                <View style={{ flex: 1, flexDirection: 'row', }} >
 
                     <TouchableOpacity style={{ flex: 6 }}
                         onPress={(e) => (item && item.children && item.children.length) ? this.props._onPressCollapse({ e, item }) : null} >
@@ -116,20 +119,11 @@ class TreeItemChuyenXuLy extends Component {
                                 selectedButtonColor={'black'}
                                 buttonColor={'black'}
                                 isSelected={item.isCheckXLC}
-                                //isSelected={this.props.currentNode === item.id}
-                                onPress={() => { this.handleRadioButtonClick(item.id) }}
+                                //isSelected={itemIsCheckXlc && itemIsCheckXlc.id == item.id && itemIsCheckXlc.parentId == item.parentId}
+                                onPress={() => { this.handleRadioButtonClick(item) }}
                             />
                         </RadioButton>
-                        {/* </RadioForm> */}
-                        {/* <RadioForm
-                            radio_props={[{ label: '', value: item.id }]}
-                            //initial={-1}
-                            buttonSize={10}
-                            selectedButtonColor={'black'}
-                            buttonColor={'black'}
-                            isSelected={item.isCheckXLC}
-                            onPress={() => { this.handleRadioButtonClick(item.id) }}
-                        /> */}
+                        
                     </View>
                     <View style={{ flex: 1 }}>
                         <CheckBox

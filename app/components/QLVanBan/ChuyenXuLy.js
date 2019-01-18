@@ -26,9 +26,9 @@ export class ChuyenXuLy extends Component {
             flagThugon: true,
             textThugon: strings.thuGon,
             iconThugon: "arrowup",
-            flagThugonCaNhan: true,
-            textThugonCaNhan: strings.thuGon,
-            iconThugonCaNhan: "arrowup",
+            flagThugonNoiBo: true,
+            textThugonNoiBo: strings.thuGon,
+            iconThugonNoiBo: "arrowup",
             lstUnit: [],
             txtUnit: "",
             txtInputName: "",
@@ -43,20 +43,20 @@ export class ChuyenXuLy extends Component {
         //this.props.dispatch(chuyenXuLyAction.resetTreeDataAction());
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         //var lstData = convertJsonToTreeMap(ContactData);
         //var lstData = convertJsonToTreeMap(this.props.login.get('dataContact'));
         var idDocument = this.props.navigation.getParam('idDocument', 'NO-ID');
 
-        await this.props.dispatch(chuyenXuLyAction.getListUnitAction());
-        await this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction("", "", ""));
-        await this.props.dispatch(chuyenXuLyAction.getListInternalAction(idDocument));
+        this.props.dispatch(chuyenXuLyAction.getListUnitAction());
+        this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction("", "", ""));
+        this.props.dispatch(chuyenXuLyAction.getListInternalAction(idDocument));
 
-        this.setState({
-            lstUnit: this.props.chuyenXuLyReducer.get('listUnit'),
-            lstUserConcurentSend: this.props.chuyenXuLyReducer.get('listUserConcurrentSend'),
-            lstInternal: this.props.chuyenXuLyReducer.get('listInternal'),
-        })
+        // this.setState({
+        //     lstUnit: this.props.chuyenXuLyReducer.get('listUnit'),
+        //     lstUserConcurentSend: this.props.chuyenXuLyReducer.get('listUserConcurrentSend'),
+        //     lstInternal: this.props.chuyenXuLyReducer.get('listInternal'),
+        // })
     }
 
     // componentWillReceiveProps() {
@@ -89,8 +89,6 @@ export class ChuyenXuLy extends Component {
         });
     }
 
-
-
     handleShowHide = (type) => {
         switch (type) {
             case "DonVi":
@@ -108,18 +106,18 @@ export class ChuyenXuLy extends Component {
                     });
                 }
                 break;
-            case "CaNhan":
-                if (this.state.flagThugonCaNhan) {
+            case "NoiBo":
+                if (this.state.flagThugonNoiBo) {
                     this.setState({
-                        flagThugonCaNhan: false,
-                        textThugonCaNhan: strings.nhanVaoDeChonNguoiNhan,
-                        iconThugonCaNhan: "arrowdown"
+                        flagThugonNoiBo: false,
+                        textThugonNoiBo: strings.nhanVaoDeChonNguoiNhan,
+                        iconThugonNoiBo: "arrowdown"
                     });
                 } else {
                     this.setState({
-                        flagThugonCaNhan: true,
-                        textThugonCaNhan: strings.thuGon,
-                        iconThugonCaNhan: "arrowup"
+                        flagThugonNoiBo: true,
+                        textThugonNoiBo: strings.thuGon,
+                        iconThugonNoiBo: "arrowup"
                     });
                 }
                 break;
@@ -129,8 +127,9 @@ export class ChuyenXuLy extends Component {
     }
 
     selectUnitHandle = (index) => {
-        let item = this.state.lstUnit[index - 1];
-        
+        let lstUnit = this.props.chuyenXuLyReducer.get('listUnit');
+        let item = lstUnit[index - 1];
+
         if (item) {
             let id = item.id;
             if (id.indexOf('U') !== -1) {
@@ -174,7 +173,7 @@ export class ChuyenXuLy extends Component {
     refresh = async () => {
         let dataSelectByUnitOrUser = this.props.chuyenXuLyReducer.get('lstDataSelectByUnitOrUser');
         let data = dataSelectByUnitOrUser.filter(item => item.isCheckXLC || item.isCheckPH || item.isCheckXem);
-        let lstData = this.state.lstUserConcurentSend;
+        let lstData = this.props.chuyenXuLyReducer.get('listUserConcurrentSend');
         if (data && data.length) {
             for (let i = 0; i < data.length; i++) {
                 await this.findByIdAndSwap(lstData, data[i]);
@@ -214,42 +213,56 @@ export class ChuyenXuLy extends Component {
         this.props.dispatch(chuyenXuLyAction.setListDataSelectAction(lstDataSelect));
     }
 
-    state = {}
-    render() {
-        let dataStr = [];
-        let viewTree;
-        let viewDonVi;
-
-        if (this.state.lstUnit != null && this.state.lstUnit.length != 0) {
-            dataStr = this.state.lstUnit.map((item) => { return item.name });
+    renderComboboxUnit = () => {
+        let dataStr = [""];
+        let lstUnit = this.props.chuyenXuLyReducer.get('listUnit');
+        if (lstUnit != null && lstUnit.length != 0) {
+            dataStr = lstUnit.map((item) => { return item.name });
             dataStr.splice(0, 0, strings.chonDonVi);
         }
+        return (
+            <View style={{ flex: 1, backgroundColor: '#ffffff', height: 40, }}>
+                <ModalDropdown
+                    options={dataStr}
+                    style={{ flex: 1 }}
+                    dropdownStyle={{ backgroundColor: "#ffffff", color: 'black', fontSize: 16, }}
+                    dropdownTextStyle={{ flex: 1, color: "black", fontSize: 16, backgroundColor: "#ffffff", width: width * 0.9 }}
+                    onSelect={(idx, value) => this.selectUnitHandle(idx, value)}
+                >
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 7 }}>
+                        <Text style={{ color: 'black', fontSize: 14 }}>{this.state.txtNameUnitSelect}</Text>
+                        <Icon name="chevron-small-down" size={23} color='black' />
+                    </View>
+                </ModalDropdown>
+            </View>
+        );
+    }
 
-        if (this.state.lstUserConcurentSend && this.state.lstUserConcurentSend.length) {
-            viewTree = <TreeSelectCustom
-                data={this.state.lstUserConcurentSend}
-                isOpen={false}
-            //handleRadioButtonClick={this.handleRadioButtonClick}
-            // onClick={this._onClick}
-            // onClickLeaf={this._onClickLeaf}
-            />
-        } else {
-            viewTree = <Text>{strings.khongCoDuLieu}</Text>
+    renderTree = (type) => {
+        let lstData = [];
+        if (type === 1) {
+            lstData = this.props.chuyenXuLyReducer.get('listUserConcurrentSend');
+        } else // cây đơn vị
+        {
+            lstData = this.props.chuyenXuLyReducer.get('listInternal');
         }
-
-        if (this.state.lstInternal && this.state.lstInternal.length) {
-            viewDonVi = <TreeSelectCustom
-                data={this.state.lstInternal}
-                isOpen
-            //handleRadioButtonClick={this.handleRadioButtonClick}
-            // onClick={this._onClick}
-            // onClickLeaf={this._onClickLeaf}
-            />
+        if (lstData && lstData.length) {
+            return (
+                <TreeSelectCustom
+                    data={lstData}
+                    isOpen={false}
+                //handleRadioButtonClick={this.handleRadioButtonClick}
+                // onClick={this._onClick}
+                // onClickLeaf={this._onClickLeaf}
+                />
+            );
         } else {
-            viewDonVi = <Text>{strings.khongCoDuLieu}</Text>;
+            return (<Text>{strings.khongCoDuLieu}</Text>);
         }
+    }
 
-
+    state = {}
+    render() {
         return (
             <View style={{ flex: 1 }}>
                 <HeaderChuyenXuLy myTitle={strings.chonNguoiNhanVanBan} saveHandle={this.saveHandle} />
@@ -262,20 +275,9 @@ export class ChuyenXuLy extends Component {
                             value={this.state.txtInputName}
                             onChangeText={(text) => this._onChangeTextHandle(text)}
                         />
-                        <View style={{ flex: 1, backgroundColor: '#ffffff', height: 40, }}>
-                            <ModalDropdown
-                                options={dataStr}
-                                style={{ flex: 1 }}
-                                dropdownStyle={{ backgroundColor: "#ffffff", color: 'black', fontSize: 16, }}
-                                dropdownTextStyle={{ flex: 1, color: "black", fontSize: 16, backgroundColor: "#ffffff", width: width * 0.9 }}
-                                onSelect={(idx, value) => this.selectUnitHandle(idx, value)}
-                            >
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 7 }}>
-                                    <Text style={{ color: 'black', fontSize: 14 }}>{this.state.txtNameUnitSelect}</Text>
-                                    <Icon name="chevron-small-down" size={23} color='black' />
-                                </View>
-                            </ModalDropdown>
-                        </View>
+
+                        {this.renderComboboxUnit()}
+
                     </View>
                     <View style={{ flex: 1, flexDirection: 'row', marginTop: 5, marginLeft: 5, marginRight: 5 }}>
                         <View style={{ width: width * 0.5 }}>
@@ -324,8 +326,8 @@ export class ChuyenXuLy extends Component {
                                 <Text>{this.state.textThugon}</Text>
                             </TouchableOpacity>
                         </View>
-
-                        {this.state.flagThugon ? viewTree : null}
+                       {/* {this.renderTree(1)} */}
+                        {this.state.flagThugon ? this.renderTree(1) : null}
 
                         <View style={[styles.tableHeader, { backgroundColor: "#32CD32" }]}>
                             <View style={styles.width50}>
@@ -344,14 +346,14 @@ export class ChuyenXuLy extends Component {
                         <View style={{ height: height * 0.05, backgroundColor: '#D7D7D7', }}>
                             <TouchableOpacity
                                 style={styles.styleCenterContent}
-                                onPress={() => this.handleShowHide("CaNhan")}
+                                onPress={() => this.handleShowHide("NoiBo")}
                             >
-                                <AntDesign name={this.state.iconThugonCaNhan} size={30} color="black" />
-                                <Text>{this.state.textThugonCaNhan}</Text>
+                                <AntDesign name={this.state.iconThugonNoiBo} size={30} color="black" />
+                                <Text>{this.state.textThugonNoiBo}</Text>
                             </TouchableOpacity>
                         </View>
 
-                        {this.state.flagThugonCaNhan ? viewDonVi : null}
+                        {this.state.flagThugonNoiBo ? this.renderTree(2) : null}
 
                     </ScrollView>
                 </View>

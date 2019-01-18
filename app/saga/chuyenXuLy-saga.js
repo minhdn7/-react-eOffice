@@ -73,6 +73,21 @@ function getListGroupUnitlURL() {
     });
 }
 
+function getListGroupUserURL() {
+
+  url = apiUrl.ROOT_URL + apiUrl.GET_LIST_GROUP_USER_URL;
+  return fetch(url, {
+    method: 'GET',
+    headers: consts.BASE_HEADER,
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
 function* getListUnit() {
   try {
     response = yield call(getListUnitURL);
@@ -168,6 +183,29 @@ function* getListGroupUnit() {
   }
 }
 
+function* getListGroupUser() {
+  try {
+    response = yield call(getListGroupUserURL);
+    console.log("list group user:", response);
+    if (typeof (response) != "undefined" && typeof (response.status) != "undefined") {
+      if (response.status.code == "0" && typeof (response.data) != "undefined") {
+        yield put(chuyenXuLyActions.getListGroupUserSucessAction(convertJsonToTreeMapCustom(response.data)));
+        return response;
+      } else {
+        yield put(chuyenXuLyActions.getListGroupUserErrorAction(response.status.message));
+        return undefined;
+      }
+    } else {
+      yield put(chuyenXuLyActions.getListGroupUserErrorAction("Không lấy được dữ liệu!"));
+      return undefined;
+    }
+
+  } catch (error) {
+
+    yield put(chuyenXuLyActions.getListGroupUserErrorAction(String(error)));
+  }
+}
+
 export function* chuyenXuLyFlow() {
   while (true) {
 
@@ -207,6 +245,17 @@ export function* getListGroupUnitFlow() {
     yield take(actions.GET_LIST_GROUP_UNIT);
     yield put(rootActions.controlProgress(true));
     yield call(getListGroupUnit);
+    yield put(rootActions.controlProgress(false));
+
+  }
+}
+
+export function* getListGroupUserFlow() {
+  while (true) {
+
+    yield take(actions.GET_LIST_GROUP_USER);
+    yield put(rootActions.controlProgress(true));
+    yield call(getListGroupUser);
     yield put(rootActions.controlProgress(false));
 
   }

@@ -38,8 +38,8 @@ export default class TreeSelectCustom extends Component {
     };
   }
 
-  handleCheckXlcClick = async (id) => {
-    await this.findById(this.props.data, id);
+  handleCheckXlcClick = (id, parentId) => {
+    this.findById(this.props.data, id, parentId);
     this.setState((state) => {
       return {
         isCheckXLC: id,
@@ -75,9 +75,9 @@ export default class TreeSelectCustom extends Component {
   // }
 
 
-  findById = (data, idNew) => {
+  findById = (data, id, parentId) => {
     for (var i = 0; i < data.length; i++) {
-      if (data[i].id == idNew) {
+      if (data[i].id == id && data[i].parentId == parentId) {
         data[i].isCheckXLC = true;
         data[i].isCheckPH = false;
         data[i].isCheckXem = false;
@@ -91,7 +91,7 @@ export default class TreeSelectCustom extends Component {
         return;
       }
       if (data[i].children)
-        this.findById(data[i].children, idNew);
+        this.findById(data[i].children, id, parentId);
     }
   }
 

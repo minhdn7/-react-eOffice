@@ -119,6 +119,7 @@ const apiUrl = {
     GET_LUONG_VAN_BAN_URL : "http://14.225.6.6/qlvbdh/view_img.jsp?",
     GET_LIST_UNIT_URL : "api/document/getlistunit/",
     GET_USER_CONCURRENT_SEND_URL : "api/document/getuserconcurrentsend/",
+    GET_LIST_GROUP_USER_URL : "api/group/getlistgroupuser/",
     GET_COUNT_MENU_URL: "api/document/countmenu/",
     GET_LIST_INTERNAL_URL: "api/unit/getlistinternal/",
     GET_LIST_GROUP_UNIT_URL: "api/group/getlistgroupunit/",

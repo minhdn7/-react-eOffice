@@ -12,6 +12,13 @@ import strings from "../../resources/strings";
 
 const { height, width } = Dimensions.get('window');
 
+//POST http://14.225.6.6/qlvb/api/incommingdocument/promulgatedocument/
+//{"actionType":"0","approvedValue":"","coevalInternal":"","coevalProcess":"U17,U18","comment":"noi dung",
+//"docId":"2032621","hanXuLy":"18/01/2019","job":1,"kho":"Văn bản đến chờ xử lý","primaryInternal":"",
+//"primaryProcess":"U16","referInternal":"","referProcess":"U1","sms":0,"strAction":"Chuyển xử lý"}
+// back ve van ban den co xu ly
+
+
 export class DocumentMove extends Component {
     constructor(props) {
         super(props);
