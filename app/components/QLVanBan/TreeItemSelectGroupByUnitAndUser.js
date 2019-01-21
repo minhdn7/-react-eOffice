@@ -36,9 +36,9 @@ class TreeItemChuyenXuLy extends Component {
         };
     }
 
-    handleRadioButtonClick = (idNew) => {
+    handleRadioButtonClick = async (idNew) => {
         //if(idOld == idNew) return;
-
+        await this.props.handleCheckXlcClick(idNew);
         var item = this.state.data;
         if (item) {
             item.isCheckXLC = true;
@@ -50,7 +50,7 @@ class TreeItemChuyenXuLy extends Component {
             })
         }
         this.addItemToListDataSelect(item);
-        this.props.handleCheckXlcClick(idNew);
+        
 
     }
 

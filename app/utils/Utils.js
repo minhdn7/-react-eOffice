@@ -40,6 +40,7 @@ export const convertJsonToTreeMapCustom = array => {
         var obj = array[i];
         if (!(obj.id in map)) {
             map[obj.id] = obj;
+            map[obj.id].key = obj.id + "_" + obj.parentId;
             map[obj.id].children = [];
             //map[obj.id].name = obj.Name;
             map[obj.id].isCheckPH = false;

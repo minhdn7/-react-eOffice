@@ -39,8 +39,8 @@ export default class TreeSelectByUnitAndUser extends Component {
     };
   }
 
-  handleCheckXlcClick = async (id) => {
-    await this.findById(this.props.data, id);
+  handleCheckXlcClick = (id) => {
+    this.findById(this.props.data, id);
     this.setState((state) => {
       return {
         isCheckXLC: id,
@@ -64,19 +64,23 @@ export default class TreeSelectByUnitAndUser extends Component {
 
   findById = (data, idNew) => {
     for (var i = 0; i < data.length; i++) {
-      if (data[i].id == idNew) {
-        data[i].isCheckXLC = true;
-        data[i].isCheckPH = false;
-        data[i].isCheckXem = false;
-        index = index + 1;
-      } else if (data[i].isCheckXLC == true) {
+      if(data[i].isCheckXLC === true){
         data[i].isCheckXLC = false;
-        index = index + 1;
-      }
-      if (index == 2) {
-        index = 0;
         return;
       }
+      // if (data[i].id == idNew) {
+      //   data[i].isCheckXLC = true;
+      //   data[i].isCheckPH = false;
+      //   data[i].isCheckXem = false;
+      //   index = index + 1;
+      // } else if (data[i].isCheckXLC == true) {
+      //   data[i].isCheckXLC = false;
+      //   index = index + 1;
+      // }
+      // if (index == 2) {
+      //   index = 0;
+      //   return;
+      // }
       if (data[i].children)
         this.findById(data[i].children, idNew);
     }

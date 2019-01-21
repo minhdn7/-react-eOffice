@@ -39,13 +39,14 @@ export default class TreeSelectCustom extends Component {
   }
 
   handleCheckXlcClick = (id, parentId) => {
+    //console.log("test preView: ", preView);
     this.findById(this.props.data, id, parentId);
-    this.setState((state) => {
-      return {
-        isCheckXLC: id,
-        //currentNode: id,
-      };
-    });
+    // this.setState((state) => {
+    //   return {
+    //     isCheckXLC: id,
+    //     //currentNode: id,
+    //   };
+    // });
   }
 
   handleCheckBoxClick = (id, changeStatus) => {
@@ -77,19 +78,23 @@ export default class TreeSelectCustom extends Component {
 
   findById = (data, id, parentId) => {
     for (var i = 0; i < data.length; i++) {
-      if (data[i].id == id && data[i].parentId == parentId) {
-        data[i].isCheckXLC = true;
-        data[i].isCheckPH = false;
-        data[i].isCheckXem = false;
-        index = index + 1;
-      } else if (data[i].isCheckXLC == true) {
+      if(data[i].isCheckXLC === true){
         data[i].isCheckXLC = false;
-        index = index + 1;
-      }
-      if (index == 2) {
-        index = 0;
         return;
       }
+      // if (data[i].id == id && data[i].parentId == parentId) {
+      //   data[i].isCheckXLC = true;
+      //   data[i].isCheckPH = false;
+      //   data[i].isCheckXem = false;
+      //   index = index + 1;
+      // } else if (data[i].isCheckXLC == true) {
+      //   data[i].isCheckXLC = false;
+      //   index = index + 1;
+      // }
+      // if (index == 2) {
+      //   index = 0;
+      //   return;
+      // }
       if (data[i].children)
         this.findById(data[i].children, id, parentId);
     }

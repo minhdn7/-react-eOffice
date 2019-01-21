@@ -36,6 +36,7 @@ export class ChuyenXuLy extends Component {
             lstInternal: [],
             actionType: "",
             txtNameUnitSelect: strings.chonDonVi,
+            isRefresh: true,
         }
     }
 
@@ -126,7 +127,7 @@ export class ChuyenXuLy extends Component {
 
     }
 
-    selectUnitHandle = (index) => {
+    selectUnitHandle = async (index) => {
         let lstUnit = this.props.chuyenXuLyReducer.get('listUnit');
         let item = lstUnit[index - 1];
 
@@ -139,26 +140,34 @@ export class ChuyenXuLy extends Component {
                 txtNameUnitSelect: shortText(item.name, 5),
                 txtUnit: id,
             });
-            this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction(id, "", this.state.txtInputName));
+            await this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction(id, "", this.state.txtInputName));
         } else {
             this.setState({
                 txtNameUnitSelect: strings.chonDonVi,
             });
-            this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction("", "", this.state.txtInputName));
+            await this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction("", "", this.state.txtInputName));
         }
+
+        // this.setState({
+        //     isRefresh: !isRefresh,
+        // })
     }
-    _onChangeTextHandle = (textInput) => {
+    _onChangeTextHandle = async (textInput) => {
         clearTimeout(this.delayTimer);
 
         this.setState({
             txtInputName: textInput,
         });
-        this.delayTimer = setTimeout(
+        this.delayTimer = await setTimeout(
             () => {
                 this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction(this.state.txtUnit, "", textInput ? textInput.trim() : ""));
+                
             },
             1500
         )
+        // this.setState({
+        //     isRefresh: !isRefresh,
+        // })
     }
 
     saveHandle = (check) => {
@@ -179,6 +188,10 @@ export class ChuyenXuLy extends Component {
                 await this.findByIdAndSwap(lstData, data[i]);
             }
         }
+
+        this.setState({
+            isRefresh: !isRefresh,
+        })
         //this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction(lstData));
     }
 

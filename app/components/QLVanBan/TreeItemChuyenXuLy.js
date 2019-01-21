@@ -26,36 +26,38 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
     }
 });
-
+//let viewData = null;
 class TreeItemChuyenXuLy extends Component {
     constructor(props) {
         super(props);
         this.state = {
             data: this.props.item,
+            savedItem: null,
             //isCheckXLC: this.props.currentNode,
         };
     }
 
-    handleRadioButtonClick = (item) => {
+    handleRadioButtonClick = async (item) => {
+        await this.props.handleCheckXlcClick(item.id, item.parentId);
         //var item = this.props.item;
+        //console.log("test viewData: ", viewData);
+        let savedItem = null;
+        savedItem = this.props.chuyenXuLyReducer.get('itemIsCheckXlc');
+        if(savedItem != null){
+            savedItem.isCheckXLC = false;
+            this.props.handleCheckXlcClick(this._renderView(savedItem));
+        }
         if (item) {
             item.isCheckXLC = true;
             item.isCheckPH = false;
             item.isCheckXem = false;
-
-            this.props.handleCheckXlcClick(item.id, item.parentId);
-
-            this.setState({
-                data: item,
-                //isCheckXLC: idNew
-            })
         }
-        
-        this.addItemToListDataSelect();
+        //this.forceUpdate();
+        this.props.dispatch(chuyenXuLyAction.setListIdCheckXlcAction(item));
+        //this.addItemToListDataSelect();
     }
-
-    handleCheckBoxClick = (id, type) => {
-        var item = this.props.item;
+    handleCheckBoxClick = (item, type) => {
+        //var item = this.props.item;
         item.isCheckXLC = false;
         let value;
         if (type == "PH") {
@@ -67,13 +69,11 @@ class TreeItemChuyenXuLy extends Component {
             item.isCheckPH = false;
             value = item.isCheckXem;
         }
-        // this.setState({
-        //     data: item,
-        //     //isCheckXLC: "",
-        // })
+        this.forceUpdate();
 
-        this.addItemToListDataSelect();
-        this.props.handleCheckBoxClick(id, value + type);
+        //this.addItemToListDataSelect();
+        //this.props.handleCheckBoxClick(id, value + type);
+
     }
 
     addItemToListDataSelect = () => {
@@ -93,13 +93,10 @@ class TreeItemChuyenXuLy extends Component {
         this.props.dispatch(chuyenXuLyAction.setListDataSelectAction(lstDataSelect));
     }
 
-    render() {
-        const item = this.props.item;
-        //const itemIsCheckXlc = this.props.chuyenXuLyReducer.get('itemIsCheckXlc');
-        let viewData;
+    _renderView = (item) => {
         if (item != null && item != "undefined") {
-            viewData =
-                <View style={{ flex: 1, flexDirection: 'row', }} >
+            return (
+                <View style={{ flex: 1, flexDirection: 'row', }} key={item.key} >
 
                     <TouchableOpacity style={{ flex: 6 }}
                         onPress={(e) => (item && item.children && item.children.length) ? this.props._onPressCollapse({ e, item }) : null} >
@@ -123,27 +120,36 @@ class TreeItemChuyenXuLy extends Component {
                                 onPress={() => { this.handleRadioButtonClick(item) }}
                             />
                         </RadioButton>
-                        
+
                     </View>
                     <View style={{ flex: 1 }}>
                         <CheckBox
-                            onClick={() => { this.handleCheckBoxClick(item.id, "PH") }}
+                            onClick={() => { this.handleCheckBoxClick(item, "PH") }}
                             isChecked={item.isCheckPH}
                         />
                     </View>
                     <View style={{ flex: 1 }}>
                         <CheckBox
-                            onClick={() => { this.handleCheckBoxClick(item.id, "XEM") }}
+                            onClick={() => { this.handleCheckBoxClick(item, "XEM") }}
                             isChecked={item.isCheckXem}
                         />
                     </View>
                 </View>
+            )
+
         } else {
-            viewData = null;
+            return null;
         }
+    }
+
+    render() {
+        const item = this.props.item;
+        //const itemIsCheckXlc = this.props.chuyenXuLyReducer.get('itemIsCheckXlc');
+        // let viewData;
+
         return (
             <View style={{ flex: 1, flexDirection: 'row' }}>
-                {viewData}
+                {this._renderView(item)}
             </View>
         );
     }

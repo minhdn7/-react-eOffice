@@ -88,6 +88,31 @@ function getListGroupUserURL() {
     });
 }
 
+function documentMoveURL(actionType, approvedValue, coevalInternal, coevalProcess, comment, docId, hanXuLy, job, kho, primaryInternal, primaryProcess, referInternal, referProcess, sms, strAction) {
+  url = apiUrl.ROOT_URL + apiUrl.CHANGE_DOC_DIRECT_URL
+  return fetch(url, {
+    method: 'POST',
+    headers: consts.BASE_HEADER,
+    body: JSON.stringify({
+      "actionType": actionType,
+      "approvedValue": approvedValue,
+      "coevalInternal": coevalInternal,
+      "coevalProcess": coevalProcess,
+      "comment": comment,
+      "docId": docId,
+      "hanXuLy": hanXuLy,
+      "job": job,
+      "kho": kho,
+      "primaryInternal": primaryInternal,
+      "primaryProcess": primaryProcess,
+      "referInternal": referInternal,
+      "referProcess": referProcess,
+      "sms": sms,
+      "strAction": strAction
+    }),
+  });
+}
+
 function* getListUnit() {
   try {
     response = yield call(getListUnitURL);
@@ -114,10 +139,10 @@ function* getListUnit() {
 function* getUserConcurrentSend(id, jobPosition, name) {
   try {
     response = yield call(getUserConcurrentSendURL, id, jobPosition, name);
-    console.log("list user concurrent send:", response);
     if (typeof (response) != "undefined" && typeof (response.status) != "undefined") {
       if (response.status.code == "0" && typeof (response.data) != "undefined") {
-        let convertTreeData = convertJsonToTreeMapCustom(response.data)
+        let convertTreeData = convertJsonToTreeMapCustom(response.data);
+        console.log("list user concurrent send:", convertTreeData);
         yield put(chuyenXuLyActions.getUserConcurrentSendSucessAction(convertTreeData));
         return response;
       } else {
@@ -206,6 +231,29 @@ function* getListGroupUser() {
   }
 }
 
+function* documentMove(actionType, approvedValue, coevalInternal, coevalProcess, comment, docId, hanXuLy, job, kho, primaryInternal, primaryProcess, referInternal, referProcess, sms, strAction) {
+  try {
+    response = yield call(documentMoveURL,actionType, approvedValue, coevalInternal, coevalProcess, comment, docId, hanXuLy, job, kho, primaryInternal, primaryProcess, referInternal, referProcess, sms, strAction);
+    console.log("result documentMove:", response);
+    if (typeof (response) != "undefined" && typeof (response.status) != "undefined") {
+      if (response.status.code == "0" && typeof (response.data) != "undefined") {
+        yield put(chuyenXuLyActions.documentMoveSucessAction(response.data));
+        return response;
+      } else {
+        yield put(chuyenXuLyActions.documentMoveErrorAction(response.status.message));
+        return undefined;
+      }
+    } else {
+      yield put(chuyenXuLyActions.documentMoveErrorAction("Server lỗi, vui lòng thử lại sau!"));
+      return undefined;
+    }
+
+  } catch (error) {
+
+    yield put(chuyenXuLyActions.documentMoveErrorAction(String(error)));
+  }
+}
+
 export function* chuyenXuLyFlow() {
   while (true) {
 
@@ -256,6 +304,17 @@ export function* getListGroupUserFlow() {
     yield take(actions.GET_LIST_GROUP_USER);
     yield put(rootActions.controlProgress(true));
     yield call(getListGroupUser);
+    yield put(rootActions.controlProgress(false));
+
+  }
+}
+
+export function* documentMoveFlow() {
+  while (true) {
+
+    const { actionType, approvedValue, coevalInternal, coevalProcess, comment, docId, hanXuLy, job, kho, primaryInternal, primaryProcess, referInternal, referProcess, sms, strAction } = yield take(actions.DOCUMENT_MOVE);
+    yield put(rootActions.controlProgress(true));
+    yield call(documentMove, actionType, approvedValue, coevalInternal, coevalProcess, comment, docId, hanXuLy, job, kho, primaryInternal, primaryProcess, referInternal, referProcess, sms, strAction);
     yield put(rootActions.controlProgress(false));
 
   }

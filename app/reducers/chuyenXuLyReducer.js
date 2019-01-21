@@ -42,9 +42,9 @@ export default function chuyenXuLyReducer(state, action = {}) {
                 .set('lstDataSelect', [])
                 .set('lstDataSelectByUnitOrUser', [])
             );
-            case actions.SET_LIST_ID_CHECK_XLC:
+        case actions.SET_LIST_ID_CHECK_XLC:
             return state.withMutations(state => state
-                .set('itemIsCheckXlc', action.lstIdCheckXlc)); 
+                .set('itemIsCheckXlc', action.lstIdCheckXlc));
         case actions.GET_LIST_INTERNAL_SUCESS:
             return state.withMutations(state => state
                 .set('progress', false)
@@ -60,12 +60,22 @@ export default function chuyenXuLyReducer(state, action = {}) {
                 .set('progress', false)
                 .set('listGroupUnit', action.listGroupUnit)
             );
-            case actions.GET_LIST_GROUP_USER_SUCESS:
+        case actions.GET_LIST_GROUP_USER_SUCESS:
             return state.withMutations(state => state
                 .set('progress', false)
                 .set('listGroupUser', action.listGroupUser)
             );
         case actions.GET_LIST_GROUP_UNIT_ERROR:
+            return state.withMutations(state => state
+                .set('progress', false)
+                .set('error', action.error)
+            );
+        case actions.DOCUMENT_MOVE_SUCESS:
+            return state.withMutations(state => state
+                .set('progress', false)
+                .set('response', action.response)
+            );
+        case actions.DOCUMENT_MOVE_ERROR:
             return state.withMutations(state => state
                 .set('progress', false)
                 .set('error', action.error)

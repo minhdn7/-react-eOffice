@@ -160,3 +160,38 @@ export const getListGroupUserErrorAction = (error) => {
         error
     }
 }
+
+export const documentMoveAction = (actionType, approvedValue, coevalInternal, coevalProcess, comment, docId, hanXuLy, job, kho, primaryInternal, primaryProcess, referInternal, referProcess, sms, strAction) => {
+    return{
+        type: actions.DOCUMENT_MOVE,
+        actionType,
+        approvedValue,
+        coevalInternal,
+        coevalProcess,
+        comment, 
+        docId,
+        hanXuLy,
+        job,
+        kho,
+        primaryInternal,
+        primaryProcess,
+        referInternal,
+        referProcess,
+        sms,
+        strAction
+    }
+}
+
+export const documentMoveSucessAction = (response) => {
+    return{
+        type: actions.DOCUMENT_MOVE_SUCESS,
+        response
+    }
+}
+
+export const documentMoveErrorAction = (error) => {
+    return{
+        type: actions.DOCUMENT_MOVE_ERROR,
+        error
+    }
+}
