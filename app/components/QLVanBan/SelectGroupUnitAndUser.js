@@ -68,13 +68,13 @@ export class SelectGroupUnitAndUser extends Component {
     renderTree = () => {
         let actionType = this.props.navigation.getParam('actionType', 'NO-ID');
         let lstData = [];
-        lstData = this.state.lstData;
-        // if (actionType === 1) {
-        //     lstData = this.props.chuyenXuLyReducer.get('listGroupUnit');
-        // } else // cây đơn vị
-        // {
-        //     lstData = this.props.chuyenXuLyReducer.get('listGroupUser');
-        // }
+        //lstData = this.state.lstData;
+        if (actionType === 1) {
+            lstData = this.props.chuyenXuLyReducer.get('listGroupUnit');
+        } else // cây đơn vị
+        {
+            lstData = this.props.chuyenXuLyReducer.get('listGroupUser');
+        }
         if (lstData && lstData.length) {
             return (
                 <TreeSelectGroupByUnitAndUser

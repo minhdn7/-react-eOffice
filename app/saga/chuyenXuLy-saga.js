@@ -110,7 +110,13 @@ function documentMoveURL(actionType, approvedValue, coevalInternal, coevalProces
       "sms": sms,
       "strAction": strAction
     }),
-  });
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
 
 function* getListUnit() {
@@ -233,7 +239,7 @@ function* getListGroupUser() {
 
 function* documentMove(actionType, approvedValue, coevalInternal, coevalProcess, comment, docId, hanXuLy, job, kho, primaryInternal, primaryProcess, referInternal, referProcess, sms, strAction) {
   try {
-    response = yield call(documentMoveURL,actionType, approvedValue, coevalInternal, coevalProcess, comment, docId, hanXuLy, job, kho, primaryInternal, primaryProcess, referInternal, referProcess, sms, strAction);
+    response = yield call(documentMoveURL, actionType, approvedValue, coevalInternal, coevalProcess, comment, docId, hanXuLy, job, kho, primaryInternal, primaryProcess, referInternal, referProcess, sms, strAction);
     console.log("result documentMove:", response);
     if (typeof (response) != "undefined" && typeof (response.status) != "undefined") {
       if (response.status.code == "0" && typeof (response.data) != "undefined") {

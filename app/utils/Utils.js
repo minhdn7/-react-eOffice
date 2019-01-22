@@ -103,3 +103,43 @@ export const shortText = (text, length) => {
 
     return text;
 }
+
+export const findByIdAndSwap = (data, item, type) => {
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].id == getIdByUnitAndUser(item.id, type)) {
+            data[i].isCheckXLC = item.isCheckXLC;
+            data[i].isCheckPH = item.isCheckPH;
+            data[i].isCheckXem = item.isCheckXem;
+            //this.addItemToListDataSelect(data[i]);
+            return;
+        } else if (data[i].children && data[i].children.length) {
+            findByIdAndSwap(data[i].children, item, type);
+        }
+    }
+}
+
+export const resetCheckXLC = (data) => {
+    if (data && data.length) {
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].isCheckXLC === true) {
+                data[i].isCheckXLC = false;
+                return;
+            }
+
+            if (data[i].children)
+                resetCheckXLC(data[i].children);
+        }
+    }
+}
+
+export const getItemSelect = (data, lstData) => {
+    if(data && data.length){
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].isCheckXLC || data[i].isCheckPH || data[i].isCheckXem) {
+                lstData.push(data[i]);
+            }
+            if (data[i].children)
+            getItemSelect(data[i].children, lstData);
+        }
+    }
+}

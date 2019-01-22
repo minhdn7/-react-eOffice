@@ -39,16 +39,13 @@ class TreeItemChuyenXuLy extends Component {
     handleRadioButtonClick = async (idNew) => {
         //if(idOld == idNew) return;
         await this.props.handleCheckXlcClick(idNew);
-        var item = this.state.data;
+        var item = this.props.item;
         if (item) {
             item.isCheckXLC = true;
             item.isCheckPH = false;
             item.isCheckXem = false;
-            this.setState({
-                data: item,
-                //isCheckXLC: idNew
-            })
         }
+        this.forceUpdate();
         this.addItemToListDataSelect(item);
         
 
@@ -56,7 +53,7 @@ class TreeItemChuyenXuLy extends Component {
 
     handleCheckBoxClick = (idNew, type) => {
 
-        var item = this.state.data;
+        var item = this.props.item;
         item.isCheckXLC = false;
         let value;
         if (type == "PH") {
@@ -75,12 +72,7 @@ class TreeItemChuyenXuLy extends Component {
             this.addItemToListDataSelect(item);
         }
 
-        this.setState(() => {
-            return {
-                data: item,
-                //isCheckXLC: "",
-            }
-        });
+        //this.forceUpdate();
         this.props.handleCheckBoxClick(idNew, value + type);
     }
 
@@ -106,8 +98,8 @@ class TreeItemChuyenXuLy extends Component {
     }
 
     addItemToListDataSelect = (item) => {
-        let lstDataSelect = [];
-        lstDataSelect = this.props.chuyenXuLyReducer.get('lstDataSelectByUnitOrUser');
+        let lstDataSelect = this.props.chuyenXuLyReducer.get('lstDataSelectByUnitOrUser');
+        if(lstDataSelect == null) lstDataSelect = [];
         if (lstDataSelect && lstDataSelect.length) {
             for (let i = 0; i < lstDataSelect.length; i++) {
                 if (lstDataSelect[i].id == item.id) {
@@ -123,7 +115,7 @@ class TreeItemChuyenXuLy extends Component {
     }
 
     render() {
-        const item = this.state.data;
+        const item = this.props.item;
         let viewData;
         if (item != null && item != "undefined") {
             viewData =

@@ -41,12 +41,8 @@ export default class TreeSelectCustom extends Component {
   handleCheckXlcClick = (id, parentId) => {
     //console.log("test preView: ", preView);
     this.findById(this.props.data, id, parentId);
-    // this.setState((state) => {
-    //   return {
-    //     isCheckXLC: id,
-    //     //currentNode: id,
-    //   };
-    // });
+    //this.forceUpdate();
+    
   }
 
   handleCheckBoxClick = (id, changeStatus) => {
@@ -80,6 +76,12 @@ export default class TreeSelectCustom extends Component {
     for (var i = 0; i < data.length; i++) {
       if(data[i].isCheckXLC === true){
         data[i].isCheckXLC = false;
+        this.setState((state) => {
+          return {
+            isCheckXLC: data[i].id,
+            //currentNode: id,
+          };
+        });
         return;
       }
       // if (data[i].id == id && data[i].parentId == parentId) {
@@ -205,7 +207,7 @@ export default class TreeSelectCustom extends Component {
               <View style={[styles.collapseIcon, collapseIcon]} />
               <TreeItemChuyenXuLy
                 item={item}
-                currentNode={this.state.isCheckXLC}
+                savedXLC={this.state.isCheckXLC}
                 handleCheckBoxClick={this.handleCheckBoxClick}
                 handleCheckXlcClick={this.handleCheckXlcClick} 
                 _onPressCollapse={this._onPressCollapse}

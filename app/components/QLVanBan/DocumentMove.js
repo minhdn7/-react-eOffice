@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, Dimensions, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { View, Text, TextInput, Dimensions, TouchableOpacity, ScrollView, FlatList, Platform, ToastAndroid } from 'react-native';
 import HeaderChuyenXuLy from '../QLVanBan/HeaderChuyenXuLy';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -9,6 +9,7 @@ import CheckBox from 'react-native-check-box';
 import { connect } from "react-redux";
 import * as chuyenXuLyAction from "../../actions/chuyenXuLy-actions";
 import strings from "../../resources/strings";
+import Toast from 'react-native-simple-toast';
 
 const { height, width } = Dimensions.get('window');
 
@@ -32,12 +33,16 @@ export class DocumentMove extends Component {
             lstXuLyChinh: [],
             lstPhoiHop: [],
             lstXem: [],
+            lstXlcInternal: [],
+            lstPhInternal: [],
+            lstXemInternal: [],
         }
     }
 
     componentDidMount() {
-        if (this.props.chuyenXuLyReducer.get('lstDataSelect')) {
-            let lstData = this.props.chuyenXuLyReducer.get('lstDataSelect')
+        let lstData = this.props.navigation.getParam('lstDataSelect', []);
+        let lstDataInternal = this.props.navigation.getParam('lstDataSelectInternal', []);
+        if (lstData && lstData.length) {
             let lstXuLyChinh = lstData.filter((item) => { return item.isCheckXLC });
             let lstPhoiHop = lstData.filter((item) => { return item.isCheckPH });
             let lstXem = lstData.filter((item) => { return item.isCheckXem });
@@ -47,7 +52,17 @@ export class DocumentMove extends Component {
                 lstPhoiHop: lstPhoiHop,
                 lstXem: lstXem,
             })
-            console.log("list data select: ", this.state.lstData);
+            console.log("list data select: ", (lstPhoiHop.map((item) => { return item.id })).toString());
+        }
+        if (lstDataInternal && lstDataInternal.length) {
+            let lstXuLyChinh = lstDataInternal.filter((item) => { return item.isCheckXLC });
+            let lstPhoiHop = lstDataInternal.filter((item) => { return item.isCheckPH });
+            let lstXem = lstDataInternal.filter((item) => { return item.isCheckXem });
+            this.setState({
+                lstXlcInternal: lstXuLyChinh,
+                lstPhInternal: lstPhoiHop,
+                lstXemInternal: lstXem,
+            })
         }
     }
 
@@ -99,62 +114,120 @@ export class DocumentMove extends Component {
         }
     }
 
+    _saveDataHandle = async () => {
+        var idDocument = this.props.navigation.getParam('idDocument', "");
+        let lstPhoiHop = "";
+        let lstXem = "";
+        let lstPhInternal = "";
+        let lstXemInternal = "";
+        let job = this.state.isCheckedTuDongGiaoViec ? 1 : 0;
+        let kho = "Văn bản đến chờ xử lý";
+        let idXlcInternal = "";
+        let idXlc = "";
+        let actionType = "0";
+        let approvedValue = "";
+        let sms = this.state.isCheckedGuiSms ? 1 : 0;
+        let strAction = "Chuyển xử lý";
+        let comment = this.state.txtContent ? this.state.txtContent.trim() : "";
+
+        if (this.state.lstXuLyChinh && this.state.lstXuLyChinh.length) {
+            idXlc = (this.state.lstXuLyChinh.map((item) => { return item.id })).toString();
+        }
+        if (this.state.lstXlcInternal && this.state.lstXlcInternal.length) {
+            idXlcInternal = (this.state.lstXlcInternal.map((item) => { return item.id })).toString();
+        }
+        if (this.state.lstPhoiHop && this.state.lstPhoiHop.length) {
+            lstPhoiHop = (this.state.lstPhoiHop.map((item) => { return item.id })).toString();
+        }
+        if (this.state.lstXem && this.state.lstXem.length) {
+            lstXem = (this.state.lstXem.map((item) => { return item.id })).toString();
+        }
+        if (this.state.lstPhInternal && this.state.lstPhInternal.length) {
+            lstPhInternal = (this.state.lstPhInternal.map((item) => { return item.id })).toString();
+        }
+        if (this.state.lstXemInternal && this.state.lstXemInternal.length) {
+            lstXemInternal = (this.state.lstXemInternal.map((item) => { return item.id })).toString();
+        }
+
+        await this.props.dispatch(chuyenXuLyAction.documentMoveAction(actionType, approvedValue, lstPhInternal, lstPhoiHop,
+            comment, idDocument, this.state.txtDateTimePicker, job, kho, idXlcInternal, idXlc, lstXemInternal,
+            lstXem, sms, strAction));
+
+        let result = this.props.chuyenXuLyReducer.get('response');
+        if (result != null && result.toUpperCase() === "TRUE") {
+            Toast.show(strings.chuyenVanBanThanhCong);
+
+        } else {
+            let message = this.props.chuyenXuLyReducer.get('error');
+            console.log("loi: ", message);
+            Toast.show(strings.messageServerError);
+
+        }
+    }
+
     _view = (data, type) => {
-        
-        return data.map((item) => {
-            return (
-                <View style={{ height: height * 0.07, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', borderBottomWidth: 1 }} key={item.id}>
-                    <Text style={{ flex: 9, color: 'black' }}>{item.name}</Text>
-                    <TouchableOpacity
-                        style={{ flex: 1, }}
-                        onPress={() => this._removeItemHandle(item.id, type)}
-                    >
-                        <EvilIcons style={{ flex: 1, fontWeight: 'bold', paddingTop: 10, paddingBottom: 10 }} name="close" size={30} color="black" />
-                    </TouchableOpacity>
-                </View>
-            )
-        })
+        if (data && data.length) {
+            return data.map((item) => {
+                return (
+                    <View style={{ height: height * 0.07, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', borderBottomWidth: 1 }} key={item.id}>
+                        <Text style={{ flex: 9, color: 'black' }}>{item.name}</Text>
+                        <TouchableOpacity
+                            style={{ flex: 1, }}
+                            onPress={() => this._removeItemHandle(item.id, type)}
+                        >
+                            <EvilIcons style={{ flex: 1, fontWeight: 'bold', paddingTop: 10, paddingBottom: 10 }} name="close" size={30} color="black" />
+                        </TouchableOpacity>
+                    </View>
+                )
+            })
+        }
     }
 
     render() {
         let viewXuLyChinh;
         let viewPhoiHop;
         let viewXem;
-        if (this.state.lstXuLyChinh && this.state.lstXuLyChinh.length) {
+        if ((this.state.lstXuLyChinh && this.state.lstXuLyChinh.length) ||
+            (this.state.lstXlcInternal && this.state.lstXlcInternal.length)) {
             viewXuLyChinh = <View style={{ marginBottom: 5 }}>
                 <View style={[styles.tableHeader, { backgroundColor: "#205AA7", justifyContent: 'flex-start', paddingLeft: 5 }]}>
                     <Text style={styles.titleStyle}>{strings.xuLyChinh}</Text>
                 </View>
                 {this._view(this.state.lstXuLyChinh, 1)}
+                {this._view(this.state.lstXlcInternal, 1)}
             </View>
         } else {
             viewXuLyChinh = null;
         }
 
-        if (this.state.lstPhoiHop && this.state.lstPhoiHop.length) {
+        if ((this.state.lstPhoiHop && this.state.lstPhoiHop.length) ||
+            (this.state.lstPhInternal && this.state.lstPhInternal.length)) {
             viewPhoiHop = <View style={{ marginBottom: 5 }}>
                 <View style={[styles.tableHeader, { backgroundColor: "#205AA7", justifyContent: 'flex-start', paddingLeft: 5 }]}>
                     <Text style={styles.titleStyle}>{strings.phoiHop}</Text>
                 </View>
                 {this._view(this.state.lstPhoiHop, 2)}
+                {this._view(this.state.lstPhInternal, 2)}
             </View>
         } else {
             viewPhoiHop = null;
         }
 
-        if (this.state.lstXem && this.state.lstXem.length) {
+        if ((this.state.lstXem && this.state.lstXem.length) ||
+            (this.state.lstXemInternal && this.state.lstXemInternal.length)) {
             viewXem = <View style={{ marginBottom: 5 }}>
                 <View style={[styles.tableHeader, { backgroundColor: "#205AA7", justifyContent: 'flex-start', paddingLeft: 5 }]}>
                     <Text style={styles.titleStyle}>{strings.xemDeBiet}</Text>
                 </View>
                 {this._view(this.state.lstXem, 3)}
+                {this._view(this.state.lstXemInternal, 3)}
             </View>
         } else {
             viewXem = null;
         }
         return (
             <View style={{ flex: 1 }}>
-                <HeaderChuyenXuLy myTitle='Chuyển văn bản' navigator={this.props.navigation} type="2" />
+                <HeaderChuyenXuLy myTitle='Chuyển văn bản' navigator={this.props.navigation} type="2" saveHandle={this._saveDataHandle} />
                 <View style={{ flex: 1, backgroundColor: "#E0EEEE", flexDirection: 'column' }}>
                     <View style={{ flex: 2, margin: 5 }}>
                         <TextInput

@@ -37,23 +37,19 @@ class TreeItemChuyenXuLy extends Component {
         };
     }
 
-    handleRadioButtonClick = async (item) => {
-        await this.props.handleCheckXlcClick(item.id, item.parentId);
-        //var item = this.props.item;
-        //console.log("test viewData: ", viewData);
-        let savedItem = null;
-        savedItem = this.props.chuyenXuLyReducer.get('itemIsCheckXlc');
-        if(savedItem != null){
-            savedItem.isCheckXLC = false;
-            this.props.handleCheckXlcClick(this._renderView(savedItem));
-        }
+    // shouldComponentUpdate(nextProps, nextState){
+    //     return nextProps.savedXLC == this.props.item.id
+    // }
+
+    handleRadioButtonClick = (item) => {
+        this.props.handleCheckXlcClick(item.id, item.parentId);
+        
         if (item) {
             item.isCheckXLC = true;
             item.isCheckPH = false;
             item.isCheckXem = false;
         }
-        //this.forceUpdate();
-        this.props.dispatch(chuyenXuLyAction.setListIdCheckXlcAction(item));
+        this.forceUpdate();
         //this.addItemToListDataSelect();
     }
     handleCheckBoxClick = (item, type) => {
@@ -144,9 +140,7 @@ class TreeItemChuyenXuLy extends Component {
 
     render() {
         const item = this.props.item;
-        //const itemIsCheckXlc = this.props.chuyenXuLyReducer.get('itemIsCheckXlc');
-        // let viewData;
-
+        
         return (
             <View style={{ flex: 1, flexDirection: 'row' }}>
                 {this._renderView(item)}

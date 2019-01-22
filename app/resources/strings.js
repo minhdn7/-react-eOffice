@@ -148,6 +148,7 @@ module.exports = new LocalizedStrings({
     nhanVaoDeChonNguoiNhan: "Nhấn vào để chọn người nhận",
     chonTheoNhomDonVi: "Chọn theo nhóm đơn vị",
     chonTheoNhomCaNhan: "Chọn theo nhóm cá nhân",
-
+    chuyenVanBanThanhCong: "Chuyển văn bản thành công",
+    messageServerError: "Lỗi server, xin vui lòng thử lại sau",
   }
 });

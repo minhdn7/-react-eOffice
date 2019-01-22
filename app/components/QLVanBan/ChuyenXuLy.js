@@ -11,10 +11,9 @@ import styles from '../../styles/styleQLVanBan';
 import * as chuyenXuLyAction from "../../actions/chuyenXuLy-actions";
 import * as rootActions from "../../actions/root-actions";
 import TreeSelectCustom from '../QLVanBan/TreeSelectCustom';
-import { convertJsonToTreeMap, shortText } from '../../utils/Utils';
 import ContactData from "../../data/ContactData";
 import strings from "../../resources/strings";
-import { getIdByUnitAndUser, convertJsonToTreeMapCustom } from '../../utils/Utils';
+import * as utils from "../../utils/Utils";
 
 const { height, width } = Dimensions.get('window');
 
@@ -137,7 +136,7 @@ export class ChuyenXuLy extends Component {
                 id = id.substring(1, id.length);
             }
             this.setState({
-                txtNameUnitSelect: shortText(item.name, 5),
+                txtNameUnitSelect: utils.shortText(item.name, 5),
                 txtUnit: id,
             });
             await this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction(id, "", this.state.txtInputName));
@@ -161,7 +160,7 @@ export class ChuyenXuLy extends Component {
         this.delayTimer = await setTimeout(
             () => {
                 this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction(this.state.txtUnit, "", textInput ? textInput.trim() : ""));
-                
+
             },
             1500
         )
@@ -171,47 +170,58 @@ export class ChuyenXuLy extends Component {
     }
 
     saveHandle = (check) => {
-        var lstDataSelect = this.props.chuyenXuLyReducer.get('lstDataSelect');
+        var idDocument = this.props.navigation.getParam('idDocument', "");
+        var lstDataSelect = [];
+        let lstDataSelectInternal = [];
+        let lstData = this.props.chuyenXuLyReducer.get('listUserConcurrentSend');
+        let lstDataInternal = this.props.chuyenXuLyReducer.get('listInternal');
+        utils.getItemSelect(lstData, lstDataSelect);
+        utils.getItemSelect(lstDataInternal, lstDataSelectInternal);
         if (lstDataSelect && lstDataSelect.length) {
-            this.props.navigation.navigate('DocumentMove');
+            this.props.navigation.navigate('DocumentMove', {
+                lstDataSelect: lstDataSelect,
+                lstDataSelectInternal: lstDataSelectInternal,
+                idDocument: idDocument,
+            });
         } else {
             alert(strings.thongBaoChuaChonNguoiNhanVanBan);
         }
     }
 
-    refresh = async () => {
+    refresh = () => {
         let dataSelectByUnitOrUser = this.props.chuyenXuLyReducer.get('lstDataSelectByUnitOrUser');
         let data = dataSelectByUnitOrUser.filter(item => item.isCheckXLC || item.isCheckPH || item.isCheckXem);
+        let isCheckXLC = dataSelectByUnitOrUser.filter(item => item.isCheckXLC);
         let lstData = this.props.chuyenXuLyReducer.get('listUserConcurrentSend');
+        if (isCheckXLC)
+            utils.resetCheckXLC(lstData);
         if (data && data.length) {
             for (let i = 0; i < data.length; i++) {
-                await this.findByIdAndSwap(lstData, data[i]);
+                utils.findByIdAndSwap(lstData, data[i], this.state.actionType);
             }
         }
 
-        this.setState({
-            isRefresh: !isRefresh,
-        })
+        this.forceUpdate();
         //this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction(lstData));
     }
 
-    findByIdAndSwap = (data, item) => {
-        for (let i = 0; i < data.length; i++) {
-            if (data[i].id == getIdByUnitAndUser(item.id, this.state.actionType)) {
-                data[i].isCheckXLC = item.isCheckXLC;
-                data[i].isCheckPH = item.isCheckPH;
-                data[i].isCheckXem = item.isCheckXem;
-                this.addItemToListDataSelect(data[i]);
-                return;
-            } else if (data[i].children && data[i].children.length) {
-                this.findByIdAndSwap(data[i].children, item);
-            }
-        }
-    }
+    // findByIdAndSwap = (data, item) => {
+    //     for (let i = 0; i < data.length; i++) {
+    //         if (data[i].id == getIdByUnitAndUser(item.id, this.state.actionType)) {
+    //             data[i].isCheckXLC = item.isCheckXLC;
+    //             data[i].isCheckPH = item.isCheckPH;
+    //             data[i].isCheckXem = item.isCheckXem;
+    //             //this.addItemToListDataSelect(data[i]);
+    //             return;
+    //         } else if (data[i].children && data[i].children.length) {
+    //             this.findByIdAndSwap(data[i].children, item);
+    //         }
+    //     }
+    // }
 
     addItemToListDataSelect = (item) => {
-        let lstDataSelect = [];
-        lstDataSelect = this.props.chuyenXuLyReducer.get('lstDataSelect');
+        let lstDataSelect = this.props.chuyenXuLyReducer.get('lstDataSelect');
+        if (lstDataSelect == null) lstDataSelect = [];
         if (lstDataSelect && lstDataSelect.length) {
             for (let i = 0; i < lstDataSelect.length; i++) {
                 if (lstDataSelect[i].id == item.id) {
@@ -339,7 +349,7 @@ export class ChuyenXuLy extends Component {
                                 <Text>{this.state.textThugon}</Text>
                             </TouchableOpacity>
                         </View>
-                       {/* {this.renderTree(1)} */}
+                        {/* {this.renderTree(1)} */}
                         {this.state.flagThugon ? this.renderTree(1) : null}
 
                         <View style={[styles.tableHeader, { backgroundColor: "#32CD32" }]}>
