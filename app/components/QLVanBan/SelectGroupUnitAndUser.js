@@ -19,6 +19,18 @@ export class SelectGroupUnitAndUser extends Component {
     }
 
     componentWillMount() {
+        // let title;
+        // //let navigator = this.props.menuReducer.get('navigator');
+        // let actionType = this.props.navigation.getParam('actionType', 'NO-ID');
+        // if (actionType == 1) title = strings.chonTheoNhomDonViNhan;
+        // else title = strings.chonTheoNhomCaNhanNhan;
+        // this.setState({
+        //     title: title,
+        //     actionType: actionType,
+        // })
+    }
+
+    componentDidMount() {
         let title;
         //let navigator = this.props.menuReducer.get('navigator');
         let actionType = this.props.navigation.getParam('actionType', 'NO-ID');
@@ -28,10 +40,7 @@ export class SelectGroupUnitAndUser extends Component {
             title: title,
             actionType: actionType,
         })
-    }
-
-    componentDidMount() {
-        if (this.state.actionType == 1) {
+        if (actionType == 1) {
             this.props.dispatch(chuyenXuLyAction.getListGroupUnitAction());
         } else {
             this.props.dispatch(chuyenXuLyAction.getListGroupUserAction());

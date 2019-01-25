@@ -14,6 +14,7 @@ import * as rootActions from "../../actions/root-actions";
 import { documentProcessedFlow } from '../../saga/document-saga';
 import ModalDropdown from 'react-native-modal-dropdown';
 import { Navigation } from 'react-native-navigation';
+import * as utils from '../../utils/Utils';
 // test 2
 let viewTrichYeu, viewSoIOffice, viewCQBH, viewSoKyHieu, viewNgayDen, viewNgayVB, viewHinhThucVB, viewDoKhan;
 export class DocumentDetail extends Component {
@@ -63,7 +64,7 @@ export class DocumentDetail extends Component {
         this.props.dispatch(documentAction.getSignedDocumentAction(this.state.documentId));
     }
 
-    finishDocument = () =>{
+    finishDocument = () => {
         this.setState({
             isTrangThaiKetThuc: true,
         })
@@ -71,10 +72,10 @@ export class DocumentDetail extends Component {
         this.props.dispatch(documentAction.getFinishDocumentAction(this.state.documentId));
     }
 
-    checkFinishDocument = () =>{
-        if(this.props.documentReducer.get('finishDocumentData') != null
-          && this.props.documentReducer.get('finishDocumentData').toLowerCase() == "true"
-          && this.state.isTrangThaiKetThuc){
+    checkFinishDocument = () => {
+        if (this.props.documentReducer.get('finishDocumentData') != null
+            && this.props.documentReducer.get('finishDocumentData').toLowerCase() == "true"
+            && this.state.isTrangThaiKetThuc) {
             this.props.dispatch(documentAction.setFinishDocumentSuccessAction(""));
             this.setState({
                 isTrangThaiKetThuc: false,
@@ -86,38 +87,38 @@ export class DocumentDetail extends Component {
             this.props.dispatch(rootActions.controlProgress(true));
 
             this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, this.props.documentReducer.get("typeDocument"), this.state.param));
-          }
+        }
         else if (this.state.isTrangThaiKetThuc
-                && this.props.documentReducer.get('finishDocumentError') != null
-                && this.props.documentReducer.get('finishDocumentError') == ""){
-                    this.setState({
-                        isTrangThaiKetThuc: false,
-                    });
-                    ToastAndroid.show(this.props.documentReducer.get('finishDocumentError'), ToastAndroid.SHORT);
-                    this.props.dispatch(documentAction.setFinishDocumentErrorAction(""));
+            && this.props.documentReducer.get('finishDocumentError') != null
+            && this.props.documentReducer.get('finishDocumentError') == "") {
+            this.setState({
+                isTrangThaiKetThuc: false,
+            });
+            ToastAndroid.show(this.props.documentReducer.get('finishDocumentError'), ToastAndroid.SHORT);
+            this.props.dispatch(documentAction.setFinishDocumentErrorAction(""));
         }
 
-        if(this.props.documentReducer.get('listDocumentData') != null
-            && this.state.isGetListData){
+        if (this.props.documentReducer.get('listDocumentData') != null
+            && this.state.isGetListData) {
             // load lại dữ liệu thành công back về màn hình list
             this.setState({
                 isGetListData: false,
             });
             this.props.navigation.goBack(null);
             ToastAndroid.show("Cập nhật danh sách văn bản thành công", ToastAndroid.SHORT);
-        }else if(this.props.documentReducer.get('documentError') != null
-            && this.props.documentReducer.get('documentError') != ''){
-                this.props.dispatch(documentAction.setListDocumentErrorAction(''));
-                this.setState({
-                    isGetListData: false,
-                });
-                ToastAndroid.show(this.props.documentReducer.get('documentError'), ToastAndroid.SHORT);
+        } else if (this.props.documentReducer.get('documentError') != null
+            && this.props.documentReducer.get('documentError') != '') {
+            this.props.dispatch(documentAction.setListDocumentErrorAction(''));
+            this.setState({
+                isGetListData: false,
+            });
+            ToastAndroid.show(this.props.documentReducer.get('documentError'), ToastAndroid.SHORT);
         }
 
     }
 
 
-    checkButton(){
+    checkButton() {
         itemData = this.props.documentReducer.get('itemDocumentData');
 
         if (itemData != null && itemData.isCheck == '0') {
@@ -141,10 +142,10 @@ export class DocumentDetail extends Component {
         }
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
         this.props.dispatch(rootActions.controlProgress(false));
     }
-    componentWillMount(){
+    componentWillMount() {
         this.props.dispatch(rootActions.controlProgress(false));
         this.props.dispatch(fileAction.setViewFileErrorAction(''));
         this.props.dispatch(documentAction.setSignedDocumentResultAction(""));
@@ -212,7 +213,7 @@ export class DocumentDetail extends Component {
             });
         }
         // load data
-}
+    }
 
     componentWillReceiveProps() {
 
@@ -220,7 +221,7 @@ export class DocumentDetail extends Component {
         this.checkFinishDocument();
 
 
-        if(this.props.documentReducer.get('finishDocumentData') != null && this.props.documentReducer.get('finishDocumentData').toLowerCase() == "true"){
+        if (this.props.documentReducer.get('finishDocumentData') != null && this.props.documentReducer.get('finishDocumentData').toLowerCase() == "true") {
             this.setState({
                 isKetThuc: true,
             });
@@ -289,79 +290,79 @@ export class DocumentDetail extends Component {
         )
     }
 
-    checkDetailHeader(){
+    checkDetailHeader() {
         // vierw header detail
 
-        if(this.state.dataDocument.trichYeu){
-            viewTrichYeu =  <View style={styles.rowCotent}>
-                                <Text style={[styles.textColor, styles.styleFontSize, {marginRight: 4}]}>{strings.trichYeu}</Text>
-                                <Text style={[styles.textColorBlack, styles.styleFontSize, { fontWeight: 'bold', marginRight: 100}]}>{this.state.dataDocument.trichYeu}</Text>
-                            </View>
-        }else{
-            viewTrichYeu = <View/>
+        if (this.state.dataDocument.trichYeu) {
+            viewTrichYeu = <View style={styles.rowCotent}>
+                <Text style={[styles.textColor, styles.styleFontSize, { marginRight: 4 }]}>{strings.trichYeu}</Text>
+                <Text style={[styles.textColorBlack, styles.styleFontSize, { fontWeight: 'bold', marginRight: 100 }]}>{this.state.dataDocument.trichYeu}</Text>
+            </View>
+        } else {
+            viewTrichYeu = <View />
         }
 
-        if(this.state.dataDocument.ioffice){
-            viewSoIOffice =  <View style={styles.rowCotent}>
-                                <Text style={[styles.textColor, styles.styleFontSize, {marginRight: 4}]}>{strings.soIOffice}</Text>
-                                <Text style={styles.textColorBlack}>{this.state.dataDocument.ioffice}</Text>
-                            </View>
-        }else{
-            viewSoIOffice = <View/>
+        if (this.state.dataDocument.ioffice) {
+            viewSoIOffice = <View style={styles.rowCotent}>
+                <Text style={[styles.textColor, styles.styleFontSize, { marginRight: 4 }]}>{strings.soIOffice}</Text>
+                <Text style={styles.textColorBlack}>{this.state.dataDocument.ioffice}</Text>
+            </View>
+        } else {
+            viewSoIOffice = <View />
         }
 
-        if(this.state.dataDocument.donViBanHanh){
-            viewCQBH =  <View style={styles.rowCotent}>
-                            <Text style={[styles.textColor, styles.styleFontSize, {marginRight: 4}]}>{strings.CQBH}</Text>
-                            <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.donViBanHanh}</Text>
-                        </View>
-        }else{
-            viewCQBH = <View/>
+        if (this.state.dataDocument.donViBanHanh) {
+            viewCQBH = <View style={styles.rowCotent}>
+                <Text style={[styles.textColor, styles.styleFontSize, { marginRight: 4 }]}>{strings.CQBH}</Text>
+                <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.donViBanHanh}</Text>
+            </View>
+        } else {
+            viewCQBH = <View />
         }
 
-        if(this.state.dataDocument.soKiHieu){
-            viewSoKyHieu =  <View style={styles.rowCotent}>
-                                <Text style={[styles.textColor, styles.styleFontSize, {marginRight: 4}]}>{strings.soKyHieu}</Text>
-                                <Text style={[styles.textColorBlack, styles.styleFontSize, { color: 'red' }]}>{this.state.dataDocument.soKiHieu}</Text>
-                            </View>
-        }else{
-            viewSoKyHieu = <View/>
+        if (this.state.dataDocument.soKiHieu) {
+            viewSoKyHieu = <View style={styles.rowCotent}>
+                <Text style={[styles.textColor, styles.styleFontSize, { marginRight: 4 }]}>{strings.soKyHieu}</Text>
+                <Text style={[styles.textColorBlack, styles.styleFontSize, { color: 'red' }]}>{this.state.dataDocument.soKiHieu}</Text>
+            </View>
+        } else {
+            viewSoKyHieu = <View />
         }
 
-        if(this.state.dataDocument.ngayDenDi){
-            viewNgayDen =   <View style={styles.rowCotent}>
-                                <Text style={[styles.textColor, styles.styleFontSize, {marginRight: 4}]}>{strings.ngayDen}</Text>
-                                <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.ngayDenDi}</Text>
-                            </View>
-        }else{
-            viewNgayDen = <View/>
+        if (this.state.dataDocument.ngayDenDi) {
+            viewNgayDen = <View style={styles.rowCotent}>
+                <Text style={[styles.textColor, styles.styleFontSize, { marginRight: 4 }]}>{strings.ngayDen}</Text>
+                <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.ngayDenDi}</Text>
+            </View>
+        } else {
+            viewNgayDen = <View />
         }
 
-        if(this.state.dataDocument.ngayVanBan){
-            viewNgayVB =    <View style={styles.rowCotent}>
-                                <Text style={[styles.textColor, styles.styleFontSize, {marginRight: 4}]}>{strings.ngayVB}</Text>
-                                <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.ngayVanBan}</Text>
-                            </View>
-        }else{
-            viewNgayVB = <View/>
+        if (this.state.dataDocument.ngayVanBan) {
+            viewNgayVB = <View style={styles.rowCotent}>
+                <Text style={[styles.textColor, styles.styleFontSize, { marginRight: 4 }]}>{strings.ngayVB}</Text>
+                <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.ngayVanBan}</Text>
+            </View>
+        } else {
+            viewNgayVB = <View />
         }
 
-        if(this.state.dataDocument.hinhThucGui){
-            viewHinhThucVB =    <View style={styles.rowCotent}>
-                                    <Text style={[styles.textColor, styles.styleFontSize, {marginRight: 4}]}>{strings.hinhThucVB}</Text>
-                                    <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.hinhThucGui}</Text>
-                                </View>
-        }else{
-            viewHinhThucVB = <View/>
+        if (this.state.dataDocument.hinhThucGui) {
+            viewHinhThucVB = <View style={styles.rowCotent}>
+                <Text style={[styles.textColor, styles.styleFontSize, { marginRight: 4 }]}>{strings.hinhThucVB}</Text>
+                <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.hinhThucGui}</Text>
+            </View>
+        } else {
+            viewHinhThucVB = <View />
         }
 
-        if(this.state.dataDocument.doMat){
-            viewDoKhan =    <View style={styles.rowCotent}>
-                                <Text style={[styles.textColor, {marginRight: 4}]}>{strings.doKhan}</Text>
-                                <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.doMat}</Text>
-                            </View>
-        }else{
-            viewDoKhan = <View/>
+        if (this.state.dataDocument.doMat) {
+            viewDoKhan = <View style={styles.rowCotent}>
+                <Text style={[styles.textColor, { marginRight: 4 }]}>{strings.doKhan}</Text>
+                <Text style={[styles.textColorBlack, styles.styleFontSize]}>{this.state.dataDocument.doMat}</Text>
+            </View>
+        } else {
+            viewDoKhan = <View />
         }
     }
 
@@ -406,11 +407,11 @@ export class DocumentDetail extends Component {
             </TouchableOpacity>;
         }
 
-        if(this.state.isKetThuc){
-            btnKetThuc =    <TouchableOpacity style={[styles.btn, { backgroundColor: '#EE7C6B' }]}
-                            onPress = {() => this.finishDocument()}>
-                                <Text style={styles.btnText}>{strings.ketThuc}</Text>
-                            </TouchableOpacity>  
+        if (this.state.isKetThuc) {
+            btnKetThuc = <TouchableOpacity style={[styles.btn, { backgroundColor: '#EE7C6B' }]}
+                onPress={() => this.finishDocument()}>
+                <Text style={styles.btnText}>{strings.ketThuc}</Text>
+            </TouchableOpacity>
         }
 
         if (this.state.isDanhDau) {
@@ -423,7 +424,7 @@ export class DocumentDetail extends Component {
 
 
         return (
-            <View style={{flex: 1, paddingBottom: 10}}>
+            <View style={{ flex: 1, paddingBottom: 10 }}>
                 <DefaultHeader myTitle={strings.chiTietVanBan} navigator={this.props.navigation} />
 
                 {/* <View style={[styles.container, {padding:0}]}> */}
@@ -467,7 +468,7 @@ export class DocumentDetail extends Component {
                             {/* FlatList commnent */}
                             <FlatList
                                 data={this.state.dataLogDocument[0].parameter}
-                                style={{ flex: 1}}
+                                style={{ flex: 1 }}
                                 renderItem={({ item, index }) => {
                                     return (
                                         <View >
@@ -514,33 +515,62 @@ class LogCommentItem extends Component {
         return string;
 
     }
+
+    
+
+    _renderChuyentoi = (chuyenToi) => {
+        if (chuyenToi != null) {
+            let chuyenToiArr = chuyenToi.split("|");
+            if (chuyenToiArr && chuyenToiArr.length)
+                return chuyenToiArr.map((item, index) => {
+                    return (
+                        <View style={styles.styleRow} key={index}>
+                            <Text>{(item) ? item.split(":")[0] + ':' : ''}</Text>
+                            <Text style={{ flex: 1, marginLeft: 10, fontWeight: 'bold' }}>{(item && item.indexOf(':') !== -1) ? item.split(":")[1] : ''}</Text>
+                        </View>
+                    );
+                })
+        }
+    }
     render() {
 
-        if (this.props.item.chuyenToi != null && this.props.item.chuyenToi.length > 0) {
-            chuyenToi = this.findAndReplace(this.props.item.chuyenToi, "|", "\n");
+        // if (this.props.item.chuyenToi != null && this.props.item.chuyenToi.length > 0) {
+        //     chuyenToi = this.findAndReplace(this.props.item.chuyenToi, "|", "\n");
+        // } else {
+        //     chuyenToi = ""
+        // }
+        
+        let dateTime;
+        if (this.props.item.updateDate != null) {
+            dateTime = this.props.item.updateDate.split(" ");
         } else {
-            chuyenToi = ""
+            dateTime = "";
         }
-
+        
         return (
-            <View>
-                <View style={{ height: 50, justifyContent: 'space-between', backgroundColor: '#D7D7D7', flexDirection: 'row' }}>
+            <View style={{flex: 1}}>
+                <View style={{ flex: 1, justifyContent: 'space-between', backgroundColor: '#D7D7D7', flexDirection: 'row' }}>
                     <View style={{ flex: 1, flexDirection: 'column', paddingTop: 5, paddingLeft: 5 }}>
                         <Text style={{ fontWeight: 'bold' }}>{this.props.item.fullName}</Text>
-                        <Text>({this.props.item.updateBy})</Text>
+                        <Text>{this.props.item.updateBy}</Text>
+                        <Text style={{ fontWeight: 'bold' }}>{strings.lanhDaoChiDao}: {utils.isEmpty(this.props.item.lanhDaoChiDao) ? "" : this.props.item.lanhDaoChiDao}</Text>
                     </View>
                     <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-end', paddingTop: 5, paddingRight: 4 }}>
-                        <Text>{this.props.item.updateDate}</Text>
-
+                        <Text>{(dateTime && dateTime.length) ? dateTime[0] : ""}</Text>
+                        <Text>{(dateTime && dateTime.length) ? dateTime[1] : ""}</Text>
                     </View>
                 </View>
                 <Text style={{ marginLeft: 10, padding: 4, color: '#205AA7' }}>{this.props.item.comment}</Text>
                 <View style={{ height: 1, backgroundColor: '#D7D7D7' }} />
-                <View style={{ margin: 5, backgroundColor: '#ffffff' }}>
+                <View style={{ flex: 1, marginTop: 3, flexDirection: 'column' }}>
+                    {this._renderChuyentoi(this.props.item.chuyenToi)}
+
+                </View>
+                {/* <View style={{ margin: 5, backgroundColor: '#ffffff' }}>
                     <View >
                         <Text style={{ marginLeft: 10 }}>{chuyenToi}</Text>
                     </View>
-                </View>
+                </View> */}
             </View>
         );
     }

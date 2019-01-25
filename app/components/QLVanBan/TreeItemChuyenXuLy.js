@@ -92,7 +92,7 @@ class TreeItemChuyenXuLy extends Component {
     _renderView = (item) => {
         if (item != null && item != "undefined") {
             return (
-                <View style={{ flex: 1, flexDirection: 'row', }} key={item.key} >
+                <View style={{ flex: 1, flexDirection: 'row', }} key={item} >
 
                     <TouchableOpacity style={{ flex: 6 }}
                         onPress={(e) => (item && item.children && item.children.length) ? this.props._onPressCollapse({ e, item }) : null} >

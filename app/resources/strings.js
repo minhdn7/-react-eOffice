@@ -90,7 +90,7 @@ module.exports = new LocalizedStrings({
     // cài đặt mặc định
     chonChucNangMacDinh: 'Chọn chức năng mặc định',
     thietLapMacDinh: 'Thiết lập mặc định',
-    chucNangManHinh: 'Chức năng màn hình',
+    chucNangManHinh: 'Chức năng/ Màn hình',
     chon: 'Chọn',
 
     // lịch họp
@@ -120,6 +120,9 @@ module.exports = new LocalizedStrings({
     doKhan: 'Độ khẩn:',
     // view file
     noiDungFile: "Nội dung File",
+    // tong hop y kien xu ly
+    lanhDaoChiDao: "LĐ chỉ đạo",
+    nguoiGui: "Người gửi",
 
     // modal dropdown
     choXuLy: "Chờ xử lý",

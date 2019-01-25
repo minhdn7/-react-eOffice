@@ -126,7 +126,7 @@ export class ChuyenXuLy extends Component {
 
     }
 
-    selectUnitHandle = async (index) => {
+    selectUnitHandle = (index) => {
         let lstUnit = this.props.chuyenXuLyReducer.get('listUnit');
         let item = lstUnit[index - 1];
 
@@ -139,25 +139,25 @@ export class ChuyenXuLy extends Component {
                 txtNameUnitSelect: utils.shortText(item.name, 5),
                 txtUnit: id,
             });
-            await this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction(id, "", this.state.txtInputName));
+            this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction(id, "", this.state.txtInputName));
         } else {
             this.setState({
                 txtNameUnitSelect: strings.chonDonVi,
             });
-            await this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction("", "", this.state.txtInputName));
+            this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction("", "", this.state.txtInputName));
         }
 
         // this.setState({
         //     isRefresh: !isRefresh,
         // })
     }
-    _onChangeTextHandle = async (textInput) => {
+    _onChangeTextHandle = (textInput) => {
         clearTimeout(this.delayTimer);
 
         this.setState({
             txtInputName: textInput,
         });
-        this.delayTimer = await setTimeout(
+        this.delayTimer = setTimeout(
             () => {
                 this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction(this.state.txtUnit, "", textInput ? textInput.trim() : ""));
 
@@ -201,8 +201,9 @@ export class ChuyenXuLy extends Component {
             }
         }
 
-        this.forceUpdate();
-        //this.props.dispatch(chuyenXuLyAction.getUserConcurrentSendAction(lstData));
+        this.setState({
+            lstDataSelectInternal: lstData
+        })
     }
 
     // findByIdAndSwap = (data, item) => {
@@ -262,7 +263,7 @@ export class ChuyenXuLy extends Component {
     }
 
     renderTree = (type) => {
-        let lstData = [];
+        let lstData;
         if (type === 1) {
             lstData = this.props.chuyenXuLyReducer.get('listUserConcurrentSend');
         } else // cây đơn vị

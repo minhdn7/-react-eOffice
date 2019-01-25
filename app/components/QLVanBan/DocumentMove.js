@@ -115,13 +115,15 @@ export class DocumentMove extends Component {
     }
 
     _saveDataHandle = async () => {
-        var idDocument = this.props.navigation.getParam('idDocument', "");
+        let typeDoc = this.props.documentReducer.get("typeDocument");
+        console.log("type document: ", typeDoc);
+        let idDocument = this.props.navigation.getParam('idDocument', "");
         let lstPhoiHop = "";
         let lstXem = "";
         let lstPhInternal = "";
         let lstXemInternal = "";
         let job = this.state.isCheckedTuDongGiaoViec ? 1 : 0;
-        let kho = "Văn bản đến chờ xử lý";
+        let kho = typeDoc ? typeDoc : "";
         let idXlcInternal = "";
         let idXlc = "";
         let actionType = "0";
@@ -156,7 +158,7 @@ export class DocumentMove extends Component {
         let result = this.props.chuyenXuLyReducer.get('response');
         if (result != null && result.toUpperCase() === "TRUE") {
             Toast.show(strings.chuyenVanBanThanhCong);
-
+            this.props.navigation.push('DocManagement');
         } else {
             let message = this.props.chuyenXuLyReducer.get('error');
             console.log("loi: ", message);
@@ -301,6 +303,7 @@ export class DocumentMove extends Component {
 
 const mapStateToProps = (state) => ({
     chuyenXuLyReducer: state.get('chuyenXuLyReducer'),
+    documentReducer: state.get('documentReducer'),
 });
 
 export default connect(mapStateToProps)(DocumentMove)  
