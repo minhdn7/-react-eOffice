@@ -1,24 +1,10 @@
 import React, { Component } from "react";
-import { Image, Text, View, Alert, TouchableOpacity, StyleSheet, TextInput, Input, FlatList, TouchableWithoutFeedback } from "react-native";
+import { Text, View, Alert, TouchableOpacity, StyleSheet, FlatList, AsyncStorage } from "react-native";
 import { Container, Content, Spinner, Button, CheckBox, ListItem, Body, Header } from "native-base";
-import { Navigation, StatusBar } from 'react-native-navigation';
-import colors from "../../resources/colors";
-import { connect } from "react-redux";
-import dimens from "../../resources/dimens";
-import HTML from "react-native-render-html";
-import showdown from "showdown";
 import strings from "../../resources/strings";
-import * as detailsActions from "../../actions/details-actions";
-import Color from 'react-native-material-color';
-import PropTypes from 'prop-types';
 import styles from '../../styles/styleQLVanBan';
 
-import BottomNavigation, { Tab } from 'react-native-material-bottom-navigation-performance';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import DefaultHeader from '../navigation/DefaultHeader';
-import flatListData from '../../data/flatListData';
-import DateTimePicker from 'react-native-modal-datetime-picker';
-import Moment from 'moment';
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 
 export default class Setting extends Component {
@@ -34,15 +20,20 @@ export default class Setting extends Component {
                 { id: '6', label: strings.lichCongTacLanhDao, value: 5 },
             ],
 
-            selectedId: 0,
+            selectedId: '1',
         };
     };
 
+    componentWillMount(){
+        AsyncStorage.setItem('setting', this.state.selectedId);
+    }
 
-    onCheckBoxPress(value) {
+    onCheckBoxPress = async (value) => {
         this.setState({
             selectedId: value
         });
+
+        await AsyncStorage.setItem('setting', this.state.selectedId);
     }
 
     render() {
@@ -80,8 +71,7 @@ export default class Setting extends Component {
                                         buttonSize={10}
                                         selectedButtonColor={'black'}
                                         buttonColor={'black'}
-                                        isSelected={this.state.selectedId == item.id}
-                                        //isSelected={itemIsCheckXlc && itemIsCheckXlc.id == item.id && itemIsCheckXlc.parentId == item.parentId}
+                                        isSelected={this.state.selectedId === item.id}
                                         onPress={() => this.onCheckBoxPress(item.id)}
                                     />
                                 </RadioButton>
