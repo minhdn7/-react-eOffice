@@ -11,7 +11,8 @@ export default class Header extends React.Component {
     }
 
     handleBackPress = () => {
-        this.props.navigator.goBack(null);
+        // this.props.navigator.goBack(null);
+        this.props.navigator.navigate('DrawerMenu');
         return true;
     }
     

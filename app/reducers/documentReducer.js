@@ -13,15 +13,17 @@ export default function documentReducer(state, action = {}){
                 .set('hasDocument', true)
                 .set('documentData', action.receivedDocs));
         case actions.GET_LIST_WAITING_DOCUMENT_SUCESS:
+        case actions.GET_LIST_PROCESSED_DOCUMENT_SUCESS:
+        case actions.GET_LIST_NOTIFY_DOCUMENT_SUCESS:
             return state.withMutations(state => state
                 .set('progress', false)
                 .set('hasDocument', true)
                 .set('listDocumentData', action.listDocumentData));
-        case actions.GET_LIST_WAITING_DOCUMENT_SUCESS:
-            return state.withMutations(state => state
-                .set('progress', false)
-                .set('hasDocument', true)
-                .set('listDocumentData', action.listDocumentData));
+        // case actions.GET_LIST_PROCESSED_DOCUMENT_SUCESS:
+        //     return state.withMutations(state => state
+        //         .set('progress', false)
+        //         .set('hasDocument', true)
+        //         .set('listDocumentData', action.listDocumentData));
         case actions.GET_LIST_DOCUMENT_ERROR:
             return state.withMutations(state => state
                 .set('progress', false)

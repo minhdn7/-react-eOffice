@@ -35,23 +35,23 @@ export class DocManagement extends Component {
             kho: type,
         });
 
-        this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, type, this.state.param));
-        // switch (type){
-        //     case strings.vanBanChoXuLy:
-        //         this.setState({
-        //             title : strings.vanBanChoXuLy,     
-        //         });
-        //         this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, this.state.param));
-        //         break
-        //     case strings.vanBanDaXuLy:
-        //         this.setState({
-        //             title : strings.vanBanDaXuLy,     
-        //         });
-        //         this.props.dispatch(documentAction.getListProcessedDocumentAction(this.state.pageNo, this.state.pageRec, this.state.param));
-        //         break
-        //     default:
-        //         break  
-        // }
+        if(type !== null && type != ''){
+            this.setState({
+                title: type,
+            })
+        }
+        //this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, type, this.state.param));
+        switch (type){
+            case strings.vanBanXemDeBiet:
+                this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, this.state.param));
+                break
+            case strings.vanBanDaXuLy:
+                this.props.dispatch(documentAction.getListProcessedDocumentAction(this.state.pageNo, this.state.pageRec, this.state.param));
+                break
+            default:
+                this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, type, this.state.param));
+                break  
+        }
     }
 
     onRefresh = () => {

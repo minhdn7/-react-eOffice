@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import {Image, ImageBackground, StatusBar, Text, Alert, ToastAndroid} from "react-native";
-import {Button, Container, Content, Spinner} from "native-base";
-import {Platform, StyleSheet, View} from 'react-native';
+import React, { Component } from 'react';
+import { Image, ImageBackground, StatusBar, Text, Alert, ToastAndroid } from "react-native";
+import { Button, Container, Content, Spinner } from "native-base";
+import { Platform, StyleSheet, View } from 'react-native';
 import colors from "../../resources/colors";
 import ValidationTextInput from "../ValidationTextInput";
 
@@ -17,7 +17,8 @@ import * as Toast from "@remobile/react-native-toast";
 import CheckBox from 'react-native-check-box';
 import * as loginActions from "../../actions/login-actions";
 import * as rootActions from "../../actions/root-actions";
-import {connect} from "react-redux";
+import * as documentAction from "../../actions/document-action";
+import { connect } from "react-redux";
 import Color from 'react-native-material-color';
 import { AsyncStorage } from 'react-native';
 import firebase from 'react-native-firebase';
@@ -30,7 +31,7 @@ export class Login extends Component {
   }
 
   isSelected: false;
-  constructor(){
+  constructor() {
     super();
     this.password = "Al@nwalker1901";
     this.email = "longpd";
@@ -45,12 +46,12 @@ export class Login extends Component {
       isfirstLoad: false,
       isLoggedIn: false,
     }
-     
+
   }
 
 
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.notificationListener();
     this.notificationOpenedListener();
     this.props.dispatch(rootActions.controlProgress(false));
@@ -63,153 +64,191 @@ export class Login extends Component {
     this.createNotificationListeners();
   }
 
-componentDidUpdate() {
-  if(this.state.isfirstLoad){
-    this.setState({isfirstLoad: false});
-    if(this.checkLogin()){
-      this.props.navigation.navigate('DrawerMenu');
-      // this.checkContact();
+  componentDidUpdate() {
+    if (this.state.isfirstLoad) {
+      this.setState({ isfirstLoad: false });
+      if (this.checkLogin()) {
+        this.settingDefaultRedirect();
+        //this.props.navigation.navigate('DrawerMenu');
+        // this.checkContact();
 
+      }
+    }
+
+  }
+
+  settingDefaultRedirect = async () => {
+    let typeAction = '';
+    try {
+      typeAction = await AsyncStorage.getItem('setting') || '';
+      console.log('AsyncStorage.getItem(setting): ', typeAction);
+      switch (typeAction) {
+        case '2':
+          this.props.dispatch(documentAction.resetListDocumentAction());
+          this.props.dispatch(documentAction.setTypeDocumentAction(strings.vanBanDaXuLy));
+          this.props.navigation.navigate('DocManagement');
+          break;
+        case '3':
+          this.props.dispatch(documentAction.resetListDocumentAction());
+          this.props.dispatch(documentAction.setTypeDocumentAction(strings.vanBanXemDeBiet));
+          this.props.navigation.navigate('DocManagement');
+          break;
+        case '4':
+          this.props.dispatch(documentAction.resetListDocumentAction());
+          this.props.dispatch(documentAction.setTypeDocumentAction(strings.vanBanDanhDau));
+          this.props.navigation.navigate('DocManagement');
+          break;
+        case '5':
+          this.props.navigation.navigate('DanhBa');
+          break;
+        case '6':
+          this.props.navigation.navigate('LichCongTac');
+          break;
+        default:
+          this.props.navigation.navigate('DrawerMenu');
+          break;
+      }
+    } catch (error) {
+      this.props.navigation.navigate('DrawerMenu');
+      console.log(error);
     }
   }
 
-}
-
- //1
- async checkPermission() {
-  const enabled = await firebase.messaging().hasPermission();
-  if (enabled) {
+  //1
+  async checkPermission() {
+    const enabled = await firebase.messaging().hasPermission();
+    if (enabled) {
       this.getToken();
-  } else {
+    } else {
       this.requestPermission();
+    }
   }
-}
 
   //3
-async getToken() {
-  let fcmToken = await AsyncStorage.getItem('fcmToken');
+  async getToken() {
+    let fcmToken = await AsyncStorage.getItem('fcmToken');
 
-  if (!fcmToken) {
-          // user has a device token
-          fcmToken = await firebase.messaging().getToken();
+    if (!fcmToken) {
+      // user has a device token
+      fcmToken = await firebase.messaging().getToken();
 
-          await AsyncStorage.setItem('fcmToken', fcmToken);
+      await AsyncStorage.setItem('fcmToken', fcmToken);
       // if (fcmToken) {
       //     // user has a device token
       //     fcmToken = await firebase.messaging().getToken();
 
       //     await AsyncStorage.setItem('fcmToken', fcmToken);
       // }
+    }
+    // ToastAndroid.show(fcmToken, ToastAndroid.SHORT);
+    this.setState({
+      tokenFirebase: fcmToken,
+    });
   }
-  // ToastAndroid.show(fcmToken, ToastAndroid.SHORT);
-  this.setState({
-    tokenFirebase: fcmToken,
-  });
-}
 
   //2
-async requestPermission() {
-  try {
+  async requestPermission() {
+    try {
       await firebase.messaging().requestPermission();
       // User has authorised
       this.getToken();
-  } catch (error) {
+    } catch (error) {
       // User has rejected permissions
       console.log('permission rejected');
+    }
   }
-}
 
-async createNotificationListeners() {
-  // create topic 
-  firebase.messaging().subscribeToTopic('news');
-  firebase.messaging().subscribeToTopic('global');
-  /*
-  * Triggered when a particular notification has been received in foreground
-  * */
-  this.notificationListener = firebase.notifications().onNotification((notification) => {
+  async createNotificationListeners() {
+    // create topic 
+    firebase.messaging().subscribeToTopic('news');
+    firebase.messaging().subscribeToTopic('global');
+    /*
+    * Triggered when a particular notification has been received in foreground
+    * */
+    this.notificationListener = firebase.notifications().onNotification((notification) => {
       const { title, body } = notification;
       this.showAlert(title, body);
-  });
+    });
 
-  /*
-  * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
-  * */
-  this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
+    /*
+    * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
+    * */
+    this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
       const { title, body } = notificationOpen.notification;
       this.showAlert(title, body);
-  });
+    });
 
-  /*
-  * If your app is closed, you can check if it was opened by a notification being clicked / tapped / opened as follows:
-  * */
-  const notificationOpen = await firebase.notifications().getInitialNotification();
-  if (notificationOpen) {
+    /*
+    * If your app is closed, you can check if it was opened by a notification being clicked / tapped / opened as follows:
+    * */
+    const notificationOpen = await firebase.notifications().getInitialNotification();
+    if (notificationOpen) {
       const { title, body } = notificationOpen.notification;
       this.showAlert(title, body);
+    }
+    /*
+    * Triggered for data only payload in foreground
+    * */
+    this.messageListener = firebase.messaging().onMessage((message) => {
+      //process data message
+      console.log(JSON.stringify(message));
+    });
   }
-  /*
-  * Triggered for data only payload in foreground
-  * */
-  this.messageListener = firebase.messaging().onMessage((message) => {
-    //process data message
-    console.log(JSON.stringify(message));
-  });
-}
 
-showAlert(title, body) {
-  Alert.alert(
-    title, body,
-    [
+  showAlert(title, body) {
+    Alert.alert(
+      title, body,
+      [
         { text: 'OK', onPress: () => console.log('OK Pressed') },
-    ],
-    { cancelable: false },
-  );
-}
+      ],
+      { cancelable: false },
+    );
+  }
 
-  checkLogin(){
+  checkLogin() {
 
     console.log('isLoggedIn:', this.props.login.get('isLoggedIn'));
-      if(this.props.login.get('isLoggedIn')){
-  
-        consts.BASE_HEADER["X-Authentication-Token"] = this.props.login.get('token');
-        console.log('Token save:', consts.BASE_HEADER["X-Authentication-Token"]);
-        
-        this.props.dispatch(loginActions.getContact());
-        // this.props.navigation.navigate('DrawerMenu');
-        return true;
-        
-      }else{
-        message = this.props.login.get('loginError');
-        if(message && message != ''){
-          Alert.alert(
-            'Thông báo',
-              message,
-            [
-              {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-              {text: 'OK', onPress: () => console.log('OK Pressed')},
-            ],
-            { cancelable: false }
-          )
-        }
+    if (this.props.login.get('isLoggedIn')) {
 
-        return false;
+      consts.BASE_HEADER["X-Authentication-Token"] = this.props.login.get('token');
+      console.log('Token save:', consts.BASE_HEADER["X-Authentication-Token"]);
+
+      this.props.dispatch(loginActions.getContact());
+      // this.props.navigation.navigate('DrawerMenu');
+      return true;
+
+    } else {
+      message = this.props.login.get('loginError');
+      if (message && message != '') {
+        Alert.alert(
+          'Thông báo',
+          message,
+          [
+            { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+            { text: 'OK', onPress: () => console.log('OK Pressed') },
+          ],
+          { cancelable: false }
+        )
       }
+
+      return false;
+    }
   }
 
-  checkContact(){
-    if(this.props.login.get('hasContact')){
-      
+  checkContact() {
+    if (this.props.login.get('hasContact')) {
+
       this.props.navigation.navigate('DrawerMenu');
-      
-    }else {
-      if(this.props.login.get('contactError') && this.props.login.get('contactError') != ''){
+
+    } else {
+      if (this.props.login.get('contactError') && this.props.login.get('contactError') != '') {
         message = this.props.login.get('contactError');
         Alert.alert(
           'Thông báo',
-            message,
+          message,
           [
-            {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-            {text: 'OK', onPress: () => console.log('OK Pressed')},
+            { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+            { text: 'OK', onPress: () => console.log('OK Pressed') },
           ],
           { cancelable: false }
         )
@@ -220,22 +259,22 @@ showAlert(title, body) {
   }
 
 
-isObject(obj) {
-  return typeof obj === 'object';
-}
+  isObject(obj) {
+    return typeof obj === 'object';
+  }
 
   render() {
     return (
-      <View style={{flex: 1}}>
-          <StatusBar
-              backgroundColor="#0d47a1"
-              barStyle="light-content"
-          />
+      <View style={{ flex: 1 }}>
+        <StatusBar
+          backgroundColor="#0d47a1"
+          barStyle="light-content"
+        />
         <ImageBackground style={loginStyles.backgroundImage} source={require('../../image/background_2.png')}>
           <Content contentContainerStyle={loginStyles.contentStyle}>
-          <Image source={require('../../image/ic_app.png')}
-                style={{marginTop: 60, width: 80, height: 80}}
-          />
+            <Image source={require('../../image/ic_app.png')}
+              style={{ marginTop: 60, width: 80, height: 80 }}
+            />
             <Text style={loginStyles.textStyle}>
               {strings.heThongVanBanDieuHanh}
             </Text>
@@ -244,30 +283,30 @@ isObject(obj) {
               label={strings.account}
               onChangeText={(text) => this.email = text}
               style={loginStyles.emailStyle}
-              color={colors.accentColor}/>
+              color={colors.accentColor} />
             <ValidationTextInput
               secureTextEntry={true}
               validate={this.validatePassword}
               onChangeText={(text) => this.password = text}
               label={strings.password}
               style={loginStyles.emailStyle}
-              color={colors.accentColor}/>
+              color={colors.accentColor} />
 
-              <Content contentContainerStyle={loginStyles.contentStyle2}>
-                <Text>Ghi nhớ tài khoản </Text>
+            <Content contentContainerStyle={loginStyles.contentStyle2}>
+              <Text>Ghi nhớ tài khoản </Text>
 
               <CheckBox
-                  style={{flex: 1, padding: 30}}
-                  onClick={()=>{
-                    this.setState({
-                        isChecked:!this.state.isChecked
-                    })
-                  }}
-                  isChecked={this.state.isChecked}
-                  leftText={"CheckBox"}
+                style={{ flex: 1, padding: 30 }}
+                onClick={() => {
+                  this.setState({
+                    isChecked: !this.state.isChecked
+                  })
+                }}
+                isChecked={this.state.isChecked}
+                leftText={"CheckBox"}
               />
 
-              </Content>
+            </Content>
 
             <Button
               style={loginStyles.buttonStyle}
@@ -275,8 +314,8 @@ isObject(obj) {
               <Text style={loginStyles.buttonTextStyle}>{strings.sign_in}</Text>
             </Button>
             {/* {this.renderProgress()} */}
-          </Content> 
-          </ImageBackground>
+          </Content>
+        </ImageBackground>
       </View>)
   }
 
@@ -286,7 +325,7 @@ isObject(obj) {
     } else {
       return null;
     }
-  } 
+  }
 
 
 
@@ -296,7 +335,7 @@ isObject(obj) {
         color={colors.accentColor}
         animating={true}
         size={'large'}
-        style={styles.progressStyle}/>
+        style={styles.progressStyle} />
     )
   }
 
@@ -305,7 +344,7 @@ isObject(obj) {
   validatePassword = (text: string): boolean => text.length >= consts.MIN_PASSWORD_LENGTH;
 
   onLoginPress = () => {
-    this.setState({isfirstLoad : true});
+    this.setState({ isfirstLoad: true });
     // let tokenFirebase = await AsyncStorage.getItem('fcmToken');
     // ToastAndroid.show(this.state.tokenFirebase, ToastAndroid.SHORT);
     this.props.dispatch(loginActions.loginAccount(this.email, this.password, this.state.tokenFirebase));
@@ -346,7 +385,7 @@ const loginStyles = {
     alignSelf: 'stretch',
     marginHorizontal: dimens.margin_large
   },
-  saveStyle:{
+  saveStyle: {
     flex: 0,
     flexDirection: 'row',
     justifyContent: 'center',

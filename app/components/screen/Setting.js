@@ -24,8 +24,21 @@ export default class Setting extends Component {
         };
     };
 
-    componentWillMount(){
-        AsyncStorage.setItem('setting', this.state.selectedId);
+    async componentWillMount() {
+        try {
+            const actionType = await AsyncStorage.getItem('setting');
+            console.log("actionType setting: ", actionType);
+            if (actionType != null) {
+                this.setState({
+                    selectedId: actionType,
+                })
+            } else {
+                AsyncStorage.setItem('setting', this.state.selectedId);
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
+
     }
 
     onCheckBoxPress = async (value) => {
@@ -33,7 +46,12 @@ export default class Setting extends Component {
             selectedId: value
         });
 
-        await AsyncStorage.setItem('setting', this.state.selectedId);
+        try {
+            await AsyncStorage.setItem('setting', value);
+        } catch (error) {
+            console.log(error.message);
+        }
+        
     }
 
     render() {

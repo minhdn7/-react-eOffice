@@ -30,8 +30,17 @@ export const getListProcessedDocumentAction = (pageNo, pageRec, param) => {
         type: actions.GET_LIST_PROCESSED_DOCUMENT,
         pageNo: pageNo,
         pageRec: pageRec,
-        kho: kho,
-        param: param,
+        parameter: param,
+    }
+}
+
+export const getListNotifyDocumentAction = (pageNo, pageRec, param) => {
+    console.log("param:", param);
+    return {
+        type: actions.GET_LIST_NOTIFY_DOCUMENT,
+        pageNo: pageNo,
+        pageRec: pageRec,
+        parameter: param,
     }
 }
 
@@ -51,7 +60,14 @@ export const setListWaitingDocumentSuccess = (listDocumentData) => {
 
 export const setListProcessedDocumentSuccess = (listDocumentData) => {
     return {
-        type: actions.GET_LIST_WAITING_DOCUMENT_SUCESS,
+        type: actions.GET_LIST_PROCESSED_DOCUMENT_SUCESS,
+        listDocumentData: listDocumentData,
+    }
+}
+
+export const setListNotifyDocumentSuccess = (listDocumentData) => {
+    return {
+        type: actions.GET_LIST_NOTIFY_DOCUMENT_SUCESS,
         listDocumentData: listDocumentData,
     }
 }
