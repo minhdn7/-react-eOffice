@@ -65,8 +65,7 @@ function getProcessedDocumentURL(pageNo, pageRec, param) {
 }
 
 function getNotifyDocumentURL(pageNo, pageRec, param) {
-  url = apiUrl.ROOT_URL + apiUrl.GET_DOC_No;
-  console.log("url get processed document:", url);
+  url = apiUrl.ROOT_URL + apiUrl.GET_DOC_NOTIFICATION_URL;
   return fetch(url, {
     method: 'POST',
     headers: consts.BASE_HEADER,
@@ -327,9 +326,9 @@ function* getWaitingDocument(pageNo, pageRec, kho, param) {
   }
 }
 
-function* getProcessedDocument(pageNo, pageRec, kho, param) {
+function* getProcessedDocument(pageNo, pageRec, param) {
   try {
-    response = yield call(getProcessedDocumentURL, pageNo, pageRec, kho, param);
+    response = yield call(getProcessedDocumentURL, pageNo, pageRec, param);
     console.log("processed data", response);
     if (typeof (response) != "undefined" && typeof (response.status) != "undefined") {
       if (response.status.code == "0") {
@@ -337,6 +336,34 @@ function* getProcessedDocument(pageNo, pageRec, kho, param) {
           yield put(documentActions.setListProcessedDocumentSuccess(response.data));
         } else {
           yield put(documentActions.setListProcessedDocumentSuccess([]));
+        }
+
+        return response;
+      } else {
+        yield put(documentActions.setListDocumentErrorAction(response.status.message));
+        return undefined;
+      }
+    } else {
+      yield put(documentActions.setListDocumentErrorAction("Không lấy được dữ liệu!"));
+      return undefined;
+    }
+
+  } catch (error) {
+
+    yield put(documentActions.setListDocumentErrorAction(String(error)));
+  }
+}
+
+function* getNotifyDocument(pageNo, pageRec, param) {
+  try {
+    response = yield call(getNotifyDocumentURL, pageNo, pageRec, param);
+    console.log("notify data", response);
+    if (typeof (response) != "undefined" && typeof (response.status) != "undefined") {
+      if (response.status.code == "0") {
+        if (response.data != null && response.data.length > 0) {
+          yield put(documentActions.setListNotifyDocumentSuccess(response.data));
+        } else {
+          yield put(documentActions.setListNotifyDocumentSuccess([]));
         }
 
         return response;
@@ -371,9 +398,20 @@ export function* documentFlow() {
 export function* documentProcessedFlow() {
   while (true) {
 
-    const { pageNo, pageRec, kho, param } = yield take(actions.GET_LIST_PROCESSED_DOCUMENT);
+    const { pageNo, pageRec, param } = yield take(actions.GET_LIST_PROCESSED_DOCUMENT);
     yield put(rootActions.controlProgress(true));
-    yield call(getProcessedDocument, pageNo, pageRec, kho, param);
+    yield call(getProcessedDocument, pageNo, pageRec, param);
+    yield put(rootActions.controlProgress(false));
+
+  }
+}
+
+export function* documentNotifyFlow() {
+  while (true) {
+
+    const { pageNo, pageRec, param } = yield take(actions.GET_LIST_NOTIFY_DOCUMENT);
+    yield put(rootActions.controlProgress(true));
+    yield call(getNotifyDocument, pageNo, pageRec, param);
     yield put(rootActions.controlProgress(false));
 
   }

@@ -25,6 +25,10 @@ export class DocManagement extends Component {
             param: "",
             kho: "",
             dataDocument: [],
+            parameter: {
+                param: "",
+                status: "",
+            }
 
         };
       }
@@ -43,10 +47,10 @@ export class DocManagement extends Component {
         //this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, type, this.state.param));
         switch (type){
             case strings.vanBanXemDeBiet:
-                this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, this.state.param));
+                this.props.dispatch(documentAction.getListNotifyDocumentAction(this.state.pageNo, this.state.pageRec, this.state.param));
                 break
             case strings.vanBanDaXuLy:
-                this.props.dispatch(documentAction.getListProcessedDocumentAction(this.state.pageNo, this.state.pageRec, this.state.param));
+                this.props.dispatch(documentAction.getListProcessedDocumentAction(this.state.pageNo, this.state.pageRec, this.state.parameter));
                 break
             default:
                 this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, type, this.state.param));

@@ -30,7 +30,7 @@ export const getListProcessedDocumentAction = (pageNo, pageRec, param) => {
         type: actions.GET_LIST_PROCESSED_DOCUMENT,
         pageNo: pageNo,
         pageRec: pageRec,
-        parameter: param,
+        param: param,
     }
 }
 
