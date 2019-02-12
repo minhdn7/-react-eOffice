@@ -153,5 +153,8 @@ module.exports = new LocalizedStrings({
     chonTheoNhomCaNhan: "Chọn theo nhóm cá nhân",
     chuyenVanBanThanhCong: "Chuyển văn bản thành công",
     messageServerError: "Lỗi server, xin vui lòng thử lại sau",
+    // văn bản xem để biết
+    vbXemDeBiet_chuaDoc: "Chưa đọc",
+    vbXemDeBiet_tatCa: "Tất cả",
   }
 });

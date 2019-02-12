@@ -3,7 +3,7 @@ import { View, FlatList, Text, TouchableOpacity, TextInput, Alert, ToastAndroid 
 import Header from './Header2';
 import ItemDocument from './ItemDocument';
 import dataJson from '../../data/flatListData';
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import * as documentAction from "../../actions/document-action";
 import * as rootActions from "../../actions/root-actions";
 import strings from "../../resources/strings";
@@ -26,61 +26,53 @@ export class DocManagement extends Component {
             kho: "",
             dataDocument: [],
             parameter: {
-                param: "",
-                status: "",
-            }
-
+                param: '',
+                status: ''
+            },
+            statusDoc: "CHUADOC",
         };
-      }
+    }
 
 
-    checkTypeDocument = (type) =>{
+    checkTypeDocument = (type) => {
         this.setState({
             kho: type,
         });
 
-        if(type !== null && type != ''){
+        if (type !== null && type != '') {
             this.setState({
                 title: type,
             })
         }
         //this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, type, this.state.param));
-        switch (type){
-            case strings.vanBanXemDeBiet:
-                this.props.dispatch(documentAction.getListNotifyDocumentAction(this.state.pageNo, this.state.pageRec, this.state.param));
-                break
-            case strings.vanBanDaXuLy:
-                this.props.dispatch(documentAction.getListProcessedDocumentAction(this.state.pageNo, this.state.pageRec, this.state.parameter));
-                break
-            default:
-                this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, type, this.state.param));
-                break  
-        }
+        this.loadListDocByType();
     }
 
     onRefresh = () => {
         ToastAndroid.show("Refresh", ToastAndroid.SHORT);
-        this.setState({  
-         dataDocument: [],  
-         isLoading : true,  
-         refreshing : false,
-         pageNo: 1,
-         pageRec: 10,
+        this.setState({
+            dataDocument: [],
+            isLoading: true,
+            refreshing: false,
+            pageNo: 1,
+            pageRec: 10,
         });
-        this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, this.props.documentReducer.get("typeDocument"), this.state.param));
-    }  
 
-    componentWillMount(){
+        //this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, this.props.documentReducer.get("typeDocument"), this.state.param));
+        this.loadListDocByType();
+    }
+
+    componentWillMount() {
         this.props.dispatch(rootActions.controlProgress(false));
         // typeDocument = this.props.documentReducer.get("typeDocument");
         this.checkTypeDocument(this.props.documentReducer.get("typeDocument"));
     }
 
 
-    componentWillReceiveProps(){
-        if(this.props.documentReducer.get('listDocumentData') != null
-        && this.props.documentReducer.get('listDocumentData').length > 0
-        && this.state.isLoading){
+    componentWillReceiveProps() {
+        if (this.props.documentReducer.get('listDocumentData') != null
+            && this.props.documentReducer.get('listDocumentData').length > 0
+            && this.state.isLoading) {
             listDocumentData = this.props.documentReducer.get('listDocumentData');
             updateData = this.state.dataDocument.concat(this.props.documentReducer.get('listDocumentData'));
             // this.props.dispatch(documentAction.setListWaitingDocumentSuccess([]));
@@ -88,31 +80,31 @@ export class DocManagement extends Component {
                 dataDocument: updateData,
                 isLoading: false,
             });
-        }else if(this.props.documentReducer.get('documentError') != null
-            && this.props.documentReducer.get('documentError') != ''){
-                this.props.dispatch(documentAction.setListDocumentErrorAction(''));
-                ToastAndroid.show(this.props.documentReducer.get('documentError'), ToastAndroid.SHORT);
-            }else if(this.state.pageNo == 1){
-                // this.setState({
-                //     dataDocument: [],
-                //     isLoading: false,
-                // });
-            }
+        } else if (this.props.documentReducer.get('documentError') != null
+            && this.props.documentReducer.get('documentError') != '') {
+            this.props.dispatch(documentAction.setListDocumentErrorAction(''));
+            ToastAndroid.show(this.props.documentReducer.get('documentError'), ToastAndroid.SHORT);
+        } else if (this.state.pageNo == 1) {
+            // this.setState({
+            //     dataDocument: [],
+            //     isLoading: false,
+            // });
+        }
 
     }
 
-    gotoDocumentDetail = (item) =>{
+    gotoDocumentDetail = (item) => {
 
         this.props.dispatch(documentAction.setIdDocumentAction(item.id));
         this.props.dispatch(documentAction.setItemDocumentEventAction(item));
-        this.props.navigation.navigate('DocumentDetail',{
+        this.props.navigation.navigate('DocumentDetail', {
             navigator: this.props.navigation,
         });
     }
 
     isEmpty(obj) {
-        for(var key in obj) {
-            if(obj.hasOwnProperty(key))
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key))
                 return false;
         }
         return true;
@@ -120,83 +112,121 @@ export class DocManagement extends Component {
 
     loadMore = () => {
         listDocumentData = this.props.documentReducer.get('listDocumentData');
-        if(this.props.documentReducer.get('listDocumentData') != null
-        && this.props.documentReducer.get('listDocumentData').length >= 9)
-        {
-            ToastAndroid.show('loading more', ToastAndroid.SHORT);
+        if (this.props.documentReducer.get('listDocumentData') != null
+            && this.props.documentReducer.get('listDocumentData').length >= 9) {
+            ToastAndroid.show('Loading more', ToastAndroid.SHORT);
             page = this.state.pageNo + 1;
             this.setState({
                 isLoading: true,
                 pageNo: page,
             });
-            this.props.dispatch(documentAction.getListWaitingDocumentAction(page, this.state.pageRec, this.props.documentReducer.get("typeDocument"), this.state.param));
-        }else{
+            //this.props.dispatch(documentAction.getListWaitingDocumentAction(page, this.state.pageRec, this.props.documentReducer.get("typeDocument"), this.state.param));
+            this.loadListDocByType();
+        } else {
             this.setState({
                 isLoading: false,
             });
         }
 
-   }
+    }
 
-    searchSubmit(search){
+    searchSubmit(search) {
         console.log("text search", search);
-        this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, this.state.kho, search));
-        // switch (this.props.documentReducer.get("typeDocument")){
-        //     case strings.vanBanChoXuLy:
-        //         this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, search));
-        //         break
-        //     case strings.vanBanDaXuLy:
-        //         this.props.dispatch(documentAction.getListProcessedDocumentAction(this.state.pageNo, this.state.pageRec, search));
-        //         break
-        //     default:
-        //         break 
-        // }
-        
+        //this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, this.state.kho, search));
+        this.loadListDocByType();
+
+    }
+
+    loadListDocByType = () => {
+        let parameter;
+        switch (this.props.documentReducer.get("typeDocument")) {
+            case strings.vanBanXemDeBiet:
+                parameter = {};
+                parameter.param = this.state.param;
+                parameter.status = this.state.statusDoc;
+                // this.setState({
+                //     parameter: parameter
+                // });
+                console.log("this.setState parameter: ", parameter);
+                this.props.dispatch(documentAction.getListNotifyDocumentAction(this.state.pageNo, this.state.pageRec, parameter));
+                break
+            case strings.vanBanDaXuLy:
+                parameter = {};
+                parameter.param = this.state.param;
+                // this.setState({
+                //     parameter: {
+                //         param: this.state.param,
+                //         status: "",
+                //     }
+                // })
+                this.props.dispatch(documentAction.getListProcessedDocumentAction(this.state.pageNo, this.state.pageRec, parameter));
+                break
+            default:
+                this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, this.props.documentReducer.get("typeDocument"), this.state.param));
+                break
+        }
+    }
+
+    vbXemDeBiet_btnHandle = (type) => {
+        if (this.state.statusDoc !== type) {
+            let parameter = {};
+            parameter.param = this.state.param;
+            parameter.status = type;
+            this.setState({
+                statusDoc: type,
+                // parameter: {
+                //     param: this.state.param,
+                //     status: type,
+                // }
+            });
+            console.log("vbXemDeBiet_btnHandle ", parameter);
+            this.props.dispatch(documentAction.getListNotifyDocumentAction(this.state.pageNo, this.state.pageRec, parameter));
+        }
     }
 
     render() {
         let CheckData;
-        if(this.state.dataDocument != null && this.state.dataDocument.length != 0){
+        if (this.state.dataDocument != null && this.state.dataDocument.length != 0) {
             CheckData = <View></View>
-        }else{
+        } else {
             CheckData = <View >
-                            <Text style={{textAlign: "center", fontSize: 18}}>Không có dữ liệu...</Text>
-                        </View>
+                <Text style={{ textAlign: "center", fontSize: 18 }}>Không có dữ liệu...</Text>
+            </View>
         }
-        let  dataView =      
-                        <View>
-                            {        
-                                CheckData
-                            }   
-                            <FlatList
-                            data={this.state.dataDocument}
-                            style={{marginBottom: 100}}
-                            onEndReached={this.loadMore}
-                            onEndReachedThreshold={0.1}
-                            onRefresh={this.onRefresh}
-                            refreshing={this.state.refreshing} 
-                            renderItem={({item, index})=>{
-                            return (
-                                <TouchableOpacity 
+        let dataView =
+            <View>
+                {
+                    CheckData
+                }
+                <FlatList
+                    data={this.state.dataDocument}
+                    style={{ marginBottom: 100 }}
+                    onEndReached={this.loadMore}
+                    onEndReachedThreshold={0.1}
+                    onRefresh={this.onRefresh}
+                    refreshing={this.state.refreshing}
+                    renderItem={({ item, index }) => {
+                        return (
+                            <TouchableOpacity
 
-                                onPress={ () => this.gotoDocumentDetail(item)}>
-                                    <ItemDocument item={item} index={index} navigator= {this.props.navigation}>
-                                    
-                                    </ItemDocument>
-                                </TouchableOpacity>);
-                
-                            }}
-                            keyExtractor={(item, index) => index.toString()}
-                            />
-                        </View>
-                            
+                                onPress={() => this.gotoDocumentDetail(item)}>
+                                <ItemDocument item={item} index={index} navigator={this.props.navigation}>
+
+                                </ItemDocument>
+                            </TouchableOpacity>);
+
+                    }}
+                    keyExtractor={(item, index) => index.toString()}
+                />
+            </View>
+
         // }else{
         //     dataView = <Text style={{textAlign: "center", fontSize: 18}}>Không có dữ liệu...</Text>
         // }
         return (
             <View>
-                <Header myTitle = {this.state.title} 
-                    navigator = {this.props.navigation}
+                <Header myTitle={this.state.title}
+                    navigator={this.props.navigation}
                 />
                 <View style={styles.wrapper}>
                     <View style={styles.searchSection}  >
@@ -206,32 +236,45 @@ export class DocManagement extends Component {
                             underlineColorAndroid='transparent'
                             placeholder='Tìm kiếm'
                             returnKeyType='search'
-                            onSubmitEditing={(event) => this.searchSubmit( event.nativeEvent.text )}
-
+                            onSubmitEditing={(event) => this.searchSubmit(event.nativeEvent.text)}
+                            onChangeText={(text) => this.setState({ param: text })}
                         />
                     </View>
                 </View>
+                {this.state.kho === strings.vanBanXemDeBiet ?
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', paddingTop: 5, paddingBottom: 5 }}>
+                        <TouchableOpacity
+                            style={[styles.btnChuaDoc, styles.btnXemDeBiet, this.state.statusDoc === "CHUADOC" ? styles.btnSelect : styles.btnUnSelect]}
+                            onPress={() => this.vbXemDeBiet_btnHandle("CHUADOC")}
+                        >
+                            <Text style={[this.state.statusDoc === "CHUADOC" ? styles.btnText : styles.btnTextUnselect, { fontWeight: 'bold' }]}>{strings.vbXemDeBiet_chuaDoc}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.btnTatCa, styles.btnXemDeBiet, this.state.statusDoc === "TATCA" ? styles.btnSelect : styles.btnUnSelect]}
+                            onPress={() => this.vbXemDeBiet_btnHandle("TATCA")}
+                        >
+                            <Text style={[this.state.statusDoc === "TATCA" ? styles.btnText : styles.btnTextUnselect, { fontWeight: 'bold' }]}>{strings.vbXemDeBiet_tatCa}</Text>
+                        </TouchableOpacity>
+                    </View> : null
+                }
+
 
                 <View>
-
                     {dataView}
-
-                    
-  
                 </View>
-                
+
             </View>
-            
+
         );
     }
 }
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
     return {
         documentReducer: state.get('documentReducer'),
         root: state.get('root'),
         // login: state.get('login')
     }
-    
+
 }
 export default connect(mapStateToProps)(DocManagement)

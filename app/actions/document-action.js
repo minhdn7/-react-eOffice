@@ -40,7 +40,7 @@ export const getListNotifyDocumentAction = (pageNo, pageRec, param) => {
         type: actions.GET_LIST_NOTIFY_DOCUMENT,
         pageNo: pageNo,
         pageRec: pageRec,
-        parameter: param,
+        param: param,
     }
 }
 

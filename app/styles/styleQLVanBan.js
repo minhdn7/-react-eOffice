@@ -124,7 +124,16 @@ const styles = StyleSheet.create({
     dropdownTextStyle:{
         color: "#ffffff", fontSize: 15, backgroundColor: "#0033FF"
     },
-    dropdownTextHighlightStyle: { color: "#ffffff" }
+    dropdownTextHighlightStyle: { color: "#ffffff" },
+
+    btnSelect: {
+        backgroundColor: backgroundColor,
+    },
+    btnTextUnselect: { color: "#205AA7", textAlign: 'center' },
+    btnUnSelect: { backgroundColor: "#fff", borderWidth: 1, borderColor: "#205AA7",  },
+    btnChuaDoc: { height: 40, width: width*0.25, borderTopLeftRadius: 5, borderBottomLeftRadius: 5, },
+    btnTatCa: { height: 40, width: width*0.25, borderTopRightRadius: 5, borderBottomRightRadius: 5, },
+    btnXemDeBiet: { height: 40, width: width*0.25, justifyContent: 'center', alignItems: 'center' },
 });
 
 export default styles;

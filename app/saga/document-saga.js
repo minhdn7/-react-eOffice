@@ -65,6 +65,7 @@ function getProcessedDocumentURL(pageNo, pageRec, param) {
 }
 
 function getNotifyDocumentURL(pageNo, pageRec, param) {
+  console.log("param getNotifyDocumentURL: ", param);
   url = apiUrl.ROOT_URL + apiUrl.GET_DOC_NOTIFICATION_URL;
   return fetch(url, {
     method: 'POST',
