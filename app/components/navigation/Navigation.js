@@ -7,7 +7,7 @@ import configureStore from "../../store/configureStore.js";
 import {StackNavigator} from "react-navigation";
 import Login from "../screen/Login";
 import Home from "../screen/Home";
-import ThongTinDieuHanh from "../screen/ThongTinDieuHanh";
+//import ThongTinDieuHanh from "../screen/ThongTinDieuHanh";
 import ChiTietDieuHanh from "../screen/ChiTietDieuHanh";
 import SendThongTin from "../screen/SendThongTin";
 import DanhSachNhan from "../screen/DanhSachNhan";
@@ -30,6 +30,7 @@ import ViewFile from "../QLVanBan/ViewFile";
 import LuongVanBan from "../QLVanBan/LuongVanBan";
 import DocumentMove from "../QLVanBan/DocumentMove";
 import SelectGroupUnitAndUser from "../QLVanBan/SelectGroupUnitAndUser";
+import ThongTinDieuHanh from "../ThongTinDieuHanh/ThongTinDieuHanh";
 
 const store = configureStore();
 const Routes = {
@@ -58,6 +59,7 @@ const Routes = {
   LuongVanBan: {screen: LuongVanBan},
   DocumentMove: {screen: DocumentMove},
   SelectGroupUnitAndUser: {screen: SelectGroupUnitAndUser},
+  ThongTinDieuHanh: {screen: ThongTinDieuHanh},
 };
 const Navigator = StackNavigator(Routes, {
   headerMode: 'none',

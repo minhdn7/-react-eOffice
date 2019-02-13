@@ -47,7 +47,7 @@ export class InfoExchange extends Component {
     searchSubmit = async() => {
         //this.props.dispatch(infoExchangeAction.guiYKienTraoDoiAction(this.state.docId, event));
         if (this.state.text != "" && this.state.text != null && this.state.text != "undefined") {
-            await  this.props.dispatch(infoExchangeAction.guiYKienTraoDoiAction(this.state.docId, this.state.text));
+            await this.props.dispatch(infoExchangeAction.guiYKienTraoDoiAction(this.state.docId, this.state.text));
             this.setState({
                 text: "",
             });

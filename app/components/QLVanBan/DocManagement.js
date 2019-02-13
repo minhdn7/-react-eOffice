@@ -80,17 +80,17 @@ export class DocManagement extends Component {
                 dataDocument: updateData,
                 isLoading: false,
             });
+        } else if (this.props.documentReducer.get('listDocumentData') != null
+            && this.props.documentReducer.get('listDocumentData').length > 0) {
+            this.setState({
+                dataDocument: this.props.documentReducer.get('listDocumentData'),
+                isLoading: false,
+            });
         } else if (this.props.documentReducer.get('documentError') != null
             && this.props.documentReducer.get('documentError') != '') {
             this.props.dispatch(documentAction.setListDocumentErrorAction(''));
             ToastAndroid.show(this.props.documentReducer.get('documentError'), ToastAndroid.SHORT);
-        } else if (this.state.pageNo == 1) {
-            // this.setState({
-            //     dataDocument: [],
-            //     isLoading: false,
-            // });
         }
-
     }
 
     gotoDocumentDetail = (item) => {
@@ -132,6 +132,10 @@ export class DocManagement extends Component {
 
     searchSubmit(search) {
         console.log("text search", search);
+        this.setState({
+            pageNo: 1,
+            pageRec: 10,
+        });
         //this.props.dispatch(documentAction.getListWaitingDocumentAction(this.state.pageNo, this.state.pageRec, this.state.kho, search));
         this.loadListDocByType();
 
@@ -172,6 +176,9 @@ export class DocManagement extends Component {
             let parameter = {};
             parameter.param = this.state.param;
             parameter.status = type;
+
+            console.log("vbXemDeBiet_btnHandle ", parameter);
+            this.props.dispatch(documentAction.getListNotifyDocumentAction(this.state.pageNo, this.state.pageRec, parameter));
             this.setState({
                 statusDoc: type,
                 // parameter: {
@@ -179,8 +186,6 @@ export class DocManagement extends Component {
                 //     status: type,
                 // }
             });
-            console.log("vbXemDeBiet_btnHandle ", parameter);
-            this.props.dispatch(documentAction.getListNotifyDocumentAction(this.state.pageNo, this.state.pageRec, parameter));
         }
     }
 
