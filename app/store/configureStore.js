@@ -23,6 +23,7 @@ import lichSuXuLyReducer from '../reducers/lichSuXuLyReducer';
 import luongVanBanReducer from '../reducers/luongVanBanReducer';
 import chuyenXuLyReducer from '../reducers/chuyenXuLyReducer';
 import menuReducer from '../reducers/menuReducer';
+import thongTinDieuHanhReducer from '../reducers/thongTinDieuHanhReducer';
 
 import createSagaMiddleware from "redux-saga";
 import * as loginSaga from "../saga/login-saga";
@@ -39,6 +40,8 @@ import * as lichSuXuLySaga from "../saga/lichSuXuLy-saga";
 import * as luongVanBanSaga from "../saga/luongVanBan-saga";
 import * as chuyenXuLySaga from "../saga/chuyenXuLy-saga";
 import * as menuSaga from "../saga/menu-saga";
+import * as thongTinDieuHanhSaga from "../saga/thongTinDieuHanh-saga";
+
 const combinedReducers = combineReducers({
   root: rootReducer,
   login: loginReducer,
@@ -54,6 +57,7 @@ const combinedReducers = combineReducers({
   chuyenXuLyReducer: chuyenXuLyReducer,
   notificationReducer: notificationReducer,
   menuReducer: menuReducer,
+  thongTinDieuHanhReducer: thongTinDieuHanhReducer,
 });
 
 const initialState = new Immutable.Map({
@@ -109,6 +113,9 @@ const initialState = new Immutable.Map({
   menuReducer: Immutable.Map({
 
   }),
+  thongTinDieuHanhReducer: Immutable.Map({
+
+  }),
 });
 
 export default function configureStore() {
@@ -159,6 +166,8 @@ export default function configureStore() {
       sagaMiddleware.run(chuyenXuLySaga.documentMoveFlow),
 
       sagaMiddleware.run(menuSaga.countMenuFlow),
+
+      sagaMiddleware.run(thongTinDieuHanhSaga.getListReceiveFlow),
 
     ]
   };

@@ -155,3 +155,9 @@ export const RESET_COUNT_MENU_DATA = "RESET_COUNT_MENU_DATA";
 
 //navigation
 export const SET_NAVIGATOR = "SET_NAVIGATOR";
+
+//Thông tin điều hành
+export const GET_LIST_RECEIVE = "GET_LIST_RECEIVE";
+export const GET_LIST_RECEIVE_SUCESS = "GET_LIST_RECEIVE_SUCESS";
+export const GET_LIST_RECEIVE_ERROR = "GET_LIST_RECEIVE_ERROR";
+

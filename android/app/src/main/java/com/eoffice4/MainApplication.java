@@ -3,6 +3,11 @@ package com.eoffice4;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativedocumentpicker.ReactNativeDocumentPicker;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.reactnativenavigation.bridge.NavigationReactPackage;
+import com.babisoft.ReactNativeLocalization.ReactNativeLocalizationPackage;
+import com.remobile.toast.RCTToastPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.RNFirebasePackage;
 import com.facebook.react.ReactNativeHost;
@@ -29,6 +34,11 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new ReactNativeDocumentPicker(),
+            new VectorIconsPackage(),
+            new NavigationReactPackage(),
+            new ReactNativeLocalizationPackage(),
+            new RCTToastPackage(),
             new RNFirebasePackage(),
             new RNFirebaseMessagingPackage(),
             new RNFirebaseNotificationsPackage()

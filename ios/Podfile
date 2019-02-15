@@ -10,4 +10,10 @@ target 'eOffice4' do
     pod 'Firebase/Core'
     pod 'Firebase/Messaging'
 
+  pod 'ReactNativeLocalization', :path => '../node_modules/react-native-localization'
+
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+  pod 'react-native-document-picker', :path => '../node_modules/react-native-document-picker'
+
 end
