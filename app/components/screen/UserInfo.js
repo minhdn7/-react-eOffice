@@ -1,147 +1,139 @@
-import React, {Component} from "react";
-import {Image, Text, View, Alert, TouchableOpacity, StyleSheet, TextInput, Input, FlatList, TouchableWithoutFeedback} from "react-native";
-import {Container, Content, Spinner, Button} from "native-base";
-import { Navigation, StatusBar} from 'react-native-navigation';
-import colors from "../../resources/colors";
-import {connect} from "react-redux";
-import dimens from "../../resources/dimens";
-import styles from "../../resources/styles";
-import HTML from "react-native-render-html";
-import showdown from "showdown";
+import React, { Component } from "react";
+import { Image, Text, View, Alert, TouchableOpacity, StyleSheet, TextInput, Input, FlatList, TouchableWithoutFeedback } from "react-native";
 import strings from "../../resources/strings";
-import * as detailsActions from "../../actions/details-actions";
-import Color from 'react-native-material-color';
-import PropTypes from 'prop-types';
-
-import BottomNavigation, { Tab } from 'react-native-material-bottom-navigation-performance';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import DefaultHeader from '../navigation/DefaultHeader';
-import flatListData from '../../data/flatListData';
-import DateTimePicker from 'react-native-modal-datetime-picker';
-import Moment from 'moment';
+import { connect } from "react-redux";
+import * as userInfoAction from "../../actions/userInfo-action";
 
-export default class UserInfo extends Component {
+export class UserInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userName : 'Lê Hữu Hoàng',
-            gioiTinh: 'Nam',
-            ngaySinh: '1/11/2018',
-            phone: '0123456789',
-            email: '123@gmail.com',
-            tenDangNhap: 'hoanglx',
-            danToc: 'Kinh',
-            tonGiao: 'Không',
-            hocVan: 'Đại học',
-            diaChi: 'Thống nhất',
-            donVi: 'VNPT',
-            trangThai: 'chờ duyệt',
+            userInfo: {},
         };
-      }
-      
+    }
 
+    componentDidMount() {
+        this.props.dispatch(userInfoAction.getUserInfoAction());
+    }
 
     render() {
-      
-      return (
-        <View style = {{flex: 1}}>
-            <DefaultHeader myTitle= "Thông tin cá nhân" navigator= {this.props.navigation} />
-            <View style={{flex: 1}}>
-                <View style={{flexDirection: 'row' ,margin: 10, alignItems: 'center'}}>
-                    <Image source={require('../../image/ic_avatar.png')} style={{width: 60, height: 60}}/>
-                    <Text style={{color: 'black', fontSize: 18, padding: 4, fontWeight: 'bold' }}>{this.state.userName}</Text>
+        let userInfo = this.props.userInfoReducer.get('userInfo');
+        if(userInfo === undefined) userInfo = {};
+        if(userInfo.avatar !== null && typeof(userInfo.avatar) != "undefined"){
+            showAvatar = <Image source={{uri: userInfo.avatar}} style={{ width: 90, height: 90 }} />
+        }else{
+            showAvatar = <Image source={require('../../image/ic_avatar.png')} style={{ width: 90, height: 90 }} />
+        }
+        return (
+            <View style={{ flex: 1 }}>
+                <DefaultHeader myTitle="Thông tin cá nhân" navigator={this.props.navigation} />
+                <View style={{ flex: 1 }}>
+                    <View style={{ flex: 1, flexDirection: 'row', margin: 10, alignItems: 'center' }}>
+                        <View style={{ flex: 4 }}>
+                            {showAvatar}
+                        </View>
+                        <Text style={{ flex: 6, color: 'black', fontSize: 18, padding: 4, fontWeight: 'bold' }}>{userInfo.userName}</Text>
+                    </View>
+                    {/* <View style={{margin: 6, height: 1, backgroundColor: 'lightslategray'}}/> */}
+                    <View style={{ flex: 5, margin: 6 }}>
+                        <View style={itemStyles.viewBound}>
+                            <Text style={itemStyles.textLabel}>{strings.gioiTinh}</Text>
+                            <Text style={itemStyles.textData}>{userInfo.sexName}</Text>
+                        </View>
+
+                        <View style={itemStyles.viewBound}>
+                            <Text style={itemStyles.textLabel}>{strings.ngaySinh}</Text>
+                            <Text style={itemStyles.textData}></Text>
+                        </View>
+
+                        <View style={itemStyles.viewBound}>
+                            <Text style={itemStyles.textLabel}>{strings.dienThoai}</Text>
+                            <Text style={itemStyles.textData}>{userInfo.mobile}</Text>
+                        </View>
+
+                        <View style={itemStyles.viewBound}>
+                            <Text style={itemStyles.textLabel}>{strings.email}</Text>
+                            <Text style={itemStyles.textData}>{userInfo.email}</Text>
+                        </View>
+
+                        <View style={itemStyles.viewBound}>
+                            <Text style={itemStyles.textLabel}>{strings.tenDangNhap}</Text>
+                            <Text style={itemStyles.textData}>{userInfo.userId}</Text>
+                        </View>
+
+                        <View style={itemStyles.viewBound}>
+                            <Text style={itemStyles.textLabel}>{strings.danToc}</Text>
+                            <Text style={itemStyles.textData}>{userInfo.danToc}</Text>
+                        </View>
+
+                        <View style={itemStyles.viewBound}>
+                            <Text style={itemStyles.textLabel}>{strings.tonGiao}</Text>
+                            <Text style={itemStyles.textData}>{userInfo.tonGiao}</Text>
+                        </View>
+
+                        <View style={itemStyles.viewBound}>
+                            <Text style={itemStyles.textLabel}>{strings.hocVan}</Text>
+                            <Text style={itemStyles.textData}>{userInfo.trinhDo}</Text>
+                        </View>
+
+                        <View style={itemStyles.viewBound}>
+                            <Text style={itemStyles.textLabel}>{strings.diaChi}</Text>
+                            <Text style={itemStyles.textData}>{userInfo.address}</Text>
+                        </View>
+
+                        <View style={itemStyles.viewBound}>
+                            <Text style={itemStyles.textLabel}>{strings.donVi}</Text>
+                            <Text style={itemStyles.textData}>{userInfo.unitName}</Text>
+                        </View>
+
+                        <View style={itemStyles.viewBound}>
+                            <Text style={itemStyles.textLabel}>{strings.trangThai}</Text>
+                            <Text style={itemStyles.textData}>{userInfo.status === "0" ? strings.duocPhepSuDung : strings.khongDuocPhepSuDung}</Text>
+                        </View>
+                    </View>
+
+
+
+
                 </View>
-                <View style={{margin: 6, height: 1, backgroundColor: 'lightslategray'}}/>
-                <View style={{margin: 6}}>
-                    <View style={itemStyles.viewBound}>
-                        <Text style={itemStyles.textLabel}>{strings.gioiTinh}</Text>
-                        <Text style={itemStyles.textData}>{this.state.gioiTinh}</Text>
-                    </View>
-
-                    <View style={itemStyles.viewBound}>
-                        <Text style={itemStyles.textLabel}>{strings.ngaySinh}</Text>
-                        <Text style={itemStyles.textData}>{this.state.ngaySinh}</Text>
-                    </View>
-
-                    <View style={itemStyles.viewBound}>
-                        <Text style={itemStyles.textLabel}>{strings.dienThoai}</Text>
-                        <Text style={itemStyles.textData}>{this.state.phone}</Text>
-                    </View>
-
-                    <View style={itemStyles.viewBound}>
-                        <Text style={itemStyles.textLabel}>{strings.email}</Text>
-                        <Text style={itemStyles.textData}>{this.state.email}</Text>
-                    </View>
-
-                    <View style={itemStyles.viewBound}>
-                        <Text style={itemStyles.textLabel}>{strings.tenDangNhap}</Text>
-                        <Text style={itemStyles.textData}>{this.state.tenDangNhap}</Text>
-                    </View>
-
-                    <View style={itemStyles.viewBound}>
-                        <Text style={itemStyles.textLabel}>{strings.danToc}</Text>
-                        <Text style={itemStyles.textData}>{this.state.danToc}</Text>
-                    </View>
-
-                    <View style={itemStyles.viewBound}>
-                        <Text style={itemStyles.textLabel}>{strings.tonGiao}</Text>
-                        <Text style={itemStyles.textData}>{this.state.tonGiao}</Text>
-                    </View>
-
-                    <View style={itemStyles.viewBound}>
-                        <Text style={itemStyles.textLabel}>{strings.hocVan}</Text>
-                        <Text style={itemStyles.textData}>{this.state.hocVan}</Text>
-                    </View>
-
-                    <View style={itemStyles.viewBound}>
-                        <Text style={itemStyles.textLabel}>{strings.diaChi}</Text>
-                        <Text style={itemStyles.textData}>{this.state.diaChi}</Text>
-                    </View>
-
-                    <View style={itemStyles.viewBound}>
-                        <Text style={itemStyles.textLabel}>{strings.donVi}</Text>
-                        <Text style={itemStyles.textData}>{this.state.donVi}</Text>
-                    </View>
-
-                    <View style={itemStyles.viewBound}>
-                        <Text style={itemStyles.textLabel}>{strings.trangThai}</Text>
-                        <Text style={itemStyles.textData}>{this.state.trangThai}</Text>
-                    </View>
-                </View>
-
-
 
 
             </View>
-          
-
-        </View>
-      )
+        )
     }
-    
-
-  }
 
 
-  const itemStyles = StyleSheet.create({
+}
+
+
+const itemStyles = StyleSheet.create({
     containerStyle: {
-      flexDirection: 'column',
-      resizeMode: 'cover',
-      flex: 1,
-      alignItems: 'center'
+        flexDirection: 'column',
+        resizeMode: 'cover',
+        flex: 1,
+        alignItems: 'center'
     },
     textLabel: {
-      flex: 2,
-      margin: 4,
-      fontSize: 16,
+        flex: 4,
+        margin: 4,
+        fontSize: 14,
+        color: 'black',
     },
     textData: {
-        flex: 8,
+        flex: 6,
         margin: 4,
-        fontSize: 16,
-      },
-    viewBound:{
-        flexDirection:'row',
+        fontSize: 14,
+        color: 'black',
+    },
+    viewBound: {
+        flexDirection: 'row',
         margin: 4,
-    }  
-  });
+    }
+});
+
+const mapStateToProps = (state) => ({
+    userInfoReducer: state.get('userInfoReducer'),
+});
+
+export default connect(mapStateToProps)(UserInfo);

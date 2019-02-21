@@ -22,10 +22,10 @@ export default class DefaultHeader extends React.Component {
         return (
             <View style={wrapper}>
                 <View style={row1}>
-                    <TouchableOpacity onPress={() => this.handleBackPress()}>
+                    <TouchableOpacity onPress={() => this.handleBackPress()} style={{flex: 1}}>
                         <Image source={icBack} style={iconStyle}/>
                     </TouchableOpacity>
-                    <View style={{flex: 1, alignItems: "center"}}>
+                    <View style={{flex: 9, alignItems: "center"}}>
                         <Text style={titleStyle}>{this.props.myTitle}</Text>
                     </View>
                     

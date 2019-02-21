@@ -31,6 +31,7 @@ import LuongVanBan from "../QLVanBan/LuongVanBan";
 import DocumentMove from "../QLVanBan/DocumentMove";
 import SelectGroupUnitAndUser from "../QLVanBan/SelectGroupUnitAndUser";
 import ThongTinDieuHanh from "../ThongTinDieuHanh/ThongTinDieuHanh";
+import SelectPerson from "../ThongTinDieuHanh/SelectPerson";
 
 const store = configureStore();
 const Routes = {
@@ -60,6 +61,7 @@ const Routes = {
   DocumentMove: {screen: DocumentMove},
   SelectGroupUnitAndUser: {screen: SelectGroupUnitAndUser},
   ThongTinDieuHanh: {screen: ThongTinDieuHanh},
+  SelectPerson: {screen: SelectPerson},
 };
 const Navigator = StackNavigator(Routes, {
   headerMode: 'none',

@@ -202,7 +202,7 @@ class SideMenu extends Component {
               </CollapseHeader>
               <CollapseBody style={{ marginLeft: 10 }}>
                 <TouchableOpacity
-                  onPress={() => this.props.navigation.navigate('ThongTinDieuHanh')}
+                  onPress={() => this.props.navigation.navigate('ThongTinDieuHanh', {type: "Nhan"})}
                   style={{ flexDirection: 'row', alignItems: 'center', padding: 4 }}
                 >
                   <Image style={{ width: 30, height: 30, margin: 4 }}
@@ -212,7 +212,7 @@ class SideMenu extends Component {
                 <View style={{ height: 1, backgroundColor: 'gainsboro' }} />
 
                 <TouchableOpacity
-                  onPress={() => this.props.navigation.navigate('ThongTinDieuHanh')}
+                  onPress={() => this.props.navigation.navigate('ThongTinDieuHanh', {type: "Gui"})}
                   style={{ flexDirection: 'row', alignItems: 'center', padding: 4 }}>
                   <Image style={{ width: 30, height: 30, margin: 4 }}
                     source={require('../../image/ic_chidao_gui.png')} />

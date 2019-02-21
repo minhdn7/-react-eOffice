@@ -122,7 +122,6 @@ function documentMoveURL(actionType, approvedValue, coevalInternal, coevalProces
 function* getListUnit() {
   try {
     response = yield call(getListUnitURL);
-    console.log("list unit:", response);
     if (typeof (response) != "undefined" && typeof (response.status) != "undefined") {
       if (response.status.code == "0" && typeof (response.data) != "undefined") {
         yield put(chuyenXuLyActions.getListUnitSucessAction(response.data));
@@ -148,7 +147,6 @@ function* getUserConcurrentSend(id, jobPosition, name) {
     if (typeof (response) != "undefined" && typeof (response.status) != "undefined") {
       if (response.status.code == "0" && typeof (response.data) != "undefined") {
         let convertTreeData = convertJsonToTreeMapCustom(response.data);
-        console.log("list user concurrent send:", convertTreeData);
         yield put(chuyenXuLyActions.getUserConcurrentSendSucessAction(convertTreeData));
         return response;
       } else {
@@ -169,7 +167,6 @@ function* getUserConcurrentSend(id, jobPosition, name) {
 function* getListInternal(idDoc) {
   try {
     response = yield call(getListInternalURL, idDoc);
-    console.log("list internal:", response);
     if (typeof (response) != "undefined" && typeof (response.status) != "undefined") {
       if (response.status.code == "0" && typeof (response.data) != "undefined") {
         let convertTreeData = convertJsonToTreeMapCustom(response.data)
@@ -193,7 +190,6 @@ function* getListInternal(idDoc) {
 function* getListGroupUnit() {
   try {
     response = yield call(getListGroupUnitlURL);
-    console.log("list group unit:", response);
     if (typeof (response) != "undefined" && typeof (response.status) != "undefined") {
       if (response.status.code == "0" && typeof (response.data) != "undefined") {
         let convertTreeData = convertJsonToTreeMapCustom(response.data)
@@ -217,7 +213,6 @@ function* getListGroupUnit() {
 function* getListGroupUser() {
   try {
     response = yield call(getListGroupUserURL);
-    console.log("list group user:", response);
     if (typeof (response) != "undefined" && typeof (response.status) != "undefined") {
       if (response.status.code == "0" && typeof (response.data) != "undefined") {
         yield put(chuyenXuLyActions.getListGroupUserSucessAction(convertJsonToTreeMapCustom(response.data)));
@@ -240,7 +235,6 @@ function* getListGroupUser() {
 function* documentMove(actionType, approvedValue, coevalInternal, coevalProcess, comment, docId, hanXuLy, job, kho, primaryInternal, primaryProcess, referInternal, referProcess, sms, strAction) {
   try {
     response = yield call(documentMoveURL, actionType, approvedValue, coevalInternal, coevalProcess, comment, docId, hanXuLy, job, kho, primaryInternal, primaryProcess, referInternal, referProcess, sms, strAction);
-    console.log("result documentMove:", response);
     if (typeof (response) != "undefined" && typeof (response.status) != "undefined") {
       if (response.status.code == "0" && typeof (response.data) != "undefined") {
         yield put(chuyenXuLyActions.documentMoveSucessAction(response.data));

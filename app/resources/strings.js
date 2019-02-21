@@ -66,6 +66,8 @@ module.exports = new LocalizedStrings({
     matKhauMoi: 'Mật khẩu mới',
     xacNhanMatKhau: 'Xác nhận mật khẩu mới',
     capNhat: 'Cập nhật',
+    duocPhepSuDung: 'Được phép sử dụng',
+    khongDuocPhepSuDung: 'Không được phép sử dụng',
     // menu
     trangChu: 'Trang chủ',
     trangTinTuc: 'Trang tin tức',
@@ -156,5 +158,22 @@ module.exports = new LocalizedStrings({
     // văn bản xem để biết
     vbXemDeBiet_chuaDoc: "Chưa đọc",
     vbXemDeBiet_tatCa: "Tất cả",
+
+    //Thông tin điều hành
+    quayLai: "Quay lại",
+    luuLai: "Lưu lại",
+    chonNhomNguoiNhan: "--Chọn nhóm người nhận--",
+    loadingMore: "Loading more",
+    refresh: "Refresh",
+    ngayTao: "Ngày tạo",
+    trangThai: "Trạng thái",
+    tepDinhKem: "Tệp đính kèm",
+    daGui: "Đã gửi",
+    banNhap: "Bản nháp",
+    daDoc: "Đã đọc",
+    chuaDoc: "Chưa đọc",
+    sua: "Sửa",
+    xoa: "Xóa",
+
   }
 });

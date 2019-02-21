@@ -1,31 +1,56 @@
 import React, { Component } from "react";
 import { Image, Text, View, Alert, TouchableOpacity, StyleSheet, TextInput, ScrollView } from "react-native";
 import { Container, Content, Spinner, Button } from "native-base";
-import { Navigation, StatusBar } from 'react-native-navigation';
 import strings from "../../resources/strings";
-import * as detailsActions from "../../actions/details-actions";
-import Color from 'react-native-material-color';
-import PropTypes from 'prop-types';
 
 import DefaultHeader from '../navigation/DefaultHeader';
-import flatListData from '../../data/flatListData';
-import DateTimePicker from 'react-native-modal-datetime-picker';
-import Moment from 'moment';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
+import * as thongTinDieuHanhAction from '../../actions/thongTinDieuHanh-actions';
 
-export default class ChiTietDieuHanh extends Component {
+export class SendThongTin extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "Huỳnh Thị Trần Lê",
-      date: "25/10/2018",
-      sendingName: "ttdh gửi",
-      description: "abc",
-      guiToi: 'Bạn và 21 người khác',
       txtTitle: '',
       txtContent: '',
+      id: '',
+      titleHeader: '',
+      lstFile: [],
 
     };
+  }
+
+  componentWillMount(){
+    let id = this.props.navigation.getParam('id', '');
+    let titleHeader = this.props.navigation.getParam('title', '');
+    this.setState({
+      id: id,
+      titleHeader: titleHeader,
+    })
+  }
+
+  componentDidMount(){
+    let id = this.state.id;
+    if(id !== null && id !== ""){
+      this.props.dispatch(thongTinDieuHanhAction.getDetailByIdAction(id));
+      this.props.dispatch(thongTinDieuHanhAction.getListFilesByIdAction(id));
+    }
+  }
+
+  componentWillReceiveProps(){
+    let userDetail = this.props.thongTinDieuHanhReducer.get('userDetail');
+    let lstFile = this.props.thongTinDieuHanhReducer.get('lstFiles');
+    if(userDetail !== null && userDetail !== "undefined"){
+      this.setState({
+        txtTitle: userDetail.tieuDe,
+        txtContent: userDetail.noiDung
+      });
+    }
+    if(lstFile !== null && lstFile.length > 0){
+      this.setState({
+        lstFile: lstFile,
+      })
+    }
   }
 
   static navigationOptions = {
@@ -35,7 +60,7 @@ export default class ChiTietDieuHanh extends Component {
   _pickFile = () => {
     console.log("co vao day");
     DocumentPicker.show({
-      filetype: [DocumentPickerUtil.images()],
+      filetype: [DocumentPickerUtil.allFiles()],
     }, (error, res) => {
       // Android
       console.log(
@@ -51,7 +76,7 @@ export default class ChiTietDieuHanh extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <DefaultHeader myTitle="Gửi thông tin điều hành" navigator={this.props.navigation} />
+        <DefaultHeader myTitle={this.state.titleHeader} navigator={this.props.navigation} />
         <View style={itemStyles.containerStyle}>
           <View style={{ flex: 2 }}>
             <Text>
@@ -61,6 +86,7 @@ export default class ChiTietDieuHanh extends Component {
             <TextInput
               style={itemStyles.editTextStyle}
               onChangeText={(text) => this.setState({ txtTitle: text })}
+              value={this.state.txtTitle}
             ></TextInput>
           </View>
 
@@ -69,6 +95,7 @@ export default class ChiTietDieuHanh extends Component {
             <TextInput
               style={[itemStyles.editTextStyle, { height: 180 }]}
               onChangeText={(text) => this.setState({ txtContent: text })}
+              value={this.state.txtContent}
               multiline={true}
             ></TextInput>
           </View>
@@ -154,4 +181,12 @@ const itemStyles = StyleSheet.create({
   },
   styleBtn: { flex: 5, justifyContent: 'center', borderRadius: 5, margin: 3 }
 });
+
+function mapStateToProps(state) {
+  return {
+    thongTinDieuHanhReducer: state.get('thongTinDieuHanhReducer'),
+  }
+}
+
+export default connect(mapStateToProps)(SendThongTin);
 

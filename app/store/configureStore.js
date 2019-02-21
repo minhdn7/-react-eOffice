@@ -24,6 +24,7 @@ import luongVanBanReducer from '../reducers/luongVanBanReducer';
 import chuyenXuLyReducer from '../reducers/chuyenXuLyReducer';
 import menuReducer from '../reducers/menuReducer';
 import thongTinDieuHanhReducer from '../reducers/thongTinDieuHanhReducer';
+import userInfoReducer from '../reducers/userInfoReducer';
 
 import createSagaMiddleware from "redux-saga";
 import * as loginSaga from "../saga/login-saga";
@@ -41,6 +42,7 @@ import * as luongVanBanSaga from "../saga/luongVanBan-saga";
 import * as chuyenXuLySaga from "../saga/chuyenXuLy-saga";
 import * as menuSaga from "../saga/menu-saga";
 import * as thongTinDieuHanhSaga from "../saga/thongTinDieuHanh-saga";
+import * as userInfroSage from "../saga/userInfo-sage";
 
 const combinedReducers = combineReducers({
   root: rootReducer,
@@ -58,6 +60,7 @@ const combinedReducers = combineReducers({
   notificationReducer: notificationReducer,
   menuReducer: menuReducer,
   thongTinDieuHanhReducer: thongTinDieuHanhReducer,
+  userInfoReducer: userInfoReducer,
 });
 
 const initialState = new Immutable.Map({
@@ -116,6 +119,9 @@ const initialState = new Immutable.Map({
   thongTinDieuHanhReducer: Immutable.Map({
 
   }),
+  userInfoReducer: Immutable.Map({
+
+  }),
 });
 
 export default function configureStore() {
@@ -168,7 +174,10 @@ export default function configureStore() {
       sagaMiddleware.run(menuSaga.countMenuFlow),
 
       sagaMiddleware.run(thongTinDieuHanhSaga.getListReceiveFlow),
+      sagaMiddleware.run(thongTinDieuHanhSaga.getListSendFlow),
+      sagaMiddleware.run(thongTinDieuHanhSaga.getListUserUnitFlow),
 
+      sagaMiddleware.run(userInfroSage.getUserInfoFlow),
     ]
   };
 }

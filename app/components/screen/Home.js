@@ -57,7 +57,8 @@ export class Home extends Component {
         this.props.navigation.navigate('DanhBa');
           break;
         case 4:
-          this.props.navigation.navigate('ThongTinDieuHanh');
+          //this.props.navigation.navigate('ThongTinDieuHanh');
+          this.props.navigation.navigate('SelectPerson');
           break;
         case 5:
           this.props.navigation.navigate('BaoCaoThongKe');

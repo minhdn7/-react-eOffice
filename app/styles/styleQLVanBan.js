@@ -8,8 +8,8 @@ const styles = StyleSheet.create({
     wrapper: { backgroundColor: backgroundColor, padding: 10, justifyContent: 'space-around' },
     row1: { flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10 },
     textInput: {
+        flex: 1,
         backgroundColor: '#FFF', paddingLeft: 0, paddingTop: 10,
-        
         paddingRight: 10,
         paddingBottom: 10,
         borderRadius: 4,
@@ -134,6 +134,8 @@ const styles = StyleSheet.create({
     btnChuaDoc: { height: 40, width: width*0.25, borderTopLeftRadius: 5, borderBottomLeftRadius: 5, },
     btnTatCa: { height: 40, width: width*0.25, borderTopRightRadius: 5, borderBottomRightRadius: 5, },
     btnXemDeBiet: { height: 40, width: width*0.25, justifyContent: 'center', alignItems: 'center' },
+    styleContainer: { flex: 1, margin: 2, padding: 2, flexDirection: 'column', backgroundColor: '#F8F8FF' },
+    styleBtn_TTDieuHanh: { flex: 1, justifyContent: 'center', alignItems: 'center', borderRadius: 5, margin: 3 }
 });
 
 export default styles;
