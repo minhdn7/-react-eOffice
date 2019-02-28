@@ -135,7 +135,7 @@ export default function configureStore() {
     store,
     {
       storage: AsyncStorage,
-      blacklist: ['root'],
+      blacklist: ['root', 'thongTinDieuHanhReducer'],
     }
   );
   return {
@@ -176,6 +176,15 @@ export default function configureStore() {
       sagaMiddleware.run(thongTinDieuHanhSaga.getListReceiveFlow),
       sagaMiddleware.run(thongTinDieuHanhSaga.getListSendFlow),
       sagaMiddleware.run(thongTinDieuHanhSaga.getListUserUnitFlow),
+      sagaMiddleware.run(thongTinDieuHanhSaga.getDetailByIdFlow),
+      sagaMiddleware.run(thongTinDieuHanhSaga.getListFilesByIdFlow),
+      sagaMiddleware.run(thongTinDieuHanhSaga.deleteInfoByIdFlow),
+      sagaMiddleware.run(thongTinDieuHanhSaga.getFlowByIdFlow),
+      sagaMiddleware.run(thongTinDieuHanhSaga.getUserReceiverFlow),
+      sagaMiddleware.run(thongTinDieuHanhSaga.createFlow),
+      sagaMiddleware.run(thongTinDieuHanhSaga.updateEmployeeFlow),
+      sagaMiddleware.run(thongTinDieuHanhSaga.sendFlow),
+
 
       sagaMiddleware.run(userInfroSage.getUserInfoFlow),
     ]

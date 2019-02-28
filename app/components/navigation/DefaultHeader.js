@@ -37,7 +37,7 @@ export default class DefaultHeader extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    wrapper: { height: 60, backgroundColor: Color.BLUE[900], padding: 10, justifyContent: 'space-around' },
+    wrapper: { height: 60, backgroundColor: '#205AA7', padding: 10, justifyContent: 'space-around' },
     row1: { 
         flexDirection: 'row',
         justifyContent: 'space-between',

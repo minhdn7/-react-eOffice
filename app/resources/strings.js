@@ -31,6 +31,8 @@ module.exports = new LocalizedStrings({
     luuNhap:'Lưu nháp',
     chonNguoiNhan: 'Chọn người nhận',
     chucNangDangPhatTrien: 'Chức năng đang được phát triển!',
+    themNguoiNhan: 'Thêm người nhận',
+    gui: 'Gửi',
 
     quanLyVanBan: 'Quản lý văn bản',
     vanBanDen: 'Văn bản đến',
@@ -166,6 +168,7 @@ module.exports = new LocalizedStrings({
     loadingMore: "Loading more",
     refresh: "Refresh",
     ngayTao: "Ngày tạo",
+    ngayNhan: "Ngày nhận",
     trangThai: "Trạng thái",
     tepDinhKem: "Tệp đính kèm",
     daGui: "Đã gửi",
@@ -174,6 +177,12 @@ module.exports = new LocalizedStrings({
     chuaDoc: "Chưa đọc",
     sua: "Sửa",
     xoa: "Xóa",
-
+    xoaThanhCongThongTinDieuHanh: "Xóa thành công thông tin điều hành",
+    ngayXem: "Ngày xem",
+    chuaXem: "Chưa xem",
+    //Thông báo
+    luuThongTinThanhCong: "Lưu thông tin thành công",
+    messageDinhDangFile: "Hệ thống chỉ hỗ trợ các Tệp định dạng DOC, DOCX, XLS, XLSX, PDF và định dạng Tệp tin ảnh",
+    messageSendSucess: "Thông tin điều hành đã được gửi thành công",
   }
 });

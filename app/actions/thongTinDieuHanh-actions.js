@@ -113,3 +113,149 @@ export const getListFilesByIdErrorAction = (error) => {
         error
     }
 }
+
+export const deleteInfoByIdAction = (id) => {
+    return {
+        type: actions.INFO_DELETE_BY_ID,
+        id
+    }
+}
+
+export const deleteInfoByIdSucess = (data) => {
+    return {
+        type: actions.INFO_DELETE_BY_ID_SUCESS,
+        result: data
+    }
+}
+
+export const deleteInfoByIdError = (error) => {
+    return{
+        type: actions.INFO_DELETE_BY_ID_ERROR,
+        error
+    }
+}
+
+export const getFlowByIdAction = (id) => {
+    return{
+        type: actions.INFO_GET_FLOW_BY_ID,
+        id
+    }
+}
+
+export const getFlowByIdSucessAction = (data) => {
+    return{
+        type: actions.INFO_GET_FLOW_BY_ID_SUCESS,
+        lstFlow: data
+    }
+}
+
+export const getFlowByIdErrorAction = (error) => {
+    return{
+        type: actions.INFO_GET_FLOW_BY_ID_ERROR,
+        error
+    }
+}
+
+export const getUserReceiverAction = (id, name, pageNo, pageRec) => {
+    return{
+        type: actions.INFO_GET_USER_RECEIVER,
+        id,
+        name,
+        pageNo,
+        pageRec
+    }
+}
+
+export const getUserReceiverSucessAction = (data) => {
+    return{
+        type: actions.INFO_GET_USER_RECEIVER_SUCCES,
+        lstUserReceiver: data
+    }
+}
+
+export const getUserReceiverErrorAction = (error) => {
+    return{
+        type: actions.INFO_GET_USER_RECEIVER_ERROR,
+        error
+    }
+}
+
+export const setIdInfomationAction = (id) => {
+    return{
+        type: actions.SET_ID_INFO,
+        idInfo: id
+    }
+}
+
+export const createAction = (chuyenTiep, deleteFiles, files, id, noiDung, parentId, tieuDe) => {
+    return{
+        type: actions.INFO_CREATE,
+        chuyenTiep,
+        deleteFiles,
+        files,
+        id,
+        noiDung,
+        parentId,
+        tieuDe
+    }
+}
+
+export const createSucessAction = (data) => {
+    return{
+        type: actions.INFO_CREATE_SUCESS,
+        createResult: data
+    }
+}
+
+export const createErrorAction = (error) => {
+    return{
+        type: actions.INFO_CREATE_ERROR,
+        error
+    }
+}
+
+export const updateEmployeeAction = (empAdd, empDelete, id) => {
+    return{
+        type: actions.INFO_UPDATE_EMPLOYEE,
+        empAdd,
+        empDelete,
+        id
+    }
+}
+
+export const updateEmployeeSucessAction = (data) => {
+    return{
+        type: actions.INFO_UPDATE_EMPLOYEE_SUCESS,
+        updateEmpResult: data
+    }
+}
+
+export const updateEmployeeErrorAction = (error) => {
+    return{
+        type: actions.INFO_UPDATE_EMPLOYEE_ERROR,
+        updateEmpError: error
+    }
+}
+
+export const sendAction = (id, sms, user) => {
+    return{
+        type: actions.INFO_SEND,
+        id,
+        sms,
+        user
+    }
+}
+
+export const sendSucessAction = (data) => {
+    return{
+        type: actions.INFO_SEND_SUCESS,
+        sendResult: data
+    }
+}
+
+export const sendErrorAction = (error) => {
+    return{
+        type: actions.INFO_SEND_ERROR,
+        sendError: error
+    }
+}

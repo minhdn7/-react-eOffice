@@ -10,7 +10,7 @@ import Home from "../screen/Home";
 //import ThongTinDieuHanh from "../screen/ThongTinDieuHanh";
 import ChiTietDieuHanh from "../ThongTinDieuHanh/ChiTietDieuHanh";
 import SendThongTin from "../ThongTinDieuHanh/SendThongTin";
-import DanhSachNhan from "../screen/DanhSachNhan";
+import DanhSachNhan from "../ThongTinDieuHanh/DanhSachNhan";
 import LichCongTac from "../screen/LichCongTac";
 import BaoCaoThongKe from "../screen/BaoCaoThongKe";
 import Notification from "../screen/Notification";

@@ -31,10 +31,10 @@ export class InfoExchange extends Component {
     }
 
     componentWillReceiveProps() {
-        this.setState({
-            listComment: this.props.infoExchangeReducer.get('listComment'),
-            //result: this.props.infoExchangeReducer.get('result'),
-        });
+        // this.setState({
+        //     listComment: this.props.infoExchangeReducer.get('listComment'),
+        //     //result: this.props.infoExchangeReducer.get('result'),
+        // });
         // var result = "";
         // result = this.props.infoExchangeReducer.get('result')
         // console.log("test result: " + result);
@@ -58,9 +58,9 @@ export class InfoExchange extends Component {
 
     render() {
         let dataView;
-        if (this.state.listComment != null && this.state.listComment.length != 0) {
+        if (this.props.infoExchangeReducer.get('listComment') && this.props.infoExchangeReducer.get('listComment').length) {
             dataView = <FlatList
-                data={this.state.listComment}
+                data={this.props.infoExchangeReducer.get('listComment')}
                 renderItem={({ item, index }) => {
                     return (
                         <View style={{ flex: 1, flexDirection: 'column', alignItems: 'flex-end', paddingTop: 10, paddingRight: 4 }}>

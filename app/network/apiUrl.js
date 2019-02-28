@@ -93,7 +93,7 @@ const apiUrl = {
     GET_PERSON_RECEIVE_CHIDAO_URL : "api/information/getlistnotify/",
     GET_PERSON_GROUP_CHIDAO_URL : "api/information/getgroup/",
     SEND_CHIDAO_URL : "api/information/send/",
-    GET_FLOW_CHIDAO_URL : "api/information/getflow/{id}/",
+    GET_FLOW_CHIDAO_URL : "api/information/getflow/",
     GET_FILE_CHIDAO_URL : "api/information/getfiles/",
     GET_DELETE_CHIDAO_URL : "api/information/delete/",
     GET_DETAIL_CHIDAO_URL : "api/information/getdetail/",
